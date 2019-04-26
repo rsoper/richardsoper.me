@@ -1,0 +1,5 @@
+
+shared/.htpasswd
+.DS_Store
+.env
+traefik/acme/
