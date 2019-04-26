@@ -3,3 +3,7 @@ shared/.htpasswd
 .DS_Store
 .env
 traefik/acme/
+*.key
+*.db
+*.pub
+portainer/data/config.json
