@@ -42,8 +42,6 @@ services:
         container_name: portainer
         restart: always
         command: -H unix:///var/run/docker.sock
-    #    ports:
-    #      - "XXXX:9000"
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
           - ${USERDIR}/docker/portainer/data:/data
@@ -56,7 +54,6 @@ services:
           - "traefik.enable=true"
           - "traefik.backend=portainer"
           - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
-    #      - "traefik.frontend.rule=Host:${DOMAINNAME}; PathPrefixStrip: /portainer"
           - "traefik.port=9000"
           - "traefik.docker.network=traefik_proxy"
           - "traefik.frontend.headers.SSLRedirect=true"
@@ -68,6 +65,18 @@ services:
           - "traefik.frontend.headers.STSIncludeSubdomains=true"
           - "traefik.frontend.headers.STSPreload=true"
           - "traefik.frontend.headers.frameDeny=true"
+
+    ######### DOCKER RELATED ##########
+
+    # Watchtower - Automatic Update of Containers/Apps
+    watchtower:
+        container_name: watchtower
+        hostname: watchtower
+        restart: always
+        image: v2tec/watchtower
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        command: --schedule "0 0 4 * * *" --cleanup
 
 networks:
   traefik_proxy:
