@@ -9,3 +9,7 @@ traefik/acme/
 portainer/data/config.json
 *.log
 *.0
+config.production.json
+owncloud/
+mariadb/
+ghost/
