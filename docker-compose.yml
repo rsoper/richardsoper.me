@@ -141,10 +141,7 @@ services:
         - mariadb
       networks:
         - traefik_proxy
-#      ports:
-#        - "80:80"
       environment:
-#        - PMA_ARBITRARY=1 # Allows you to enter a database server hostname on login form
         - PMA_HOST=mariadb
         - PMA_USER=root
         - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -190,8 +187,6 @@ services:
       restart: always
       networks:
         - traefik_proxy
-#     ports:
-#       - "3306:3306"
       volumes:
         - ${USERDIR}/docker/mariadb:/config
         - ${USERDIR}/docker/shared:/shared
