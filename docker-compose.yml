@@ -1,5 +1,8 @@
 version: "3.6"
 services:
+
+    # Traefik - reverse proxy with sub-domain configuration
+
     traefik:
         hostname: traefik
         image: traefik:latest
@@ -36,7 +39,8 @@ services:
           - /Users/richardsoper/docker/traefik:/etc/traefik
           - /Users/richardsoper/docker/shared:/shared
 
-    #Portainer - WebUI for Containers
+    # Portainer - WebUI for Containers
+
     portainer:
         image: portainer/portainer
         container_name: portainer
@@ -66,7 +70,8 @@ services:
           - "traefik.frontend.headers.STSPreload=true"
           - "traefik.frontend.headers.frameDeny=true"
 
-    #Ghost - Blog platform for personal blog
+    # Ghost - Blog platform for personal blog
+
     ghost:
         image: ghost:latest
         container_name: ghost
@@ -102,7 +107,8 @@ services:
         volumes:
           - ${USERDIR}/docker/ghost:/var/lib/ghost/content
 
-    #Owncloud - Personal file storage
+    # Owncloud - Personal file storage
+
     owncloud:
         image: owncloud:latest
         container_name: owncloud
@@ -131,7 +137,8 @@ services:
         volumes:
           - ${USERDIR}/docker/owncloud:/var/www/html
 
-    #PHPmyadmin - mySQL management UI for mariadb
+    # PHPmyadmin - mySQL management UI for mariadb
+
     phpmyadmin:
       hostname: phpmyadmin
       container_name: phpmyadmin
@@ -164,11 +171,10 @@ services:
         - "traefik.frontend.headers.frameDeny=true"
         - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-
-
     ######### DOCKER RELATED ##########
 
     # Watchtower - Automatic Update of Containers/Apps
+
     watchtower:
         container_name: watchtower
         hostname: watchtower
@@ -180,6 +186,8 @@ services:
 
     ######### DATABASE #########
 
+    # Maria DB - MySQL configured for ghost, and owncloud
+    
     mariadb:
       hostname: mariadb
       container_name: mariadb
