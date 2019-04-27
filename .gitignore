@@ -1,4 +1,4 @@
-
+!.gitkeep
 shared/.htpasswd
 .DS_Store
 .env
@@ -10,6 +10,3 @@ portainer/data/config.json
 *.log
 *.0
 config.production.json
-owncloud/
-mariadb/
-ghost/
