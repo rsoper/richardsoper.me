@@ -7,3 +7,5 @@ traefik/acme/
 *.db
 *.pub
 portainer/data/config.json
+*.log
+*.0
