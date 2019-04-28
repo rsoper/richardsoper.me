@@ -5,7 +5,8 @@ Personal site used for developing my own skills
 ### Frontend
     - Portainer
     - Ghost
-    - OwnCloud
+    - NextCloud
+    - WordPress
 
 ### Tools
     - MySQL
