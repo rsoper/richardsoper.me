@@ -1,5 +1,8 @@
 version: "3.6"
 services:
+
+    # Traefik - reverse proxy with sub-domain configuration
+
     traefik:
         hostname: traefik
         image: traefik:latest
@@ -36,7 +39,8 @@ services:
           - /Users/richardsoper/docker/traefik:/etc/traefik
           - /Users/richardsoper/docker/shared:/shared
 
-    #Portainer - WebUI for Containers
+    # Portainer - WebUI for Containers
+
     portainer:
         image: portainer/portainer
         container_name: portainer
@@ -66,7 +70,8 @@ services:
           - "traefik.frontend.headers.STSPreload=true"
           - "traefik.frontend.headers.frameDeny=true"
 
-    #Ghost - Blog platform for personal blog
+    # Ghost - Blog platform for personal blog
+
     ghost:
         image: ghost:latest
         container_name: ghost
@@ -102,10 +107,11 @@ services:
         volumes:
           - ${USERDIR}/docker/ghost:/var/lib/ghost/content
 
-    #Owncloud - Personal file storage
-    owncloud:
-        image: owncloud:latest
-        container_name: owncloud
+    # NextCloud - Personal file storage
+
+    nextcloud:
+        image: nextcloud:latest
+        container_name: nextcloud
         restart: always
         depends_on: 
           - mariadb
@@ -115,8 +121,8 @@ services:
           - "8000:80"
         labels:
           - "traefik.enable=true"
-          - "traefik.backend=ghost1"
-          - "traefik.frontend.rule=Host:owncloud.${DOMAINNAME}"  
+          - "traefik.backend=nextcloud"
+          - "traefik.frontend.rule=Host:nextcloud.${DOMAINNAME}"  
           - "traefik.port=80"
           - "traefik.docker.network=traefik_proxy"
           - "traefik.frontend.headers.SSLRedirect=true"
@@ -128,10 +134,13 @@ services:
           - "traefik.frontend.headers.STSIncludeSubdomains=true"
           - "traefik.frontend.headers.STSPreload=true"
           - "traefik.frontend.headers.frameDeny=true"
+          - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://nextcloud.${DOMAINNAME}"
+          - "traefik.frontend.passHostHeader=true"
         volumes:
-          - ${USERDIR}/docker/owncloud:/var/www/html
+          - ${USERDIR}/docker/nextcloud:/var/www/html
 
-    #PHPmyadmin - mySQL management UI for mariadb
+    # PHPmyadmin - mySQL management UI for mariadb
+
     phpmyadmin:
       hostname: phpmyadmin
       container_name: phpmyadmin
@@ -141,10 +150,7 @@ services:
         - mariadb
       networks:
         - traefik_proxy
-#      ports:
-#        - "80:80"
       environment:
-#        - PMA_ARBITRARY=1 # Allows you to enter a database server hostname on login form
         - PMA_HOST=mariadb
         - PMA_USER=root
         - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -167,11 +173,46 @@ services:
         - "traefik.frontend.headers.frameDeny=true"
         - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
+    # Wordpress - primary site landing page will be powered by Wordpress until I find a better option
 
+    wordpress:
+      hostname: wordpress
+      container_name: wordpress
+      image: wordpress:latest
+      restart: always
+      depends_on: 
+        - mariadb
+      networks:
+        - traefik_proxy
+      environment:
+        WORDPRESS_DB_HOST: mariadb
+        WORDPRESS_DB_USER: wordpress
+        WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
+        WORDPRESS_DB_NAME: wordpress
+      labels:
+        - "traefik.enable=true"
+        - "traefik.backend=wordpress"
+        - "traefik.frontend.rule=Host:${DOMAINNAME}"  
+        - "traefik.port=80"
+        - "traefik.docker.network=traefik_proxy"
+        - "traefik.frontend.headers.SSLRedirect=true"
+        - "traefik.frontend.headers.STSSeconds=315360000"
+        - "traefik.frontend.headers.browserXSSFilter=true"
+        - "traefik.frontend.headers.contentTypeNosniff=true"
+        - "traefik.frontend.headers.forceSTSHeader=true"
+        - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+        - "traefik.frontend.headers.STSIncludeSubdomains=true"
+        - "traefik.frontend.headers.STSPreload=true"
+        - "traefik.frontend.headers.frameDeny=true"
+        - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://${DOMAINNAME}"
+        - "traefik.frontend.passHostHeader=true"
+      volumes:
+        - ${USERDIR}/docker/wordpress:/var/www/html
 
     ######### DOCKER RELATED ##########
 
     # Watchtower - Automatic Update of Containers/Apps
+
     watchtower:
         container_name: watchtower
         hostname: watchtower
@@ -183,6 +224,8 @@ services:
 
     ######### DATABASE #########
 
+    # Maria DB - MySQL configured for ghost, and nextcloud
+
     mariadb:
       hostname: mariadb
       container_name: mariadb
@@ -190,8 +233,6 @@ services:
       restart: always
       networks:
         - traefik_proxy
-#     ports:
-#       - "3306:3306"
       volumes:
         - ${USERDIR}/docker/mariadb:/config
         - ${USERDIR}/docker/shared:/shared
