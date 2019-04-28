@@ -192,7 +192,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.backend=wordpress"
-        - "traefik.frontend.rule=Host:${DOMAINNAME}"  
+        - "traefik.frontend.rule=Host:${DOMAINNAME},www.${DOMAINNAME}"  
         - "traefik.port=80"
         - "traefik.docker.network=traefik_proxy"
         - "traefik.frontend.headers.SSLRedirect=true"
