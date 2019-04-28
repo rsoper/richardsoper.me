@@ -122,7 +122,7 @@ services:
         labels:
           - "traefik.enable=true"
           - "traefik.backend=nextcloud"
-          - "traefik.frontend.rule=Host:nextcloud.${DOMAINNAME}"  
+          - "traefik.frontend.rule=Host:cloud.${DOMAINNAME}"  
           - "traefik.port=80"
           - "traefik.docker.network=traefik_proxy"
           - "traefik.frontend.headers.SSLRedirect=true"
@@ -134,7 +134,7 @@ services:
           - "traefik.frontend.headers.STSIncludeSubdomains=true"
           - "traefik.frontend.headers.STSPreload=true"
           - "traefik.frontend.headers.frameDeny=true"
-          - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://nextcloud.${DOMAINNAME}"
+          - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.${DOMAINNAME}"
           - "traefik.frontend.passHostHeader=true"
         volumes:
           - ${USERDIR}/docker/nextcloud:/var/www/html
