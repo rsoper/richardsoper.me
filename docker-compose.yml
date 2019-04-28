@@ -107,7 +107,7 @@ services:
         volumes:
           - ${USERDIR}/docker/ghost:/var/lib/ghost/content
 
-    # NextCloud - Personal file storage
+    # NextCloud - Personal file storage 
 
     nextcloud:
         image: nextcloud:latest
