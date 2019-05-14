@@ -80,13 +80,8 @@ services:
           - mariadb
         networks:
           - traefik_proxy
-        environment:
-          url: https://blog.${DOMAINNAME}
-          database_client: mysql
-          database_connection_host: mariadb
-          database_connection_user: ghost
-          database_connection_password: ${GHOSTDBPW}
-          database_connection_database: ghost
+        env_file:
+          - ${DOCKERDIR}/ghost/ghost.env
         labels:
           - "traefik.enable=true"
           - "traefik.backend=ghost"
