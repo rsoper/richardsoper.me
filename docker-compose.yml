@@ -36,8 +36,8 @@ services:
           - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock:ro
-          - /Users/richardsoper/docker/traefik:/etc/traefik
-          - /Users/richardsoper/docker/shared:/shared
+          - ${DOCKERDIR}/traefik:/etc/traefik
+          - ${DOCKERDIR}/shared:/shared
 
     # Portainer - WebUI for Containers
 
@@ -48,8 +48,8 @@ services:
         command: -H unix:///var/run/docker.sock
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
-          - ${USERDIR}/docker/portainer/data:/data
-          - ${USERDIR}/docker/shared:/shared
+          - ${DOCKERDIR}/portainer/data:/data
+          - ${DOCKERDIR}/shared:/shared
         environment:
           - TZ=${TZ}
         networks:
@@ -80,13 +80,8 @@ services:
           - mariadb
         networks:
           - traefik_proxy
-        environment:
-          url: https://blog.${DOMAINNAME}
-          database_client: mysql
-          database_connection_host: mariadb
-          database_connection_user: ghost
-          database_connection_password: ${GHOSTDBPW}
-          database_connection_database: ghost
+        env_file:
+          - ${DOCKERDIR}/ghost/ghost.env
         labels:
           - "traefik.enable=true"
           - "traefik.backend=ghost"
@@ -105,7 +100,7 @@ services:
           - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://blog.${DOMAINNAME}"
           - "traefik.frontend.passHostHeader=true"
         volumes:
-          - ${USERDIR}/docker/ghost:/var/lib/ghost/content
+          - ${DOCKERDIR}/ghost:/var/lib/ghost/content
 
     # NextCloud - Personal file storage 
 
@@ -137,7 +132,7 @@ services:
           - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.${DOMAINNAME}"
           - "traefik.frontend.passHostHeader=true"
         volumes:
-          - ${USERDIR}/docker/nextcloud:/var/www/html
+          - ${DOCKERDIR}/nextcloud:/var/www/html
 
     # PHPmyadmin - mySQL management UI for mariadb
 
@@ -207,7 +202,7 @@ services:
         - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://${DOMAINNAME}"
         - "traefik.frontend.passHostHeader=true"
       volumes:
-        - ${USERDIR}/docker/wordpress:/var/www/html
+        - ${DOCKERDIR}/wordpress:/var/www/html
 
     ######### DOCKER RELATED ##########
 
@@ -234,8 +229,8 @@ services:
       networks:
         - traefik_proxy
       volumes:
-        - ${USERDIR}/docker/mariadb:/config
-        - ${USERDIR}/docker/shared:/shared
+        - ${DOCKERDIR}/mariadb:/config
+        - ${DOCKERDIR}/shared:/shared
       environment:
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         - TZ=${TZ}
