@@ -10,3 +10,5 @@ portainer/data/config.json
 *.log
 *.0
 config.production.json
+.vscode/
+nextcloud/
