@@ -1,267 +1,281 @@
 version: "3.6"
 services:
+  # Traefik - reverse proxy with sub-domain configuration
 
-    # Traefik - reverse proxy with sub-domain configuration
+  traefik:
+    hostname: traefik
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    domainname: ${DOMAINNAME}
+    networks:
+      - default
+      - traefik_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
+      - CF_API_KEY=${CLOUDFLARE_API_KEY}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
+      - "traefik.port=8080"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERDIR}/traefik:/etc/traefik
+      - ${DOCKERDIR}/shared:/shared
 
-    traefik:
-        hostname: traefik
-        image: traefik:latest
-        container_name: traefik
-        restart: always
-        domainname: ${DOMAINNAME}
-        networks:
-          - default
-          - traefik_proxy
-        ports:
-          - "80:80"
-          - "443:443"
-        environment:
-          - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
-          - CF_API_KEY=${CLOUDFLARE_API_KEY}
-        labels:
-          - "traefik.enable=true"
-          - "traefik.backend=traefik"
-          - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"  
-          - "traefik.port=8080"
-          - "traefik.docker.network=traefik_proxy"
-          - "traefik.frontend.headers.SSLRedirect=true"
-          - "traefik.frontend.headers.STSSeconds=315360000"
-          - "traefik.frontend.headers.browserXSSFilter=true"
-          - "traefik.frontend.headers.contentTypeNosniff=true"
-          - "traefik.frontend.headers.forceSTSHeader=true"
-          - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-          - "traefik.frontend.headers.STSIncludeSubdomains=true"
-          - "traefik.frontend.headers.STSPreload=true"
-          - "traefik.frontend.headers.frameDeny=true"
-          - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock:ro
-          - ${DOCKERDIR}/traefik:/etc/traefik
-          - ${DOCKERDIR}/shared:/shared
+  # Portainer - WebUI for Containers
 
-    # Portainer - WebUI for Containers
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERDIR}/portainer/data:/data
+      - ${DOCKERDIR}/shared:/shared
+    environment:
+      - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"
+      - "traefik.port=9000"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
 
-    portainer:
-        image: portainer/portainer
-        container_name: portainer
-        restart: always
-        command: -H unix:///var/run/docker.sock
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - ${DOCKERDIR}/portainer/data:/data
-          - ${DOCKERDIR}/shared:/shared
-        environment:
-          - TZ=${TZ}
-        networks:
-          - traefik_proxy
-        labels:
-          - "traefik.enable=true"
-          - "traefik.backend=portainer"
-          - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
-          - "traefik.port=9000"
-          - "traefik.docker.network=traefik_proxy"
-          - "traefik.frontend.headers.SSLRedirect=true"
-          - "traefik.frontend.headers.STSSeconds=315360000"
-          - "traefik.frontend.headers.browserXSSFilter=true"
-          - "traefik.frontend.headers.contentTypeNosniff=true"
-          - "traefik.frontend.headers.forceSTSHeader=true"
-          - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-          - "traefik.frontend.headers.STSIncludeSubdomains=true"
-          - "traefik.frontend.headers.STSPreload=true"
-          - "traefik.frontend.headers.frameDeny=true"
+  # Ghost - Blog platform for personal blog
 
-    # Ghost - Blog platform for personal blog
+  ghost:
+    image: ghost:latest
+    container_name: ghost
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - traefik_proxy
+    env_file:
+      - ${DOCKERDIR}/ghost/ghost.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=ghost"
+      - "traefik.frontend.rule=Host:blog.${DOMAINNAME}"
+      - "traefik.port=2368"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://blog.${DOMAINNAME}"
+      - "traefik.frontend.passHostHeader=true"
+    volumes:
+      - ${DOCKERDIR}/ghost:/var/lib/ghost/content
 
-    ghost:
-        image: ghost:latest
-        container_name: ghost
-        restart: always
-        depends_on:
-          - mariadb
-        networks:
-          - traefik_proxy
-        env_file:
-          - ${DOCKERDIR}/ghost/ghost.env
-        labels:
-          - "traefik.enable=true"
-          - "traefik.backend=ghost"
-          - "traefik.frontend.rule=Host:blog.${DOMAINNAME}"  
-          - "traefik.port=2368"
-          - "traefik.docker.network=traefik_proxy"
-          - "traefik.frontend.headers.SSLRedirect=true"
-          - "traefik.frontend.headers.STSSeconds=315360000"
-          - "traefik.frontend.headers.browserXSSFilter=true"
-          - "traefik.frontend.headers.contentTypeNosniff=true"
-          - "traefik.frontend.headers.forceSTSHeader=true"
-          - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-          - "traefik.frontend.headers.STSIncludeSubdomains=true"
-          - "traefik.frontend.headers.STSPreload=true"
-          - "traefik.frontend.headers.frameDeny=true"
-          - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://blog.${DOMAINNAME}"
-          - "traefik.frontend.passHostHeader=true"
-        volumes:
-          - ${DOCKERDIR}/ghost:/var/lib/ghost/content
+  # NextCloud - Personal file storage
 
-    # NextCloud - Personal file storage 
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - traefik_proxy
+    ports:
+      - "8000:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=nextcloud"
+      - "traefik.frontend.rule=Host:cloud.${DOMAINNAME}"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.${DOMAINNAME}"
+      - "traefik.frontend.passHostHeader=true"
+    volumes:
+      - ${DOCKERDIR}/nextcloud:/var/www/html
 
-    nextcloud:
-        image: nextcloud:latest
-        container_name: nextcloud
-        restart: always
-        depends_on: 
-          - mariadb
-        networks:
-          - traefik_proxy
-        ports:
-          - "8000:80"
-        labels:
-          - "traefik.enable=true"
-          - "traefik.backend=nextcloud"
-          - "traefik.frontend.rule=Host:cloud.${DOMAINNAME}"  
-          - "traefik.port=80"
-          - "traefik.docker.network=traefik_proxy"
-          - "traefik.frontend.headers.SSLRedirect=true"
-          - "traefik.frontend.headers.STSSeconds=315360000"
-          - "traefik.frontend.headers.browserXSSFilter=true"
-          - "traefik.frontend.headers.contentTypeNosniff=true"
-          - "traefik.frontend.headers.forceSTSHeader=true"
-          - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-          - "traefik.frontend.headers.STSIncludeSubdomains=true"
-          - "traefik.frontend.headers.STSPreload=true"
-          - "traefik.frontend.headers.frameDeny=true"
-          - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.${DOMAINNAME}"
-          - "traefik.frontend.passHostHeader=true"
-        volumes:
-          - ${DOCKERDIR}/nextcloud:/var/www/html
+  # PHPmyadmin - mySQL management UI for mariadb
 
-    # PHPmyadmin - mySQL management UI for mariadb
+  phpmyadmin:
+    hostname: phpmyadmin
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - traefik_proxy
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_ABSOLUTE_URI=https://phpmyadmin.${DOMAINNAME}/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=phpmyadmin"
+      - "traefik.frontend.rule=Host:phpmyadmin.${DOMAINNAME}"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=phpmyadmin.${DOMAINNAME}"
+      - "traefik.frontend.headers.SSLForceHost=true"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-    phpmyadmin:
-      hostname: phpmyadmin
-      container_name: phpmyadmin
-      image: phpmyadmin/phpmyadmin
-      restart: always
-      depends_on:
-        - mariadb
-      networks:
-        - traefik_proxy
-      environment:
-        - PMA_HOST=mariadb
-        - PMA_USER=root
-        - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        - PMA_ABSOLUTE_URI=https://phpmyadmin.${DOMAINNAME}/
-      labels:
-        - "traefik.enable=true"
-        - "traefik.backend=phpmyadmin"
-        - "traefik.frontend.rule=Host:phpmyadmin.${DOMAINNAME}"
-        - "traefik.port=80"
-        - "traefik.docker.network=traefik_proxy"
-        - "traefik.frontend.headers.SSLRedirect=true"
-        - "traefik.frontend.headers.STSSeconds=315360000"
-        - "traefik.frontend.headers.browserXSSFilter=true"
-        - "traefik.frontend.headers.contentTypeNosniff=true"
-        - "traefik.frontend.headers.forceSTSHeader=true"
-        - "traefik.frontend.headers.SSLHost=phpmyadmin.${DOMAINNAME}"
-        - "traefik.frontend.headers.SSLForceHost=true"
-        - "traefik.frontend.headers.STSIncludeSubdomains=true"
-        - "traefik.frontend.headers.STSPreload=true"
-        - "traefik.frontend.headers.frameDeny=true"
-        - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+  pihole:
+    container_name: pihole
+    domainname: docker
+    hostname: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      # - '67:67/udp'
+      - "8182:80"
+      - "8183:443"
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/pihole/pihole:/etc/pihole
+      # - ${USERDIR}/docker/pihole/pihole.log:/var/log/pihole.log
+      - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - ServerIP=${SERVER_IP}
+      - PROXY_LOCATION=pihole
+      - VIRTUAL_HOST=pihole.${DOMAINNAME}
+      - VIRTUAL_PORT=80
+      - TZ=${TZ}
+      - WEBPASSWORD=${PIHOLEPW}
+      - DNS1=127.0.0.1
+      - DNS2=1.1.1.1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=pihole"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=HostRegexp:pihole.${DOMAINNAME},{catchall:.*}"
+      - "traefik.frontend.priority=1"
+      - traefik.frontend.headers.SSLRedirect=true
+      - traefik.frontend.headers.STSSeconds=315360000
+      - traefik.frontend.headers.browserXSSFilter=true
+      - traefik.frontend.headers.contentTypeNosniff=true
+      - traefik.frontend.headers.forceSTSHeader=true
+      - traefik.frontend.headers.SSLHost=${DOMAINNAME}
+      - traefik.frontend.headers.STSIncludeSubdomains=true
+      - traefik.frontend.headers.STSPreload=true
+      - traefik.frontend.headers.frameDeny=true
 
-    coder:
-      hostname: code
-      container_name: code
-      image: codercom/code-server:latest
-      restart: always
-      networks:
-        - traefik_proxy
-      labels:
-        - "traefik.enable=true"
-        - "traefik.backend=code"
-        - "traefik.frontend.rule=Host:code.${DOMAINNAME}"  
-        - "traefik.port=8443"
-        - "traefik.docker.network=traefik_proxy"
-        - "traefik.frontend.headers.SSLRedirect=true"
-        - "traefik.frontend.headers.STSSeconds=315360000"
-        - "traefik.frontend.headers.browserXSSFilter=true"
-        - "traefik.frontend.headers.contentTypeNosniff=true"
-        - "traefik.frontend.headers.forceSTSHeader=true"
-        - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-        - "traefik.frontend.headers.STSIncludeSubdomains=true"
-        - "traefik.frontend.headers.STSPreload=true"
-        - "traefik.frontend.headers.frameDeny=true"
-        - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://code.${DOMAINNAME}"
-        - "traefik.frontend.passHostHeader=true"
-      volumes:
-        - ${DOCKERDIR}/code:/home/coder/project
+  # Wordpress - primary site landing page will be powered by Wordpress until I find a better option
 
-    # Wordpress - primary site landing page will be powered by Wordpress until I find a better option
+  wordpress:
+    hostname: wordpress
+    container_name: wordpress
+    image: wordpress:latest
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - traefik_proxy
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
+      WORDPRESS_DB_NAME: wordpress
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=wordpress"
+      - "traefik.frontend.rule=Host:${DOMAINNAME},www.${DOMAINNAME}"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://${DOMAINNAME}"
+      - "traefik.frontend.passHostHeader=true"
+    volumes:
+      - ${DOCKERDIR}/wordpress:/var/www/html
 
-    wordpress:
-      hostname: wordpress
-      container_name: wordpress
-      image: wordpress:latest
-      restart: always
-      depends_on: 
-        - mariadb
-      networks:
-        - traefik_proxy
-      environment:
-        WORDPRESS_DB_HOST: mariadb
-        WORDPRESS_DB_USER: wordpress
-        WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
-        WORDPRESS_DB_NAME: wordpress
-      labels:
-        - "traefik.enable=true"
-        - "traefik.backend=wordpress"
-        - "traefik.frontend.rule=Host:${DOMAINNAME},www.${DOMAINNAME}"  
-        - "traefik.port=80"
-        - "traefik.docker.network=traefik_proxy"
-        - "traefik.frontend.headers.SSLRedirect=true"
-        - "traefik.frontend.headers.STSSeconds=315360000"
-        - "traefik.frontend.headers.browserXSSFilter=true"
-        - "traefik.frontend.headers.contentTypeNosniff=true"
-        - "traefik.frontend.headers.forceSTSHeader=true"
-        - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-        - "traefik.frontend.headers.STSIncludeSubdomains=true"
-        - "traefik.frontend.headers.STSPreload=true"
-        - "traefik.frontend.headers.frameDeny=true"
-        - "traefik.frontend.headers.customFrameOptionsValue=ALLOW-FROM https://${DOMAINNAME}"
-        - "traefik.frontend.passHostHeader=true"
-      volumes:
-        - ${DOCKERDIR}/wordpress:/var/www/html
+  ######### DOCKER RELATED ##########
 
-    ######### DOCKER RELATED ##########
+  # Watchtower - Automatic Update of Containers/Apps
 
-    # Watchtower - Automatic Update of Containers/Apps
+  watchtower:
+    container_name: watchtower
+    hostname: watchtower
+    restart: always
+    image: v2tec/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --schedule "0 0 4 * * *" --cleanup
 
-    watchtower:
-        container_name: watchtower
-        hostname: watchtower
-        restart: always
-        image: v2tec/watchtower
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-        command: --schedule "0 0 4 * * *" --cleanup
+  ######### DATABASE #########
 
-    ######### DATABASE #########
+  # Maria DB - MySQL configured for ghost, and nextcloud
 
-    # Maria DB - MySQL configured for ghost, and nextcloud
-
-    mariadb:
-      hostname: mariadb
-      container_name: mariadb
-      image: linuxserver/mariadb
-      restart: always
-      networks:
-        - traefik_proxy
-      volumes:
-        - ${DOCKERDIR}/mariadb:/config
-        - ${DOCKERDIR}/shared:/shared
-      environment:
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        - TZ=${TZ}
-
+  mariadb:
+    hostname: mariadb
+    container_name: mariadb
+    image: linuxserver/mariadb
+    restart: always
+    networks:
+      - traefik_proxy
+    volumes:
+      - ${DOCKERDIR}/mariadb:/config
+      - ${DOCKERDIR}/shared:/shared
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TZ}
 
 networks:
   traefik_proxy:
