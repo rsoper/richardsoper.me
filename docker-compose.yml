@@ -4,7 +4,7 @@ services:
 
   traefik:
     hostname: traefik
-    image: traefik:latest
+    image: traefik:v1.7
     container_name: traefik
     restart: always
     domainname: ${DOMAINNAME}
