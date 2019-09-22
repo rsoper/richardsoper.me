@@ -1,49 +1,37 @@
-#debug = true
+# traefik.toml
 
-logLevel = "INFO" #DEBUG, INFO, WARN, ERROR, FATAL, PANIC
-InsecureSkipVerify = true 
-defaultEntryPoints = ["https", "http"]
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
 
-# WEB interface of Traefik - it will show web page with overview of frontend and backend configurations 
-[api]
-  entryPoint = "traefik"
-  dashboard = true
-  address = ":8080"
-  usersFile = "/shared/.htpasswd"
+[log]
+  level = "INFO"
 
-# Force HTTPS
 [entryPoints]
-  [entryPoints.http]
-  address = ":80"
-    [entryPoints.http.redirect]
-    entryPoint = "https"
-  [entryPoints.https]
-  address = ":443"
-    [entryPoints.https.tls]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.web-secure]
+    address = ":443"
+  [entryPoints.postgres]
+    address = ":5432"
 
-# [file]
-#   watch = true
-#   filename = "/etc/traefik/rules.toml"
+[certificatesResolvers.letsencrypt.acme]
+  email = "richardwebdesigner@me.com"
+  storage = "/etc/traefik/acme/acme.json"
+  [certificatesResolvers.letsencrypt.acme.dnsChallenge]
+    provider = "cloudflare"
+    delayBeforeCheck = 300
+    resolvers = [&lt;dns1&gt;", "&lt;dns2&gt;"]
 
-# Let's encrypt configuration
-[acme]
-  email = "richardwebdesigner@me.com" #any email id will work
-  storage="/etc/traefik/acme/acme.json"
-  entryPoint = "https"
-  acmeLogging=true 
-  onDemand = false #create certificate when container is created
+[api]
+  dashboard = true
+  debug = true
 
-[acme.dnsChallenge]
-  provider = "cloudflare"
-  delayBeforeCheck = 300
-[[acme.domains]]
-   main = "RICHARDSOPER.ME"
-[[acme.domains]]
-   main = "*.RICHARDSOPER.ME"
-   
-# Connection to docker host system (docker.sock)
-[docker]
-  endpoint = "unix:///var/run/docker.sock"
-  domain = "RICHARDSOPER.ME"
-  watch = true
-  exposedbydefault = false
+[ping]
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    defaultRule = "Host(`{{ normalize .Name }}.{{ domain }}`)"
+    watch = true
+    exposedByDefault = false
