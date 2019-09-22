@@ -1,10 +1,6 @@
 #!/bin/bash
 
 echo ""
-echo "Stopping Apache service"
-echo ""
-
-echo ""
 echo "Bringing the stack up"
 echo ""
 
