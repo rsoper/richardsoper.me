@@ -19,9 +19,7 @@
   [certificatesResolvers.letsencrypt.acme.dnsChallenge]
     provider = "cloudflare"
     delayBeforeCheck = 300
-    CF_API_EMAIL = ${CLOUDFLARE_EMAIL}
-    CF_API_KEY = ${CLOUDFLARE_API_KEY}
-    domain = ["RICHARDSOPER.ME", "*.RICHARDSOPER.ME"]
+    
 
 [api]
   dashboard = true
