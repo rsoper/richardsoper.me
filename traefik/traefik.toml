@@ -12,8 +12,6 @@
     address = ":80"
   [entryPoints.web-secure]
     address = ":443"
-  [entryPoints.postgres]
-    address = ":5432"
 
 [certificatesResolvers.letsencrypt.acme]
   email = "richardwebdesigner@me.com"
@@ -21,7 +19,9 @@
   [certificatesResolvers.letsencrypt.acme.dnsChallenge]
     provider = "cloudflare"
     delayBeforeCheck = 300
-    resolvers = [&lt;dns1&gt;", "&lt;dns2&gt;"]
+    CF_API_EMAIL = ${CLOUDFLARE_EMAIL}
+    CF_API_KEY = ${CLOUDFLARE_API_KEY}
+    domain = ["RICHARDSOPER.ME", "*.RICHARDSOPER.ME"]
 
 [api]
   dashboard = true

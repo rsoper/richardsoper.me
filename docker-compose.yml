@@ -12,6 +12,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       # - ${DOCKERDIR}/traefik:/etc/traefik
       - ${DOCKERDIR}/shared:/shared
+    labels:
+      - traefik.http.routers.api.rule=Host(`traefik.${DOMAINNAME}`)
+      - traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/dashboard`)
 
   wordpress:
     hostname: wordpress
@@ -25,7 +28,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
       WORDPRESS_DB_NAME: wordpress
     labels:
-      - traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`)
+      - traefik.http.routers.wordpress.rule=Host(`${DOMAINNAME}`)
 
   ghost:
     image: ghost:latest
