@@ -1,6 +1,6 @@
 #debug = true
 
-logLevel = "ERROR" #DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+logLevel = "INFO" #DEBUG, INFO, WARN, ERROR, FATAL, PANIC
 InsecureSkipVerify = true 
 defaultEntryPoints = ["https", "http"]
 
@@ -21,20 +21,21 @@ defaultEntryPoints = ["https", "http"]
   address = ":443"
     [entryPoints.https.tls]
 
-[file]
-  watch = true
-  filename = "/etc/traefik/rules.toml"
+# [file]
+#   watch = true
+#   filename = "/etc/traefik/rules.toml"
 
 # Let's encrypt configuration
 [acme]
-email = "richardwebdesigner@me.com" #any email id will work
-storage="/etc/traefik/acme/acme.json"
-entryPoint = "https"
-acmeLogging=true 
-onDemand = false #create certificate when container is created
+  email = "richardwebdesigner@me.com" #any email id will work
+  storage="/etc/traefik/acme/acme.json"
+  entryPoint = "https"
+  acmeLogging=true 
+  onDemand = false #create certificate when container is created
+
 [acme.dnsChallenge]
   provider = "cloudflare"
-  delayBeforeCheck = 0
+  delayBeforeCheck = 300
 [[acme.domains]]
    main = "RICHARDSOPER.ME"
 [[acme.domains]]
@@ -42,9 +43,7 @@ onDemand = false #create certificate when container is created
    
 # Connection to docker host system (docker.sock)
 [docker]
-endpoint = "unix:///var/run/docker.sock"
-domain = "RICHARDSOPER.ME"
-watch = true
-# This will hide all docker containers that don't have explicitly  
-# set label to "enable"
-exposedbydefault = false
+  endpoint = "unix:///var/run/docker.sock"
+  domain = "RICHARDSOPER.ME"
+  watch = true
+  exposedbydefault = false
