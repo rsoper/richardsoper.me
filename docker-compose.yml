@@ -1,22 +1,25 @@
 version: "3.7"
 
 services:
-
   traefik:
     image: traefik:v2.0
     command: --providers.docker
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - ${DOCKERDIR}/traefik:/etc/traefik
       - ${DOCKERDIR}/shared:/shared
     labels:
-      - "traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
+
+      - "traefik.http.routers.traefik_secure.entrypoints=web-secure"
+      - "traefik.http.routers.traefik_secure.rule=Host(`traefik.${DOMAINNAME}`)"
       - "traefik.http.routers.api.service=api@internal"
-      - "traefik.http.routers.api.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.usersfile=/shared/.htpasswd"
     networks:
       - traefik_proxy
 
@@ -24,7 +27,7 @@ services:
     hostname: wordpress
     image: wordpress:latest
     restart: always
-    depends_on: 
+    depends_on:
       - mariadb
     environment:
       WORDPRESS_DB_HOST: mariadb
@@ -53,7 +56,7 @@ services:
     ports:
       - "9000:9000"
     labels:
-      - traefik.http.routers.portainer.rule=Host(`portainer.localhost`)
+      - traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -86,7 +89,6 @@ services:
       - ${DOCKERDIR}/nextcloud:/var/www/html
     networks:
       - traefik_proxy
-
 
   mariadb:
     hostname: mariadb

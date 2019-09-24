@@ -29,9 +29,13 @@
 [ping]
 
 [providers]
+
+  [providers.file]
+    filename = "/etc/traefik/provider_file.toml"
+
   [providers.docker]
     endpoint = "unix:///var/run/docker.sock"
-    defaultRule = "Host(`{{ normalize .Name }}.{{ domain }}`)"
+    # defaultRule = "Host(`{{ normalize .Name }}.richardsoper.me`)"
     watch = true
-    exposedByDefault = false
+    exposedByDefault = true
     network = "traefik_proxy"
