@@ -13,11 +13,12 @@
   [entryPoints.web-secure]
     address = ":443"
 
-[certificatesResolvers.letsencrypt.acme]
+[certificatesResolvers.cloudflare.acme]
   email = "richardwebdesigner@me.com"
   storage = "/etc/traefik/acme/acme.json"
-  [certificatesResolvers.letsencrypt.acme.dnsChallenge]
+  [certificatesResolvers.cloudflare.acme.dnsChallenge]
     provider = "cloudflare"
+    resolvers = ["1.1.1.1:53", "1.0.0.1:53"]
     delayBeforeCheck = 300
     
 
@@ -33,3 +34,4 @@
     defaultRule = "Host(`{{ normalize .Name }}.{{ domain }}`)"
     watch = true
     exposedByDefault = false
+    network = "traefik_proxy"
