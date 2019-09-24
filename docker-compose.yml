@@ -57,15 +57,28 @@ services:
     networks:
       - traefik_proxy
 
-  # ghost:
-  #   image: ghost:latest
-  #   restart: always
-  #   depends_on:
-  #     - mariadb
-  #   labels:
-  #     - traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)
-  #   networks:
-  #     - traefik_proxy
+  ghost:
+    image: ghost:latest
+    restart: always
+    env_file:
+      - ${DOCKERDIR}/ghost/ghost.env
+    depends_on:
+      - mariadb
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ghost.entrypoints=http"
+      - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.ghost-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.ghost.middlewares=ghost-https-redirect"
+      - "traefik.http.routers.ghost-secure.entrypoints=https"
+      - "traefik.http.routers.ghost-secure.rule=Host(`blog.${DOMAINNAME}`)"
+      - "traefik.http.routers.ghost-secure.tls=true"
+      - "traefik.http.routers.ghost-secure.tls.certresolver=http"
+      - "traefik.http.routers.ghost-secure.service=ghost"
+      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
 
   portainer:
     image: portainer/portainer:latest
@@ -98,22 +111,46 @@ services:
   #     - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
   #     - PMA_ABSOLUTE_URL=http://phpmyadmin.${DOMAINNAME}/
   #   labels:
-  #     - traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.localhost`)
+  #     - "traefik.enable=true"
+  #     - "traefik.http.middlewares.phpmyadmin-auth.basicauth.usersfile=/shared/.htpasswd"
+  #     - "traefik.http.routers.phpmyadmin.entrypoints=http"
+  #     - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.${DOMAINNAME}`)"
+  #     - "traefik.http.middlewares.phpmyadmin-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-https-redirect"
+  #     - "traefik.http.routers.phpmyadmin-secure.entrypoints=https"
+  #     - "traefik.http.routers.phpmyadmin-secure.rule=Host(`phpmyadmin.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.phpmyadmin-secure.tls=true"
+  #     - "traefik.http.routers.phpmyadmin-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.phpmyadmin-secure.service=phpmyadmin"
+  #     - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+  #     - "traefik.docker.network=traefik_proxy"
   #   networks:
   #     - traefik_proxy
 
-  # nextcloud:
-  #   image: nextcloud:latest
-  #   depends_on:
-  #     - mariadb
-  #   ports:
-  #     - "8000:80"
-  #   labels:
-  #     - traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)
-  #   volumes:
-  #     - ${DOCKERDIR}/nextcloud:/var/www/html
-  #   networks:
-  #     - traefik_proxy
+  nextcloud:
+    image: nextcloud:latest
+    depends_on:
+      - mariadb
+    ports:
+      - "8000:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=http"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.nextcloud-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-https-redirect"
+      - "traefik.http.routers.nextcloud-secure.entrypoints=https"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.${DOMAINNAME}`)"
+      - "traefik.http.routers.nextcloud-secure.tls=true"
+      - "traefik.http.routers.nextcloud-secure.tls.certresolver=http"
+      - "traefik.http.routers.nextcloud-secure.service=nextcloud"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/nextcloud:/var/www/html
+    networks:
+      - traefik_proxy
+
   watchtower:
     container_name: watchtower
     hostname: watchtower
@@ -122,7 +159,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --schedule "0 0 4 * * *" --cleanup
-  
+
   mariadb:
     hostname: mariadb
     image: linuxserver/mariadb
