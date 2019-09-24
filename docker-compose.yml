@@ -60,6 +60,7 @@ services:
     image: portainer/portainer:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -H unix:///var/run/docker.sock
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=http"
