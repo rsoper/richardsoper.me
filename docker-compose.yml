@@ -1,7 +1,10 @@
 version: "3"
 
 services:
+  # Traefik 2.0 reverse proxy with sub-domain configuration
+
   traefik:
+    container_name: traefik
     image: traefik:v2.0
     command: --providers.docker
     ports:
@@ -28,7 +31,10 @@ services:
     networks:
       - traefik_proxy
 
+  #Wordpress acts as the TLD landing. www.richardsoper.me --> richardsoper.me
+
   wordpress:
+    container_name: wordpress
     hostname: wordpress
     image: wordpress:latest
     restart: always
@@ -57,7 +63,10 @@ services:
     networks:
       - traefik_proxy
 
+  # Ghost is the preferred blogging platform for tech related blogs
+
   ghost:
+    container_name: ghost
     image: ghost:latest
     restart: always
     env_file:
@@ -77,13 +86,20 @@ services:
       - "traefik.http.routers.ghost-secure.service=ghost"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
       - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/ghost:/var/lib/ghost/content
     networks:
       - traefik_proxy
 
+  # Portainer - WebUI for docker containers
+
   portainer:
+    container_name: portainer
     image: portainer/portainer:latest
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERDIR}/portainer/data:/data
+      - ${DOCKERDIR}/shared:/shared
     command: -H unix:///var/run/docker.sock
     labels:
       - "traefik.enable=true"
@@ -127,7 +143,10 @@ services:
   #   networks:
   #     - traefik_proxy
 
+  # Nextcloud - Personal cloud storage system
+
   nextcloud:
+    container_name: nextcloud
     image: nextcloud:latest
     depends_on:
       - mariadb
@@ -151,6 +170,49 @@ services:
     networks:
       - traefik_proxy
 
+  # PiHole - Ad filtering DNS system.
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8182:80"
+      - "8183:443"
+    volumes:
+      - ${DOCKERDIR}/pihole/pihole:/etc/pihole
+      # - ${USERDIR}/docker/pihole/pihole.log:/var/log/pihole.log
+      - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - ServerIP=${SERVER_IP}
+      - PROXY_LOCATION=pihole
+      - VIRTUAL_HOST=pihole.${DOMAINNAME}
+      - VIRTUAL_PORT=80
+      - TZ=${TZ}
+      - WEBPASSWORD=${PIHOLEPW}
+      - DNS1=1.0.0.1
+      - DNS2=1.1.1.1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.entrypoints=http"
+      - "traefik.http.routers.pihole.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
+      - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
+      - "traefik.http.routers.pihole-secure.entrypoints=https"
+      - "traefik.http.routers.pihole-secure.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
+      - "traefik.http.routers.pihole-secure.tls=true"
+      - "traefik.http.routers.pihole-secure.tls.certresolver=http"
+      - "traefik.http.routers.pihole-secure.service=pihole"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
+  # Watchtower - automatically update docker containers
+
   watchtower:
     container_name: watchtower
     hostname: watchtower
@@ -160,7 +222,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --schedule "0 0 4 * * *" --cleanup
 
+  # MariaDB - SQL based database for most of this stack.
+
   mariadb:
+    container_name: mariadb
     hostname: mariadb
     image: linuxserver/mariadb
     restart: always
