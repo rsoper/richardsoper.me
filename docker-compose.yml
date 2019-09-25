@@ -7,6 +7,7 @@ services:
     container_name: traefik
     image: traefik:v2.0
     command: --providers.docker
+    restart: always
     ports:
       - "80:80"
       - "443:443"
@@ -96,6 +97,7 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer:latest
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERDIR}/portainer/data:/data
@@ -148,6 +150,7 @@ services:
   nextcloud:
     container_name: nextcloud
     image: nextcloud:latest
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -175,6 +178,7 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
+    restart: always
     ports:
       - "53:53/tcp"
       - "53:53/udp"
