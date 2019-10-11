@@ -177,7 +177,7 @@ services:
 
   homeassistant:
     container_name: homeassistant
-    image: homeassistant/raspberrypi3-homeassistant:stable
+    image: homeassistant/home-assistant:latest
     restart: always
     ports:
       - "8123:8123"
@@ -187,16 +187,16 @@ services:
       - TZ=${TZ}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pihole.entrypoints=http"
-      - "traefik.http.routers.pihole.rule=Host(`home.${DOMAINNAME}`)"
-      - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
-      - "traefik.http.routers.pihole-secure.entrypoints=https"
-      - "traefik.http.routers.pihole-secure.rule=Host(`home.${DOMAINNAME}`)"
-      - "traefik.http.routers.pihole-secure.tls=true"
-      - "traefik.http.routers.pihole-secure.tls.certresolver=http"
-      - "traefik.http.routers.pihole-secure.service=pihole"
-      - "traefik.http.services.pihole.loadbalancer.server.port=8123"
+      - "traefik.http.routers.homeassistant.entrypoints=http"
+      - "traefik.http.routers.homeassistant.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.homeassistant-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.homeassistant.middlewares=homeassistant-https-redirect"
+      - "traefik.http.routers.homeassistant-secure.entrypoints=https"
+      - "traefik.http.routers.homeassistant-secure.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.routers.homeassistant-secure.tls=true"
+      - "traefik.http.routers.homeassistant-secure.tls.certresolver=http"
+      - "traefik.http.routers.homeassistant-secure.service=homeassistant"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
       - "traefik.docker.network=traefik_proxy"
     networks:
       - traefik_proxy
