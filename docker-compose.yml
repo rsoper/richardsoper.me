@@ -173,6 +173,34 @@ services:
     networks:
       - traefik_proxy
 
+  # Home Assistant
+
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/raspberrypi3-homeassistant:stable
+    restart: always
+    ports:
+      - "8123:8123"
+    volumes:
+      - ${DOCKERDIR}/homeassistant/config:/config
+    environment:
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.entrypoints=http"
+      - "traefik.http.routers.pihole.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
+      - "traefik.http.routers.pihole-secure.entrypoints=https"
+      - "traefik.http.routers.pihole-secure.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.routers.pihole-secure.tls=true"
+      - "traefik.http.routers.pihole-secure.tls.certresolver=http"
+      - "traefik.http.routers.pihole-secure.service=pihole"
+      - "traefik.http.services.pihole.loadbalancer.server.port=8123"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
   # PiHole - Ad filtering DNS system.
 
   pihole:
@@ -197,8 +225,8 @@ services:
       - VIRTUAL_PORT=80
       - TZ=${TZ}
       - WEBPASSWORD=${PIHOLEPW}
-      - DNS1=1.0.0.1
-      - DNS2=1.1.1.1
+      - DNS1=1.1.1.1
+      - DNS2=1.0.0.1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole.entrypoints=http"
