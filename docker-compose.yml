@@ -181,7 +181,7 @@ services:
       - mariadb
     ports:
       - "3000:3000"
-      - "22:2222"
+      - "2222:22"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gitea.entrypoints=http"
