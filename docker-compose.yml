@@ -173,6 +173,63 @@ services:
     networks:
       - traefik_proxy
 
+  # Gitea - A simple self hosted git server
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:latest
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitea.entrypoints=http"
+      - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.gitea-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.gitea.middlewares=gitea-https-redirect"
+      - "traefik.http.routers.gitea-secure.entrypoints=https"
+      - "traefik.http.routers.gitea-secure.rule=Host(`git.${DOMAINNAME}`)"
+      - "traefik.http.routers.gitea-secure.tls=true"
+      - "traefik.http.routers.gitea-secure.tls.certresolver=http"
+      - "traefik.http.routers.gitea-secure.service=gitea"
+      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/gitea:/data
+    networks:
+      - traefik_proxy
+
+  # Home Assistant
+
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:latest
+    restart: always
+    ports:
+      - "8123:8123"
+    volumes:
+      - ${DOCKERDIR}/homeassistant/config:/config
+    environment:
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.entrypoints=http"
+      - "traefik.http.routers.homeassistant.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.homeassistant-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.homeassistant.middlewares=homeassistant-https-redirect"
+      - "traefik.http.routers.homeassistant-secure.entrypoints=https"
+      - "traefik.http.routers.homeassistant-secure.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.routers.homeassistant-secure.tls=true"
+      - "traefik.http.routers.homeassistant-secure.tls.certresolver=http"
+      - "traefik.http.routers.homeassistant-secure.service=homeassistant"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
   # PiHole - Ad filtering DNS system.
 
   pihole:
@@ -197,8 +254,8 @@ services:
       - VIRTUAL_PORT=80
       - TZ=${TZ}
       - WEBPASSWORD=${PIHOLEPW}
-      - DNS1=1.0.0.1
-      - DNS2=1.1.1.1
+      - DNS1=1.1.1.1
+      - DNS2=1.0.0.1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole.entrypoints=http"
