@@ -173,6 +173,8 @@ services:
     networks:
       - traefik_proxy
 
+  # Gitea - A simple self hosted git server
+
   gitea:
     container_name: gitea
     image: gitea/gitea:latest
@@ -185,7 +187,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gitea.entrypoints=http"
-      - "traefik.http.routers.gitea.rule=Host(`cloud.${DOMAINNAME}`)"
+      - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
       - "traefik.http.middlewares.gitea-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.gitea.middlewares=gitea-https-redirect"
       - "traefik.http.routers.gitea-secure.entrypoints=https"
