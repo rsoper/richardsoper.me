@@ -173,6 +173,35 @@ services:
     networks:
       - traefik_proxy
 
+  # Gitea - A simple self hosted git server
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:latest
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitea.entrypoints=http"
+      - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.gitea-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.gitea.middlewares=gitea-https-redirect"
+      - "traefik.http.routers.gitea-secure.entrypoints=https"
+      - "traefik.http.routers.gitea-secure.rule=Host(`git.${DOMAINNAME}`)"
+      - "traefik.http.routers.gitea-secure.tls=true"
+      - "traefik.http.routers.gitea-secure.tls.certresolver=http"
+      - "traefik.http.routers.gitea-secure.service=gitea"
+      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/gitea:/data
+    networks:
+      - traefik_proxy
+
   # Home Assistant
 
   homeassistant:
