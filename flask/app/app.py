@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
+from flask import Flask, flash, redirect, render_template, request, session, abort, url_for, make_response
 import os
 
 app = Flask(__name__)
@@ -8,23 +8,25 @@ app = Flask(__name__)
 @app.route('/', defaults={'u_path': ''})
 @app.route('/<path:u_path>')
 def home(u_path):
-    session['u_path'] = u_path
+    headers = request.headers
+    auth = headers.get('X-Admin-Auth')
+    if auth == 'Definitely':
+        return 'Pass', 200
     if not session.get('logged_in'):
-        return redirect(url_for('authenticate'), code=302)
+        return render_template('login.html'), 403
     else:
         return redirect(f"https://{u_path}.richardsoper.me", code=200)
 
 
-@app.route('/authenticate')
-def authenticate():
-    return render_template('login.html')
-
-
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    u_path = session.get('u_path')
+    u_path = request.headers.get('Referer')
     if request.form['password'] == 'password' and request.form['username'] == 'admin':
-        session['logged_in'] = True
+        # session['logged_in'] = True
+        # return redirect(u_path, code=302)
+        response = make_response(redirect(u_path))
+        response.headers['X-Admin-Auth'] = 'Definitely'
+        return response
     else:
         flash('wrong password!')
     return home(u_path)
