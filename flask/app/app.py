@@ -10,7 +10,7 @@ app = Flask(__name__)
 def home(u_path):
     session['u_path'] = u_path
     if not session.get('logged_in'):
-        return redirect(url_for('authenticate'), code=401)
+        return redirect(url_for('authenticate'), code=302)
     else:
         return redirect(f"https://{u_path}.richardsoper.me", code=200)
 
