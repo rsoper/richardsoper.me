@@ -1,10 +1,13 @@
 import os
 from flask import Flask, g, session, redirect, request, url_for, jsonify
 from requests_oauthlib import OAuth2Session
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 OAUTH2_CLIENT_ID = os.environ['OAUTH2_CLIENT_ID']
 OAUTH2_CLIENT_SECRET = os.environ['OAUTH2_CLIENT_SECRET']
-OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
+OAUTH2_REDIRECT_URI = 'https://auth.richardsoper.me/callback'
 
 API_BASE_URL = os.environ.get('API_BASE_URL', 'https://discordapp.com/api')
 AUTHORIZATION_BASE_URL = API_BASE_URL + '/oauth2/authorize'
@@ -67,11 +70,15 @@ def callback():
 
 @app.route('/me')
 def me():
-    discord = make_session(token=session.get('oauth2_token'))
-    user = discord.get(API_BASE_URL + '/users/@me').json()
-    # guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
-    # connections = discord.get(API_BASE_URL + '/users/@me/connections').json()
-    return jsonify(user=user)
+    try:
+        discord = make_session(token=session.get('oauth2_token'))
+        user = discord.get(API_BASE_URL + '/users/@me').json()
+        # guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
+        # connections = discord.get(API_BASE_URL + '/users/@me/connections').json()
+        if user['code'] == 0:
+            return redirect('/')
+    except KeyError:
+        return 'Success'
 
 
 if __name__ == '__main__':
