@@ -19,3 +19,11 @@ certificatesResolvers:
       storage: /etc/traefik/acme/acme.json
       httpChallenge:
         entryPoint: http
+
+http:
+  middlewares:
+    boreale:
+      forwardAuth:
+        address: "https://127.0.0.1:5252"
+        tls:
+          insecureSkipVerify: true
