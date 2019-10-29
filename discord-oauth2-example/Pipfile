@@ -5,11 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 autopep8 = "*"
-v = {editable = true,version = "*"}
+v = {version = "*",editable = true}
 
 [packages]
 flask = "*"
 requests-oauthlib = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"
