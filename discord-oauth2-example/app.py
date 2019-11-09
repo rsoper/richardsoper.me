@@ -78,7 +78,7 @@ def me():
         if user['code'] == 0:
             return redirect('/')
     except KeyError:
-        return 'Success'
+        return 'Success', 200
 
 
 if __name__ == '__main__':
