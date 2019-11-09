@@ -7,7 +7,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ${DOCKERDIR}/flask/app:/app
+      - ${DOCKERDIR}/discord-oauth2-example/app:/app
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flask_auth.entrypoints=http"
