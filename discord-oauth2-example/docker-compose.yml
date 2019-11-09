@@ -2,7 +2,7 @@ version: "3"
 services:
   flask:
     container_name: flask_auth
-    build: .
+    image: flask_auth:latest
     restart: always
     ports:
       - "5000:5000"
