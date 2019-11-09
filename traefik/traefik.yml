@@ -1,6 +1,11 @@
 api:
   dashboard: true
 
+log:
+  level: DEBUG
+  filePath: /shared/traefik.log
+  format: json
+
 entryPoints:
   http:
     address: ":80"
