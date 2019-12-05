@@ -244,7 +244,7 @@ services:
       - "8183:443"
     volumes:
       - ${DOCKERDIR}/pihole/pihole:/etc/pihole
-      - ${DOCKERDIR}/docker/pihole/pihole.log:/var/log/pihole.log
+      # - ${DOCKERDIR}/docker/pihole/logs:/var/log/
       - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
     cap_add:
       - NET_ADMIN
