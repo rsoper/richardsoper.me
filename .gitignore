@@ -11,3 +11,4 @@ portainer/data/config.json
 *.0
 config.production.json
 .vscode/
+**__pycache__**
