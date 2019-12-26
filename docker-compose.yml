@@ -122,33 +122,32 @@ services:
     networks:
       - traefik_proxy
 
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   depends_on:
-  #     - mariadb
-  #   volumes:
-  #     - ${DOCKERDIR}/shared:/shared
-  #   environment:
-  #     - PMA_HOST=mariadb
-  #     - PMA_USER=root
-  #     - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #     - PMA_ABSOLUTE_URL=https://phpmyadmin.${DOMAINNAME}/
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.middlewares.phpmyadmin-auth.basicauth.usersfile=/shared/.htpasswd"
-  #     - "traefik.http.routers.phpmyadmin.entrypoints=http"
-  #     - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.${DOMAINNAME}`)"
-  #     - "traefik.http.middlewares.phpmyadmin-https-redirect.redirectscheme.scheme=https"
-  #     - "traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-https-redirect"
-  #     - "traefik.http.routers.phpmyadmin-secure.entrypoints=https"
-  #     - "traefik.http.routers.phpmyadmin-secure.rule=Host(`phpmyadmin.${DOMAINNAME}`)"
-  #     - "traefik.http.routers.phpmyadmin-secure.tls=true"
-  #     - "traefik.http.routers.phpmyadmin-secure.tls.certresolver=http"
-  #     - "traefik.http.routers.phpmyadmin-secure.service=phpmyadmin"
-  #     - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
-  #     - "traefik.docker.network=traefik_proxy"
-  #   networks:
-  #     - traefik_proxy
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+      # - PMA_USER=root
+      # - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_ABSOLUTE_URL=https://phpmyadmin.${DOMAINNAME}/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.phpmyadmin-auth.basicauth.usersfile=/shared/.htpasswd"
+      - "traefik.http.routers.phpmyadmin.entrypoints=http"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.phpmyadmin-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-https-redirect"
+      - "traefik.http.routers.phpmyadmin-secure.entrypoints=https"
+      - "traefik.http.routers.phpmyadmin-secure.rule=Host(`phpmyadmin.${DOMAINNAME}`)"
+      - "traefik.http.routers.phpmyadmin-secure.tls=true"
+      - "traefik.http.routers.phpmyadmin-secure.tls.certresolver=http"
+      - "traefik.http.routers.phpmyadmin-secure.service=phpmyadmin"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
 
   # Nextcloud - Personal cloud storage system
 
@@ -171,6 +170,18 @@ services:
       - "traefik.http.routers.nextcloud-secure.tls=true"
       - "traefik.http.routers.nextcloud-secure.tls.certresolver=http"
       - "traefik.http.routers.nextcloud-secure.service=nextcloud"
+      - "traefik.http.middlewares.nextcloud-secure.headers.customFrameOptionsValue=SAMEORIGIN"
+      - "traefik.http.middlewares.nextcloud-secure.headers.framedeny=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.sslredirect=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.stsPreload=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.stsSeconds=15552000"
+      - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
+      - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
+      - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
       - "traefik.docker.network=traefik_proxy"
     volumes:
@@ -263,6 +274,7 @@ services:
 
   pihole:
     container_name: pihole
+    hostname: pihole
     image: pihole/pihole:latest
     restart: always
     ports:
@@ -272,7 +284,7 @@ services:
       - "8183:443"
     volumes:
       - ${DOCKERDIR}/pihole/pihole:/etc/pihole
-      # - ${USERDIR}/docker/pihole/pihole.log:/var/log/pihole.log
+      # - ${DOCKERDIR}/docker/pihole/logs:/var/log/
       - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
     cap_add:
       - NET_ADMIN
