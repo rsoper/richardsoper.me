@@ -27,3 +27,18 @@ certificatesResolvers:
         delayBeforeCheck: 300
       # httpChallenge:
       #   entryPoint: http
+
+http:
+  routers:
+    route-to-pi:
+      rule: "Host(`pihole.richardsoper.me`)"
+      service: route-to-pi-service
+      priority: 1000
+      entryPoints:
+        - web
+      
+  services:
+    route-to-pi-service:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.14:80/admin"
