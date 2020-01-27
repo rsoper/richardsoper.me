@@ -22,13 +22,11 @@ certificatesResolvers:
     acme:
       email: richardwebdesigner@me.com
       storage: /etc/traefik/acme/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 500
+        resolver:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
       httpChallenge:
         entryPoint: http
-
-http:
-  middlewares:
-    boreale:
-      forwardAuth:
-        address: "https://127.0.0.1:5252"
-        tls:
-          insecureSkipVerify: true
