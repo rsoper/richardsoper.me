@@ -1,5 +1,3 @@
-# Static Configuration
-
 api:
   dashboard: true
 
@@ -11,38 +9,24 @@ log:
 entryPoints:
   web:
     address: ":80"
-  web-secure:
+  websecure:
     address: ":443"
 
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-
-# Dynamic configuration
-
-http:
-  routers:
-    route-to-pi:
-      rule: "Host(`pihole.richardsoper.me`)"
-      service: route-to-pi-service
-      priority: 1000
-      entryPoints:
-        - web
-
-  services:
-    route-to-pi-service:
-      loadBalancer:
-        servers:
-          - url: "http://192.168.1.14"
+  file:
+    filename: "/etc/traefik/config.yml"
 
 certificatesResolvers:
-  http:
+  cf-cert:
     acme:
-      email: richardwebdesigner@me.com
+      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       storage: /etc/traefik/acme/acme.json
+      email: richardwebdesigner@me.com
       dnsChallenge:
         provider: cloudflare
-        delayBeforeCheck: 300
-      # httpChallenge:
-      #   entryPoint: http
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
