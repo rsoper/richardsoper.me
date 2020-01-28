@@ -6,8 +6,10 @@ services:
   traefik:
     container_name: traefik
     hostname: traefik
-    image: traefik:v2.0
-    restart: always
+    image: traefik:v2.1
+    environment:
+      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
+      - CF_API_KEY=${CLOUDFLARE_API_KEY}
     ports:
       - "80:80"
       - "443:443"
@@ -17,17 +19,57 @@ services:
       - ${DOCKERDIR}/shared:/shared
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
       - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/shared/.htpasswd"
-      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.traefik-secure.entrypoints=https"
-      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.${DOMAINNAME}`)"
-      - "traefik.http.routers.traefik-secure.tls=true"
-      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
-      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.traefik.service=api@internal"
+      ## DNS CHALLENGE
+      - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
+      - "traefik.http.routers.traefik.tls.domains[0].main=*.${DOMAINNAME}"
+      - "traefik.http.routers.traefik.tls.domains[0].sans=${DOMAINNAME}"
+      ## HTTP REDIRECT
+      - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.redirect-https.entrypoints=web"
+      - "traefik.http.routers.redirect-https.middlewares=secure-redirect@file"
+    networks:
+      - traefik_proxy
+
+  wordpress:
+    container_name: wordpress
+    hostname: wordpress
+    image: wordpress:latest
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ${DOCKERDIR}/wordpress:/var/www/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wordpress.entrypoints=websecure"
+      - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
+      - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+    networks:
+      - traefik_proxy
+
+  mariadb:
+    container_name: mariadb
+    hostname: mariadb
+    image: linuxserver/mariadb
+    restart: always
+    depends_on:
+      - traefik
+    volumes:
+      - ${DOCKERDIR}/mariadb:/config
+      - ${DOCKERDIR}/shared:/shared
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TZ}
     networks:
       - traefik_proxy
 
