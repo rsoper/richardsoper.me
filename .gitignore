@@ -12,3 +12,4 @@ portainer/data/config.json
 config.production.json
 .vscode/
 **__pycache__**
+mariadb.zip
