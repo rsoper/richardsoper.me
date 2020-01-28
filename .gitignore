@@ -14,3 +14,4 @@ config.production.json
 flask/Pipfile
 flask/Pipfile.lock
 **__pycache__**
+mariadb.zip

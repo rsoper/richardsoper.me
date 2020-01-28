@@ -1,0 +1,344 @@
+version: "3"
+
+services:
+  # Traefik 2.0 reverse proxy with sub-domain configuration
+
+  traefik:
+    container_name: traefik
+    image: traefik:v2.0
+    command: --providers.docker
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment: 
+      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
+      - CF_API_KEY=${CLOUDFLARE_API_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ${DOCKERDIR}/traefik:/etc/traefik
+      - ${DOCKERDIR}/shared:/shared
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/shared/.htpasswd"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.${DOMAINNAME}`)"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+    networks:
+      - traefik_proxy
+
+  #Wordpress acts as the TLD landing. www.richardsoper.me --> richardsoper.me
+
+  wordpress:
+    container_name: wordpress
+    hostname: wordpress
+    image: wordpress:latest
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ${DOCKERDIR}/wordpress:/var/www/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wordpress.entrypoints=http"
+      - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
+      - "traefik.http.middlewares.wordpress-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.wordpress.middlewares=wordpress-https-redirect"
+      - "traefik.http.routers.wordpress-secure.entrypoints=https"
+      - "traefik.http.routers.wordpress-secure.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
+      - "traefik.http.routers.wordpress-secure.tls=true"
+      - "traefik.http.routers.wordpress-secure.tls.certresolver=http"
+      - "traefik.http.routers.wordpress-secure.service=wordpress"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
+  # Ghost is the preferred blogging platform for tech related blogs
+
+  ghost:
+    container_name: ghost
+    image: ghost:latest
+    restart: always
+    env_file:
+      - ${DOCKERDIR}/ghost/ghost.env
+    depends_on:
+      - mariadb
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ghost.entrypoints=http"
+      - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.ghost-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.ghost.middlewares=ghost-https-redirect"
+      - "traefik.http.routers.ghost-secure.entrypoints=https"
+      - "traefik.http.routers.ghost-secure.rule=Host(`blog.${DOMAINNAME}`)"
+      - "traefik.http.routers.ghost-secure.tls=true"
+      - "traefik.http.routers.ghost-secure.tls.certresolver=http"
+      - "traefik.http.routers.ghost-secure.service=ghost"
+      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+      - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/ghost:/var/lib/ghost/content
+    networks:
+      - traefik_proxy
+
+  # Portainer - WebUI for docker containers
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer:latest
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERDIR}/portainer/data:/data
+      - ${DOCKERDIR}/shared:/shared
+    command: -H unix:///var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.entrypoints=http"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.portainer-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.portainer.middlewares=portainer-https-redirect"
+      - "traefik.http.routers.portainer-secure.entrypoints=https"
+      - "traefik.http.routers.portainer-secure.rule=Host(`portainer.${DOMAINNAME}`)"
+      - "traefik.http.routers.portainer-secure.tls=true"
+      - "traefik.http.routers.portainer-secure.tls.certresolver=http"
+      - "traefik.http.routers.portainer-secure.service=portainer"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+      # - PMA_USER=root
+      # - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_ABSOLUTE_URL=https://phpmyadmin.${DOMAINNAME}/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.phpmyadmin-auth.basicauth.usersfile=/shared/.htpasswd"
+      - "traefik.http.routers.phpmyadmin.entrypoints=http"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.phpmyadmin-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-https-redirect"
+      - "traefik.http.routers.phpmyadmin-secure.entrypoints=https"
+      - "traefik.http.routers.phpmyadmin-secure.rule=Host(`db.${DOMAINNAME}`)"
+      - "traefik.http.routers.phpmyadmin-secure.tls=true"
+      - "traefik.http.routers.phpmyadmin-secure.tls.certresolver=http"
+      - "traefik.http.routers.phpmyadmin-secure.service=phpmyadmin"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
+  # Nextcloud - Personal cloud storage system
+
+  nextcloud:
+    container_name: nextcloud
+    image: nextcloud:latest
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "8000:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=http"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.nextcloud-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-https-redirect"
+      - "traefik.http.routers.nextcloud-secure.entrypoints=https"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.${DOMAINNAME}`)"
+      - "traefik.http.routers.nextcloud-secure.tls=true"
+      - "traefik.http.routers.nextcloud-secure.tls.certresolver=http"
+      - "traefik.http.routers.nextcloud-secure.service=nextcloud"
+      - "traefik.http.middlewares.nextcloud-secure.headers.customFrameOptionsValue=SAMEORIGIN"
+      - "traefik.http.middlewares.nextcloud-secure.headers.framedeny=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.sslredirect=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.stsPreload=true"
+      - "traefik.http.middlewares.nextcloud-secure.headers.stsSeconds=15552000"
+      - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
+      - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
+      - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/nextcloud:/var/www/html
+    networks:
+      - traefik_proxy
+
+  # Gitea - A simple self hosted git server
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:latest
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitea.entrypoints=http"
+      - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.gitea-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.gitea.middlewares=gitea-https-redirect"
+      - "traefik.http.routers.gitea-secure.entrypoints=https"
+      - "traefik.http.routers.gitea-secure.rule=Host(`git.${DOMAINNAME}`)"
+      - "traefik.http.routers.gitea-secure.tls=true"
+      - "traefik.http.routers.gitea-secure.tls.certresolver=http"
+      - "traefik.http.routers.gitea-secure.service=gitea"
+      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik_proxy"
+    volumes:
+      - ${DOCKERDIR}/gitea:/data
+    networks:
+      - traefik_proxy
+
+  # Home Assistant
+
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:latest
+    restart: always
+    ports:
+      - "8123:8123"
+    volumes:
+      - ${DOCKERDIR}/homeassistant/config:/config
+    environment:
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.entrypoints=http"
+      - "traefik.http.routers.homeassistant.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.middlewares.homeassistant-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.homeassistant.middlewares=homeassistant-https-redirect"
+      - "traefik.http.routers.homeassistant-secure.entrypoints=https"
+      - "traefik.http.routers.homeassistant-secure.rule=Host(`home.${DOMAINNAME}`)"
+      - "traefik.http.routers.homeassistant-secure.tls=true"
+      - "traefik.http.routers.homeassistant-secure.tls.certresolver=http"
+      - "traefik.http.routers.homeassistant-secure.service=homeassistant"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
+  # Flask for authentication
+
+  # flask:
+  #   container_name: flask_auth
+  #   image: jcdemo/flaskapp
+  #   restart: always
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - ${DOCKERDIR}/flask:/src
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.flask_auth.entrypoints=http"
+  #     - "traefik.http.routers.flask_auth.rule=Host(`auth.${DOMAINNAME}`)"
+  #     - "traefik.http.middlewares.flask_auth-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.flask_auth.middlewares=flask_auth-https-redirect"
+  #     - "traefik.http.routers.flask_auth-secure.entrypoints=https"
+  #     - "traefik.http.routers.flask_auth-secure.rule=Host(`auth.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.flask_auth-secure.tls=true"
+  #     - "traefik.http.routers.flask_auth-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.flask_auth-secure.service=flask_auth"
+  #     - "traefik.http.services.flask_auth.loadbalancer.server.port=5000"
+  #     - "traefik.docker.network=traefik_proxy"
+
+  # PiHole - Ad filtering DNS system.
+
+  pihole:
+    container_name: pihole
+    hostname: pihole
+    image: pihole/pihole:latest
+    restart: always
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8182:80"
+      - "8183:443"
+    volumes:
+      - ${DOCKERDIR}/pihole/pihole:/etc/pihole
+      # - ${DOCKERDIR}/docker/pihole/logs:/var/log/
+      - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - ServerIP=${SERVER_IP}
+      - PROXY_LOCATION=pihole
+      - VIRTUAL_HOST=pihole.${DOMAINNAME}
+      - VIRTUAL_PORT=80
+      - TZ=${TZ}
+      - WEBPASSWORD=${PIHOLEPW}
+      - DNS1=1.1.1.1
+      - DNS2=1.0.0.1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.entrypoints=http"
+      - "traefik.http.routers.pihole.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
+      - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
+      - "traefik.http.routers.pihole-secure.entrypoints=https"
+      - "traefik.http.routers.pihole-secure.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
+      - "traefik.http.routers.pihole-secure.tls=true"
+      - "traefik.http.routers.pihole-secure.tls.certresolver=http"
+      - "traefik.http.routers.pihole-secure.service=pihole"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+
+  # Watchtower - automatically update docker containers
+
+  watchtower:
+    container_name: watchtower
+    hostname: watchtower
+    restart: always
+    image: v2tec/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --schedule "0 0 4 * * *" --cleanup
+
+  # MariaDB - SQL based database for most of this stack.
+
+  mariadb:
+    container_name: mariadb
+    hostname: mariadb
+    image: linuxserver/mariadb
+    restart: always
+    volumes:
+      - ${DOCKERDIR}/mariadb:/config
+      - ${DOCKERDIR}/shared:/shared
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TZ}
+    networks:
+      - traefik_proxy
+
+networks:
+  traefik_proxy:
+    external: true
