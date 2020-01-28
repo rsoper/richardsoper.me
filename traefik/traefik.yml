@@ -1,3 +1,5 @@
+# Static Configuration
+
 api:
   dashboard: true
 
@@ -7,15 +9,32 @@ log:
   format: json
 
 entryPoints:
-  http:
+  web:
     address: ":80"
-  https:
+  web-secure:
     address: ":443"
 
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
+
+# Dynamic configuration
+
+http:
+  routers:
+    route-to-pi:
+      rule: "Host(`pihole.richardsoper.me`)"
+      service: route-to-pi-service
+      priority: 1000
+      entryPoints:
+        - web
+
+  services:
+    route-to-pi-service:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.14"
 
 certificatesResolvers:
   http:
@@ -27,18 +46,3 @@ certificatesResolvers:
         delayBeforeCheck: 300
       # httpChallenge:
       #   entryPoint: http
-
-http:
-  routers:
-    route-to-pi:
-      rule: "Host(`pihole.richardsoper.me`)"
-      service: route-to-pi-service
-      priority: 1000
-      entryPoints:
-        - web
-      
-  services:
-    route-to-pi-service:
-      loadBalancer:
-        servers:
-          - url: "http://192.168.1.14"
