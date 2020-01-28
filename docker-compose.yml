@@ -217,74 +217,74 @@ services:
 
   # Home Assistant
 
-  homeassistant:
-    container_name: homeassistant
-    image: homeassistant/home-assistant:latest
-    restart: always
-    ports:
-      - "8123:8123"
-    volumes:
-      - ${DOCKERDIR}/homeassistant/config:/config
-    environment:
-      - TZ=${TZ}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homeassistant.entrypoints=http"
-      - "traefik.http.routers.homeassistant.rule=Host(`home.${DOMAINNAME}`)"
-      - "traefik.http.middlewares.homeassistant-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.homeassistant.middlewares=homeassistant-https-redirect"
-      - "traefik.http.routers.homeassistant-secure.entrypoints=https"
-      - "traefik.http.routers.homeassistant-secure.rule=Host(`home.${DOMAINNAME}`)"
-      - "traefik.http.routers.homeassistant-secure.tls=true"
-      - "traefik.http.routers.homeassistant-secure.tls.certresolver=http"
-      - "traefik.http.routers.homeassistant-secure.service=homeassistant"
-      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
-      - "traefik.docker.network=traefik_proxy"
-    networks:
-      - traefik_proxy
+  # homeassistant:
+  #   container_name: homeassistant
+  #   image: homeassistant/home-assistant:latest
+  #   restart: always
+  #   ports:
+  #     - "8123:8123"
+  #   volumes:
+  #     - ${DOCKERDIR}/homeassistant/config:/config
+  #   environment:
+  #     - TZ=${TZ}
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.homeassistant.entrypoints=http"
+  #     - "traefik.http.routers.homeassistant.rule=Host(`home.${DOMAINNAME}`)"
+  #     - "traefik.http.middlewares.homeassistant-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.homeassistant.middlewares=homeassistant-https-redirect"
+  #     - "traefik.http.routers.homeassistant-secure.entrypoints=https"
+  #     - "traefik.http.routers.homeassistant-secure.rule=Host(`home.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.homeassistant-secure.tls=true"
+  #     - "traefik.http.routers.homeassistant-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.homeassistant-secure.service=homeassistant"
+  #     - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+  #     - "traefik.docker.network=traefik_proxy"
+  #   networks:
+  #     - traefik_proxy
 
-  # PiHole - Ad filtering DNS system.
+  # # PiHole - Ad filtering DNS system.
 
-  pihole:
-    container_name: pihole
-    hostname: pihole
-    image: pihole/pihole:latest
-    restart: always
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "8182:80"
-      - "8183:443"
-    volumes:
-      - ${DOCKERDIR}/pihole/pihole:/etc/pihole
-      # - ${DOCKERDIR}/docker/pihole/logs:/var/log/
-      - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - ServerIP=${SERVER_IP}
-      - PROXY_LOCATION=pihole
-      - VIRTUAL_HOST=pihole.${DOMAINNAME}
-      - VIRTUAL_PORT=80
-      - TZ=${TZ}
-      - WEBPASSWORD=${PIHOLEPW}
-      - DNS1=1.1.1.1
-      - DNS2=1.0.0.1
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.pihole.entrypoints=http"
-      - "traefik.http.routers.pihole.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
-      - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
-      - "traefik.http.routers.pihole-secure.entrypoints=https"
-      - "traefik.http.routers.pihole-secure.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
-      - "traefik.http.routers.pihole-secure.tls=true"
-      - "traefik.http.routers.pihole-secure.tls.certresolver=http"
-      - "traefik.http.routers.pihole-secure.service=pihole"
-      - "traefik.http.services.pihole.loadbalancer.server.port=80"
-      - "traefik.docker.network=traefik_proxy"
-    networks:
-      - traefik_proxy
+  # pihole:
+  #   container_name: pihole
+  #   hostname: pihole
+  #   image: pihole/pihole:latest
+  #   restart: always
+  #   ports:
+  #     - "53:53/tcp"
+  #     - "53:53/udp"
+  #     - "8182:80"
+  #     - "8183:443"
+  #   volumes:
+  #     - ${DOCKERDIR}/pihole/pihole:/etc/pihole
+  #     # - ${DOCKERDIR}/docker/pihole/logs:/var/log/
+  #     - ${DOCKERDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - ServerIP=${SERVER_IP}
+  #     - PROXY_LOCATION=pihole
+  #     - VIRTUAL_HOST=pihole.${DOMAINNAME}
+  #     - VIRTUAL_PORT=80
+  #     - TZ=${TZ}
+  #     - WEBPASSWORD=${PIHOLEPW}
+  #     - DNS1=1.1.1.1
+  #     - DNS2=1.0.0.1
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.pihole.entrypoints=http"
+  #     - "traefik.http.routers.pihole.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
+  #     - "traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.pihole.middlewares=pihole-https-redirect"
+  #     - "traefik.http.routers.pihole-secure.entrypoints=https"
+  #     - "traefik.http.routers.pihole-secure.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
+  #     - "traefik.http.routers.pihole-secure.tls=true"
+  #     - "traefik.http.routers.pihole-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.pihole-secure.service=pihole"
+  #     - "traefik.http.services.pihole.loadbalancer.server.port=80"
+  #     - "traefik.docker.network=traefik_proxy"
+  #   networks:
+  #     - traefik_proxy
 
   # Watchtower - automatically update docker containers
 
