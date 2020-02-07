@@ -15,9 +15,13 @@ providers:
     filename: /etc/traefik/config.yml
 
 certificatesResolvers:
-  http:
+  cf-cert:
     acme:
-      email: richardwebdesigner@me.com
+      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       storage: /etc/traefik/acme/acme.json
-      httpChallenge:
-        entryPoint: http
+      email: richardwebdesigner@me.com
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
