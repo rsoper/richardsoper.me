@@ -57,6 +57,25 @@ services:
     networks:
       - traefik_proxy
 
+  ghost:
+    container_name: ghost
+    image: ghost:latest
+    restart: always
+    env_file:
+      - ${DOCKERDIR}/ghost/ghost.env
+    depends_on:
+      - mariadb
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ghost.entrypoints=websecure"
+      - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
+      - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
+      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+    volumes:
+      - ${DOCKERDIR}/ghost:/var/lib/ghost/content
+    networks:
+      - traefik_proxy
+
   mariadb:
     container_name: mariadb
     hostname: mariadb
