@@ -8,6 +8,9 @@ services:
     image: traefik:v2.0
     command: --providers.docker
     restart: always
+    environment:
+      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
+      - CF_API_KEY=${CLOUDFLARE_API_KEY}
     ports:
       - "80:80"
       - "443:443"
@@ -26,7 +29,9 @@ services:
       - "traefik.http.routers.traefik-secure.rule=Host(`traefik.${DOMAINNAME}`)"
       - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
       - "traefik.http.routers.traefik-secure.tls=true"
-      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cf-cert"
+      - "traefik.http.routers.traefik.tls.domains[0].main=*.${DOMAINNAME}"
+      - "traefik.http.routers.traefik.tls.domains[0].sans=${DOMAINNAME}"
       - "traefik.http.routers.traefik-secure.service=api@internal"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
     networks:
@@ -57,7 +62,7 @@ services:
       - "traefik.http.routers.wordpress-secure.entrypoints=https"
       - "traefik.http.routers.wordpress-secure.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
       - "traefik.http.routers.wordpress-secure.tls=true"
-      - "traefik.http.routers.wordpress-secure.tls.certresolver=http"
+      - "traefik.http.routers.wordpress-secure.tls.certresolver=cf-cert"
       - "traefik.http.routers.wordpress-secure.service=wordpress"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
       - "traefik.docker.network=traefik_proxy"
@@ -83,7 +88,7 @@ services:
       - "traefik.http.routers.ghost-secure.entrypoints=https"
       - "traefik.http.routers.ghost-secure.rule=Host(`blog.${DOMAINNAME}`)"
       - "traefik.http.routers.ghost-secure.tls=true"
-      - "traefik.http.routers.ghost-secure.tls.certresolver=http"
+      - "traefik.http.routers.ghost-secure.tls.certresolver=cf-cert"
       - "traefik.http.routers.ghost-secure.service=ghost"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
       - "traefik.docker.network=traefik_proxy"
@@ -112,7 +117,7 @@ services:
       - "traefik.http.routers.portainer-secure.entrypoints=https"
       - "traefik.http.routers.portainer-secure.rule=Host(`portainer.${DOMAINNAME}`)"
       - "traefik.http.routers.portainer-secure.tls=true"
-      - "traefik.http.routers.portainer-secure.tls.certresolver=http"
+      - "traefik.http.routers.portainer-secure.tls.certresolver=cf-cert"
       - "traefik.http.routers.portainer-secure.service=portainer"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
       - "traefik.docker.network=traefik_proxy"
@@ -139,7 +144,7 @@ services:
       - "traefik.http.routers.phpmyadmin-secure.entrypoints=https"
       - "traefik.http.routers.phpmyadmin-secure.rule=Host(`db.${DOMAINNAME}`)"
       - "traefik.http.routers.phpmyadmin-secure.tls=true"
-      - "traefik.http.routers.phpmyadmin-secure.tls.certresolver=http"
+      - "traefik.http.routers.phpmyadmin-secure.tls.certresolver=cf-cert"
       - "traefik.http.routers.phpmyadmin-secure.service=phpmyadmin"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
       - "traefik.docker.network=traefik_proxy"
@@ -165,7 +170,7 @@ services:
       - "traefik.http.routers.nextcloud-secure.entrypoints=https"
       - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.${DOMAINNAME}`)"
       - "traefik.http.routers.nextcloud-secure.tls=true"
-      - "traefik.http.routers.nextcloud-secure.tls.certresolver=http"
+      - "traefik.http.routers.nextcloud-secure.tls.certresolver=cf-cert"
       - "traefik.http.routers.nextcloud-secure.service=nextcloud"
       - "traefik.http.middlewares.nextcloud-secure.headers.customFrameOptionsValue=SAMEORIGIN"
       - "traefik.http.middlewares.nextcloud-secure.headers.framedeny=true"
@@ -206,7 +211,7 @@ services:
       - "traefik.http.routers.gitea-secure.entrypoints=https"
       - "traefik.http.routers.gitea-secure.rule=Host(`git.${DOMAINNAME}`)"
       - "traefik.http.routers.gitea-secure.tls=true"
-      - "traefik.http.routers.gitea-secure.tls.certresolver=http"
+      - "traefik.http.routers.gitea-secure.tls.certresolver=cf-cert"
       - "traefik.http.routers.gitea-secure.service=gitea"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_proxy"
@@ -236,7 +241,7 @@ services:
   #     - "traefik.http.routers.homeassistant-secure.entrypoints=https"
   #     - "traefik.http.routers.homeassistant-secure.rule=Host(`home.${DOMAINNAME}`)"
   #     - "traefik.http.routers.homeassistant-secure.tls=true"
-  #     - "traefik.http.routers.homeassistant-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.homeassistant-secure.tls.certresolver=cf-cert"
   #     - "traefik.http.routers.homeassistant-secure.service=homeassistant"
   #     - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
   #     - "traefik.docker.network=traefik_proxy"
@@ -279,7 +284,7 @@ services:
   #     - "traefik.http.routers.pihole-secure.entrypoints=https"
   #     - "traefik.http.routers.pihole-secure.rule=HostRegexp(`pihole.${DOMAINNAME}`,`pihole.${DOMAINNAME}/{catchall:.*}`)"
   #     - "traefik.http.routers.pihole-secure.tls=true"
-  #     - "traefik.http.routers.pihole-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.pihole-secure.tls.certresolver=cf-cert"
   #     - "traefik.http.routers.pihole-secure.service=pihole"
   #     - "traefik.http.services.pihole.loadbalancer.server.port=80"
   #     - "traefik.docker.network=traefik_proxy"
