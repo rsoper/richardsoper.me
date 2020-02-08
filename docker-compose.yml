@@ -36,6 +36,8 @@ services:
     networks:
       - traefik_proxy
 
+  # Wordpress - This acts as the TLD.
+
   wordpress:
     container_name: wordpress
     hostname: wordpress
@@ -59,6 +61,8 @@ services:
     networks:
       - traefik_proxy
 
+  # Ghost - This is the blog subdomain
+
   ghost:
     container_name: ghost
     image: ghost:latest
@@ -77,6 +81,79 @@ services:
       - ${DOCKERDIR}/ghost:/var/lib/ghost/content
     networks:
       - traefik_proxy
+
+  # Nextcloud - Personal cloud storage
+
+  nextcloud:
+    container_name: nextcloud
+    image: nextcloud:latest
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "8000:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
+      - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      ## Headers - Not sure if needed
+      - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
+      - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
+      - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
+
+    volumes:
+      - ${DOCKERDIR}/nextcloud:/var/www/html
+    networks:
+      - traefik_proxy
+
+  # Portainer - Remote access to docker containers via web UI
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer:latest
+    restart: always
+    depends_on:
+      - traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERDIR}/portainer/data:/data
+      - ${DOCKERDIR}/shared:/shared
+    command: -H unix:///var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
+      - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    networks:
+      - traefik_proxy
+
+  # PHPmyadmin - Manage the database via web UI
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_ABSOLUTE_URL=https://db.${DOMAINNAME}/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
+      - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+    networks:
+      - traefik_proxy
+
+  # MariaDB - Open sourced relational database. MySQL equivalent.
 
   mariadb:
     container_name: mariadb
