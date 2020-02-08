@@ -25,7 +25,7 @@ https://www.richardsoper.me
 
 ### Broken
 
-    - Nothing that I am aware of currently
+    - Gitea and watchtower not integrated yet
 
 ### Usage
 
