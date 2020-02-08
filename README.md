@@ -1,10 +1,17 @@
-# richardsoper.me Traefik 2.0
+# richardsoper.me Traefik 2.1
 
 Personal site used for developing my own skills.
 
 https://www.richardsoper.me
 
+### Branch goals
+
+    - Reduce the number of labels per-container
+    - Maintain automatic certs
+    - Include non-docker backends
+
 ### Frontend
+
     - Portainer
     - Ghost
     - NextCloud
@@ -12,13 +19,16 @@ https://www.richardsoper.me
     - PHPMyAdmin
 
 ### Tools
+
     - MySQL
     - watchtower
 
 ### Broken
+
     - Nothing that I am aware of currently
 
 ### Usage
+
     - Create a .env file in the root directory of this repository
     - Navigate to traefik/traefik.yml and update the email address(unless you want me to know about your certs)
     - Create traefik_proxy network with "docker network create traefik_proxy"
