@@ -2,7 +2,6 @@
 shared/.htpasswd
 .DS_Store
 .env
-traefik/acme/
 *.key
 *.db
 *.pub
@@ -10,8 +9,6 @@ portainer/data/config.json
 *.log
 *.0
 config.production.json
-**.vscode**
-flask/Pipfile
-flask/Pipfile.lock
+.vscode/
 **__pycache__**
 mariadb.zip
