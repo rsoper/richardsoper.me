@@ -157,7 +157,7 @@ services:
 
   phpmyadmin:
     container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
+    image: mhzawadi/phpmyadmin:latest-arm64
     restart: always
     depends_on:
       - mariadb
@@ -197,7 +197,7 @@ services:
     container_name: watchtower
     hostname: watchtower
     restart: always
-    image: v2tec/watchtower
+    image: containrrr/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --schedule "0 0 4 * * *" --cleanup
