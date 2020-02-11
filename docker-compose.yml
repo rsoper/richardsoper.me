@@ -116,6 +116,12 @@ services:
   gitea:
     container_name: gitea
     image: kunde21/gitea-arm:latest
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=mariadb:3306
+      - DB_name=gitea
+      - DB_USER=gitea
+      - DB_PASSWD=${GITPASS}
     restart: always
     depends_on:
       - mariadb
