@@ -157,7 +157,7 @@ services:
 
   phpmyadmin:
     container_name: phpmyadmin
-    image: mhzawadi/phpmyadmin:latest-arm64
+    image: jackgruber/phpmyadmin:latest
     restart: always
     depends_on:
       - mariadb
