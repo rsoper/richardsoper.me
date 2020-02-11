@@ -115,7 +115,7 @@ services:
 
   gitea:
     container_name: gitea
-    image: gitea/gitea:1.11.0
+    image: kunde21/gitea-arm:latest
     restart: always
     depends_on:
       - mariadb
