@@ -111,9 +111,11 @@ services:
     networks:
       - traefik_proxy
 
+  # Self hosted Git repository
+
   gitea:
     container_name: gitea
-    image: gitea/gitea:linux-arm64
+    image: gitea/gitea:1.11.0
     restart: always
     depends_on:
       - mariadb
