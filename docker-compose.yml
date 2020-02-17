@@ -122,6 +122,7 @@ services:
       - GITEA_DATABASE_NAME=gitea
       - GITEA_DATABASE_USERNAME=gitea
       - GITEA_DATABASE_PASSWORD=${GITPASS}
+      - GITEA_SERVER_ROOT_URL=https://git.${DOMAINNAME}
     restart: always
     depends_on:
       - mariadb
