@@ -214,3 +214,11 @@ services:
 networks:
   traefik_proxy:
     external: true
+
+volumes:
+  docker_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.1.22,nolock,soft,rw
+      device: ":/mnt/docker_storage"
