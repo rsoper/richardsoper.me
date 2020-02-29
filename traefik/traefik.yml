@@ -1,10 +1,15 @@
 api:
   dashboard: true
 
+log:
+  level: DEBUG
+  filePath: /shared/traefik.log
+  format: json
+
 entryPoints:
-  http:
+  web:
     address: ":80"
-  https:
+  websecure:
     address: ":443"
 
 providers:
@@ -12,7 +17,7 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
   file:
-    filename: /etc/traefik/config.yml
+    filename: "/etc/traefik/config.yml"
 
 certificatesResolvers:
   cf-cert:

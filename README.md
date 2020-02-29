@@ -1,8 +1,14 @@
-# richardsoper.me Traefik 2.0
+# richardsoper.me Traefik 2.1
 
 Personal site used for developing my own skills.
 
 https://www.richardsoper.me
+
+### Branch goals
+
+    - Reduce the number of labels per-container
+    - Maintain automatic certs
+    - Include non-docker backends
 
 ### Frontend
 
