@@ -40,109 +40,109 @@ services:
 
   # Wordpress - This acts as the TLD.
 
-  wordpress:
-    container_name: wordpress
-    hostname: wordpress
-    image: wordpress:latest
-    restart: always
-    depends_on:
-      - mariadb
-    environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
-      WORDPRESS_DB_NAME: wordpress
-    volumes:
-      - ${DOCKERDIR}/wordpress:/var/www/html
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.entrypoints=websecure"
-      - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
-      - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
-      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
-    networks:
-      - traefik_proxy
+  # wordpress:
+  #   container_name: wordpress
+  #   hostname: wordpress
+  #   image: wordpress:latest
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   environment:
+  #     WORDPRESS_DB_HOST: mariadb
+  #     WORDPRESS_DB_USER: wordpress
+  #     WORDPRESS_DB_PASSWORD: ${WORDPRESSPW}
+  #     WORDPRESS_DB_NAME: wordpress
+  #   volumes:
+  #     - ${DOCKERDIR}/wordpress:/var/www/html
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.wordpress.entrypoints=websecure"
+  #     - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
+  #     - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
+  #     - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+  #   networks:
+  #     - traefik_proxy
 
-  # Ghost - This is the blog subdomain
+  # # Ghost - This is the blog subdomain
 
-  ghost:
-    container_name: ghost
-    image: ghost:latest
-    restart: always
-    env_file:
-      - ${DOCKERDIR}/ghost.env
-    depends_on:
-      - mariadb
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.ghost.entrypoints=websecure"
-      - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
-      - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
-      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
-    volumes:
-      - ghost_data:/var/lib/ghost/content
-    networks:
-      - traefik_proxy
-    deploy:
-      replicas: 2
+  # ghost:
+  #   container_name: ghost
+  #   image: ghost:latest
+  #   restart: always
+  #   env_file:
+  #     - ${DOCKERDIR}/ghost.env
+  #   depends_on:
+  #     - mariadb
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.ghost.entrypoints=websecure"
+  #     - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
+  #     - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+  #   volumes:
+  #     - ghost_data:/var/lib/ghost/content
+  #   networks:
+  #     - traefik_proxy
+  #   deploy:
+  #     replicas: 2
 
-  # Nextcloud - Personal cloud storage
+  # # Nextcloud - Personal cloud storage
 
-  nextcloud:
-    container_name: nextcloud
-    image: nextcloud:latest
-    restart: always
-    depends_on:
-      - mariadb
-    ports:
-      - "8000:80"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.entrypoints=websecure"
-      - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
-      - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
-      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-      ## Headers - Not sure if needed
-      - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
-      - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
-      - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
+  # nextcloud:
+  #   container_name: nextcloud
+  #   image: nextcloud:latest
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   ports:
+  #     - "8000:80"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.nextcloud.entrypoints=websecure"
+  #     - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
+  #     - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+  #     ## Headers - Not sure if needed
+  #     - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
+  #     - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
+  #     - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
+  #     - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
+  #     - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
+  #     - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
 
-    volumes:
-      - ${DOCKERDIR}/nextcloud:/var/www/html
-    networks:
-      - traefik_proxy
+  #   volumes:
+  #     - ${DOCKERDIR}/nextcloud:/var/www/html
+  #   networks:
+  #     - traefik_proxy
 
-  # Self hosted Git repository
+  # # Self hosted Git repository
 
-  gitea:
-    container_name: gitea
-    image: webhippie/gitea:latest
-    environment:
-      - GITEA_DATABASE_TYPE=mysql
-      - GITEA_DATABASE_HOST=mariadb:3306
-      - GITEA_DATABASE_NAME=gitea
-      - GITEA_DATABASE_USERNAME=gitea
-      - GITEA_DATABASE_PASSWORD=${GITPASS}
-      - GITEA_SERVER_ROOT_URL=https://git.${DOMAINNAME}
-    restart: always
-    depends_on:
-      - mariadb
-    ports:
-      - "3000:3000"
-      - "2222:22"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.gitea.entrypoints=websecure"
-      - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
-      - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
-      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
-    volumes:
-      - ${DOCKERDIR}/gitea:/data
-    networks:
-      - traefik_proxy
+  # gitea:
+  #   container_name: gitea
+  #   image: webhippie/gitea:latest
+  #   environment:
+  #     - GITEA_DATABASE_TYPE=mysql
+  #     - GITEA_DATABASE_HOST=mariadb:3306
+  #     - GITEA_DATABASE_NAME=gitea
+  #     - GITEA_DATABASE_USERNAME=gitea
+  #     - GITEA_DATABASE_PASSWORD=${GITPASS}
+  #     - GITEA_SERVER_ROOT_URL=https://git.${DOMAINNAME}
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   ports:
+  #     - "3000:3000"
+  #     - "2222:22"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.gitea.entrypoints=websecure"
+  #     - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
+  #     - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+  #   volumes:
+  #     - ${DOCKERDIR}/gitea:/data
+  #   networks:
+  #     - traefik_proxy
 
   # Portainer - Remote access to docker containers via web UI
 
@@ -169,54 +169,49 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # PHPmyadmin - Manage the database via web UI
-
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: jackgruber/phpmyadmin:latest
-    restart: always
-    depends_on:
-      - mariadb
-    environment:
-      - PMA_HOST=mariadb
-      - PMA_ABSOLUTE_URL=https://db.${DOMAINNAME}/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
-      - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
-      - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
-      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
-    networks:
-      - traefik_proxy
-
-  # MariaDB - Open sourced relational database. MySQL equivalent.
-
-  mariadb:
-    container_name: mariadb
-    hostname: mariadb
-    image: linuxserver/mariadb
-    restart: always
-    depends_on:
-      - traefik
-    volumes:
-      - ${DOCKERDIR}/mariadb:/config
-      - ${DOCKERDIR}/shared:/shared
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - TZ=${TZ}
-    networks:
-      - traefik_proxy
-
-  # Watchtower - automatically update docker containers
-
-  watchtower:
-    container_name: watchtower
-    hostname: watchtower
-    restart: always
-    image: containrrr/watchtower:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --schedule "0 0 4 * * *" --cleanup
+  # # PHPmyadmin - Manage the database via web UI
+  # phpmyadmin:
+  #   container_name: phpmyadmin
+  #   image: jackgruber/phpmyadmin:latest
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   environment:
+  #     - PMA_HOST=mariadb
+  #     - PMA_ABSOLUTE_URL=https://db.${DOMAINNAME}/
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+  #     - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
+  #     - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+  #   networks:
+  #     - traefik_proxy
+  # # MariaDB - Open sourced relational database. MySQL equivalent.
+  # mariadb:
+  #   container_name: mariadb
+  #   hostname: mariadb
+  #   image: linuxserver/mariadb
+  #   restart: always
+  #   depends_on:
+  #     - traefik
+  #   volumes:
+  #     - ${DOCKERDIR}/mariadb:/config
+  #     - ${DOCKERDIR}/shared:/shared
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #     - TZ=${TZ}
+  #   networks:
+  #     - traefik_proxy
+  # # Watchtower - automatically update docker containers
+  # watchtower:
+  #   container_name: watchtower
+  #   hostname: watchtower
+  #   restart: always
+  #   image: containrrr/watchtower:latest
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --schedule "0 0 4 * * *" --cleanup
 
 networks:
   traefik_proxy:
