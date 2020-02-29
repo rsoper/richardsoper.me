@@ -4,12 +4,6 @@ Personal site used for developing my own skills.
 
 https://www.richardsoper.me
 
-### Branch goals
-
-    - Reduce the number of labels per-container
-    - Maintain automatic certs
-    - Include non-docker backends
-
 ### Frontend
 
     - Portainer
@@ -20,12 +14,12 @@ https://www.richardsoper.me
 
 ### Tools
 
-    - MySQL
+    - mariaDB
     - watchtower
 
 ### Broken
 
-    - Nothing that I am aware of currently
+    - Some unknown database connection issues #17
 
 ### Usage
 
@@ -37,3 +31,9 @@ https://www.richardsoper.me
     - Navigate to traefik/traefik.yml and update the email address(unless you want me to know about your certs)
     - Create traefik_proxy network with "docker network create traefik_proxy"
     - With all variable created, run the docker-up.sh script or command "docker-compose -f richardsoper.me/docker-compose.yml up -d"
+
+### Future work
+
+    - Integrate non-docker services(Pi-hole, etc)
+    - Mount NFS volumes
+    - Deploy as docker swarm across architectures
