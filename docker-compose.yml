@@ -70,7 +70,7 @@ services:
     image: ghost:latest
     restart: always
     env_file:
-      - ghost_data/ghost.env
+      - ${DOCKERDIR}/ghost.env
     depends_on:
       - mariadb
     labels:
@@ -155,7 +155,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERDIR}/portainer/data:/data
-      - ${DOCKERDIR}/shared:/shared
     command: -H unix:///var/run/docker.sock
     labels:
       - "traefik.enable=true"
@@ -165,6 +164,10 @@ services:
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks:
       - traefik_proxy
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   # PHPmyadmin - Manage the database via web UI
 
