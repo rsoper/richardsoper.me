@@ -21,6 +21,8 @@ services:
       - traefik_proxy
     deploy:
       replicas: 2
+      placement:
+        constraints: [node.role == manager]
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
