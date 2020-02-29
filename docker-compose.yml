@@ -15,8 +15,8 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-      - ${DOCKERDIR}/traefik:/etc/traefik
-      - ${DOCKERDIR}/shared:/shared
+      - traefik_data:/etc/traefik
+      - shared_data:/shared
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
@@ -35,6 +35,8 @@ services:
       - "traefik.http.routers.redirect-https.middlewares=secure-redirect@file"
     networks:
       - traefik_proxy
+    deploy:
+      replicas: 2
 
   # Wordpress - This acts as the TLD.
 
@@ -216,9 +218,15 @@ networks:
     external: true
 
 volumes:
-  docker_data:
+  shared_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage"
+      device: ":/mnt/docker_storage/shared"
+  traefik_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.1.22,nolock,soft,rw
+      device: ":/mnt/docker_storage/traefik"
