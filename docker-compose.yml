@@ -70,7 +70,7 @@ services:
     image: ghost:latest
     restart: always
     env_file:
-      - ${DOCKERDIR}/ghost/ghost.env
+      - ghost_data/ghost.env
     depends_on:
       - mariadb
     labels:
@@ -80,9 +80,11 @@ services:
       - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
-      - ${DOCKERDIR}/ghost:/var/lib/ghost/content
+      - ghost_data:/var/lib/ghost/content
     networks:
       - traefik_proxy
+    deploy:
+      replicas: 2
 
   # Nextcloud - Personal cloud storage
 
@@ -230,3 +232,9 @@ volumes:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
       device: ":/mnt/docker_storage/traefik"
+  ghost_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.1.22,nolock,soft,rw
+      device: ":/mnt/docker_storage/ghost"
