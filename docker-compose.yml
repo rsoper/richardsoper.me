@@ -201,6 +201,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --schedule "0 0 4 * * *" --cleanup
+    networks:
+      - traefik_proxy
 
 networks:
   traefik_proxy:
