@@ -1,5 +1,11 @@
 version: "3.7"
 
+secrets:
+  cf_api_email:
+    file: "./secrets/cf_api_email.secret"
+  cf_api_key:
+    file: "./secrets/cf_api_key.secret"
+
 services:
   # Traefik 2.0 reverse proxy with sub-domain configuration
 
@@ -7,9 +13,12 @@ services:
     container_name: traefik
     hostname: traefik
     image: traefik:v2.1
+    secrets:
+      - "cf_api_email"
+      - "cf_api_key"
     environment:
-      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
-      - CF_API_KEY=${CLOUDFLARE_API_KEY}
+      - CF_API_EMAIL=/run/secrets/cf_api_email
+      - CF_API_KEY=/run/secrets/cf_api_key
     ports:
       - "80:80"
       - "443:443"
@@ -25,7 +34,7 @@ services:
         constraints: [node.role == manager]
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.richardsoper.me`)"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
         - "traefik.http.routers.traefik.service=api@internal"
         ## Secure dashboard with basic authentication
@@ -33,8 +42,8 @@ services:
         - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/shared/.htpasswd"
         ## DNS CHALLENGE
         - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
-        - "traefik.http.routers.traefik.tls.domains[0].main=*.${DOMAINNAME}"
-        - "traefik.http.routers.traefik.tls.domains[0].sans=${DOMAINNAME}"
+        - "traefik.http.routers.traefik.tls.domains[0].main=*.richardsoper.me"
+        - "traefik.http.routers.traefik.tls.domains[0].sans=richardsoper.me"
         ## HTTP REDIRECT
         - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
         - "traefik.http.routers.redirect-https.entrypoints=web"
@@ -59,7 +68,7 @@ services:
   #   labels:
   #     - "traefik.enable=true"
   #     - "traefik.http.routers.wordpress.entrypoints=websecure"
-  #     - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
+  #     - "traefik.http.routers.wordpress.rule=Host(`www.richardsoper.me`) || Host(`richardsoper.me`)"
   #     - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
   #     - "traefik.http.services.wordpress.loadbalancer.server.port=80"
   #   networks:
@@ -78,7 +87,7 @@ services:
   #   labels:
   #     - "traefik.enable=true"
   #     - "traefik.http.routers.ghost.entrypoints=websecure"
-  #     - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.ghost.rule=Host(`blog.richardsoper.me`)"
   #     - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
   #     - "traefik.http.services.ghost.loadbalancer.server.port=2368"
   #   volumes:
@@ -101,7 +110,7 @@ services:
   #   labels:
   #     - "traefik.enable=true"
   #     - "traefik.http.routers.nextcloud.entrypoints=websecure"
-  #     - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.nextcloud.rule=Host(`cloud.richardsoper.me`)"
   #     - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
   #     - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
   #     ## Headers - Not sure if needed
@@ -128,7 +137,7 @@ services:
   #     - GITEA_DATABASE_NAME=gitea
   #     - GITEA_DATABASE_USERNAME=gitea
   #     - GITEA_DATABASE_PASSWORD=${GITPASS}
-  #     - GITEA_SERVER_ROOT_URL=https://git.${DOMAINNAME}
+  #     - GITEA_SERVER_ROOT_URL=https://git.richardsoper.me
   #   restart: always
   #   depends_on:
   #     - mariadb
@@ -138,7 +147,7 @@ services:
   #   labels:
   #     - "traefik.enable=true"
   #     - "traefik.http.routers.gitea.entrypoints=websecure"
-  #     - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.gitea.rule=Host(`git.richardsoper.me`)"
   #     - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
   #     - "traefik.http.services.gitea.loadbalancer.server.port=3000"
   #   volumes:
@@ -156,7 +165,7 @@ services:
       - traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERDIR}/portainer/data:/data
+      - portainer_data:/data
     command: -H unix:///var/run/docker.sock
     networks:
       - traefik_proxy
@@ -167,7 +176,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.portainer.entrypoints=websecure"
-        - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.richardsoper.me`)"
         - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
@@ -180,11 +189,11 @@ services:
   #     - mariadb
   #   environment:
   #     - PMA_HOST=mariadb
-  #     - PMA_ABSOLUTE_URL=https://db.${DOMAINNAME}/
+  #     - PMA_ABSOLUTE_URL=https://db.richardsoper.me/
   #   labels:
   #     - "traefik.enable=true"
   #     - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
-  #     - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
+  #     - "traefik.http.routers.phpmyadmin.rule=Host(`db.richardsoper.me`)"
   #     - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
   #     - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
   #   networks:
@@ -238,3 +247,9 @@ volumes:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
       device: ":/mnt/docker_storage/ghost"
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.1.22,nolock,soft,rw
+      device: ":/mnt/docker_storage/portainer/data"
