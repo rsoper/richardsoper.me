@@ -5,12 +5,13 @@ secrets:
     file: "./secrets/cf_api_email.secret"
   cf_api_key:
     file: "./secrets/cf_api_key.secret"
+  mysql_root_password:
+    external: true
 
 services:
   # Traefik 2.0 reverse proxy with sub-domain configuration
 
   traefik:
-    container_name: traefik
     hostname: traefik
     image: traefik:v2.1
     secrets:
@@ -52,7 +53,6 @@ services:
   # Wordpress - This acts as the TLD.
 
   # wordpress:
-  #   container_name: wordpress
   #   hostname: wordpress
   #   image: wordpress:latest
   #   restart: always
@@ -77,7 +77,6 @@ services:
   # # Ghost - This is the blog subdomain
 
   # ghost:
-  #   container_name: ghost
   #   image: ghost:latest
   #   restart: always
   #   env_file:
@@ -100,7 +99,6 @@ services:
   # # Nextcloud - Personal cloud storage
 
   # nextcloud:
-  #   container_name: nextcloud
   #   image: nextcloud:latest
   #   restart: always
   #   depends_on:
@@ -129,7 +127,6 @@ services:
   # # Self hosted Git repository
 
   # gitea:
-  #   container_name: gitea
   #   image: webhippie/gitea:latest
   #   environment:
   #     - GITEA_DATABASE_TYPE=mysql
@@ -158,7 +155,6 @@ services:
   # Portainer - Remote access to docker containers via web UI
 
   portainer:
-    container_name: portainer
     image: portainer/portainer:latest
     restart: always
     depends_on:
@@ -182,7 +178,6 @@ services:
 
   # # PHPmyadmin - Manage the database via web UI
   # phpmyadmin:
-  #   container_name: phpmyadmin
   #   image: jackgruber/phpmyadmin:latest
   #   restart: always
   #   depends_on:
@@ -198,22 +193,30 @@ services:
   #     - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
   #   networks:
   #     - traefik_proxy
-  # # MariaDB - Open sourced relational database. MySQL equivalent.
-  # mariadb:
-  #   container_name: mariadb
-  #   hostname: mariadb
-  #   image: linuxserver/mariadb
-  #   restart: always
-  #   depends_on:
-  #     - traefik
-  #   volumes:
-  #     - ${DOCKERDIR}/mariadb:/config
-  #     - ${DOCKERDIR}/shared:/shared
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #     - TZ=${TZ}
-  #   networks:
-  #     - traefik_proxy
+
+  # MariaDB - Open sourced relational database. MySQL equivalent.
+
+  mariadb:
+    container_name: mariadb
+    hostname: mariadb
+    image: linuxserver/mariadb
+    restart: always
+    depends_on:
+      - traefik
+    volumes:
+      - mariadb_data:/config
+    secrets:
+      - mysql_root_password
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+      - TZ=America/Los_Angeles
+    networks:
+      - traefik_proxy
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
   # # Watchtower - automatically update docker containers
   # watchtower:
   #   container_name: watchtower
@@ -253,3 +256,9 @@ volumes:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
       device: ":/mnt/docker_storage/richardsoper.me/portainer/data"
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.1.22,nolock,soft,rw
+      device: ":/mnt/docker_storage/richardsoper.me/mariadb"
