@@ -234,22 +234,22 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/shared"
+      device: ":/mnt/docker_storage/richardsoper.me/shared"
   traefik_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/traefik"
+      device: ":/mnt/docker_storage/richardsoper.me/traefik"
   ghost_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/ghost"
+      device: ":/mnt/docker_storage/richardsoper.me/ghost"
   portainer_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/portainer/data"
+      device: ":/mnt/docker_storage/richardsoper.me/portainer/data"
