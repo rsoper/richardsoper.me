@@ -17,8 +17,8 @@ services:
       - "cf_api_email"
       - "cf_api_key"
     environment:
-      - CF_API_EMAIL=/run/secrets/cf_api_email
-      - CF_API_KEY=/run/secrets/cf_api_key
+      - CF_API_EMAIL_FILE=/run/secrets/cf_api_email
+      - CF_API_KEY_FILE=/run/secrets/cf_api_key
     ports:
       - "80:80"
       - "443:443"
