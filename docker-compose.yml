@@ -183,7 +183,7 @@ services:
     depends_on:
       - mariadb
     environment:
-      - PMA_HOST=mariadb
+      - PMA_HOST=mariadb:3306
       - PMA_ABSOLUTE_URL=https://db.richardsoper.me/
     networks:
       - traefik_proxy
@@ -209,6 +209,8 @@ services:
       - traefik
     volumes:
       - mariadb_data:/config
+    ports:
+      - "3306:3306"
     secrets:
       - mysql_root_password
     environment:
