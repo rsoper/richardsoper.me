@@ -210,7 +210,7 @@ services:
     secrets:
       - mysql_root_password
     environment:
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+      - FILE__MYSQL_ROOT_PASSWORD=/run/secrets/mysql_root_password
       - TZ=America/Los_Angeles
     networks:
       - traefik_proxy
