@@ -30,7 +30,7 @@ services:
     networks:
       - traefik_proxy
     deploy:
-      replicas: 2
+      mode: global
       placement:
         constraints: [node.role == manager]
       labels:
