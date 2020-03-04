@@ -188,7 +188,7 @@ services:
     networks:
       - traefik_proxy
     deploy:
-      replicas: 1
+      mode: global
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
