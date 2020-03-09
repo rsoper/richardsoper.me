@@ -19,7 +19,7 @@ https://www.richardsoper.me
 
 ### Broken
 
-    - Some unknown database connection issues #17
+    - Stuck trying to configure database connections appropriately.
 
 ### Usage
 
@@ -35,5 +35,4 @@ https://www.richardsoper.me
 ### Future work
 
     - Integrate non-docker services(Pi-hole, etc)
-    - Mount NFS volumes
     - Deploy as docker swarm across architectures
