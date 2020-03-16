@@ -206,8 +206,6 @@ services:
       - mariadb
     ports:
       - "9001:8080"
-    environment:
-      -
     networks:
       - traefik_proxy
     deploy:
