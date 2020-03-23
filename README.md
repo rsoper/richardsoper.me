@@ -15,11 +15,6 @@ https://www.richardsoper.me
 ### Tools
 
     - mariaDB
-    - watchtower
-
-### Broken
-
-    - Some unknown database connection issues #17
 
 ### Usage
 

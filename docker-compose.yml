@@ -200,25 +200,6 @@ services:
     networks:
       - traefik_proxy
 
-  # Watchtower - automatically update docker containers
-
-  watchtower:
-    container_name: watchtower
-    hostname: watchtower
-    restart: always
-    image: containrrr/watchtower:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --schedule "0 0 4 * * *" --cleanup
-
 networks:
   traefik_proxy:
     external: true
-
-volumes:
-  docker_data:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage"
