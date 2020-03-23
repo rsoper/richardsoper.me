@@ -115,17 +115,8 @@ services:
 
   gitea:
     container_name: gitea
-    image: webhippie/gitea:latest
-    environment:
-      - GITEA_DATABASE_TYPE=mysql
-      - GITEA_DATABASE_HOST=mariadb:3306
-      - GITEA_DATABASE_NAME=gitea
-      - GITEA_DATABASE_USERNAME=gitea
-      - GITEA_DATABASE_PASSWORD=${GITPASS}
-      - GITEA_SERVER_ROOT_URL=https://git.${DOMAINNAME}
+    image: kunde21/gitea-arm
     restart: always
-    depends_on:
-      - mariadb
     ports:
       - "3000:3000"
       - "2222:22"
