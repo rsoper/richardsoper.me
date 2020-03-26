@@ -6,7 +6,7 @@ services:
   traefik:
     container_name: traefik
     hostname: traefik
-    image: traefik:v2.1
+    image: traefik:v2.2
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
