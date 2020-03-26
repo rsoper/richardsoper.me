@@ -58,6 +58,17 @@ services:
       - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
       - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+      # Adding in secure headers
+      - traefik.http.middlewares.securedheaders.headers.forcestsheader=true
+      - traefik.http.middlewares.securedheaders.headers.sslRedirect=true
+      - traefik.http.middlewares.securedheaders.headers.STSPreload=true
+      - traefik.http.middlewares.securedheaders.headers.ContentTypeNosniff=true
+      - traefik.http.middlewares.securedheaders.headers.BrowserXssFilter=true
+      - traefik.http.middlewares.securedheaders.headers.STSIncludeSubdomains=true
+      - traefik.http.middlewares.securedheaders.headers.stsSeconds=63072000
+      - traefik.http.middlewares.securedheaders.headers.frameDeny=true
+      - traefik.http.middlewares.securedheaders.headers.browserXssFilter=true
+      - traefik.http.middlewares.securedheaders.headers.contentTypeNosniff=true
     networks:
       - traefik_proxy
 
