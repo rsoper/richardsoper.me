@@ -77,6 +77,7 @@ services:
       - "traefik.http.routers.ghost.entrypoints=websecure"
       - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
       - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
+      - "traefik.http.routers.ghost.middlewares=securedheaders@file"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
       - ${DOCKERDIR}/ghost:/var/lib/ghost/content
@@ -98,14 +99,8 @@ services:
       - "traefik.http.routers.nextcloud.entrypoints=websecure"
       - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
       - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
+      - "traefik.http.routers.nextcloud.middlewares=securedheaders@file"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-      ## Headers - Not sure if needed
-      - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
-      - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
-      - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
 
     volumes:
       - ${DOCKERDIR}/nextcloud:/var/www/html
@@ -126,6 +121,7 @@ services:
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
       - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
+      - "traefik.http.routers.gitea.middlewares=securedheaders@file"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
     volumes:
       - ${DOCKERDIR}/gitea:/data
@@ -150,6 +146,7 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
       - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
+      - "traefik.http.routers.portainer.middlewares=securedheaders@file"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks:
       - traefik_proxy
@@ -170,6 +167,7 @@ services:
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
+      - "traefik.http.routers.phpmyadmin.middlewares=securedheaders@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
     networks:
       - traefik_proxy
