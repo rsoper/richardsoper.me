@@ -18,7 +18,6 @@ providers:
     exposedByDefault: false
   file:
     filename: "/etc/traefik/config.yml"
-    filename: "/etc/traefik/headers.yml"
 
 certificatesResolvers:
   cf-cert:
