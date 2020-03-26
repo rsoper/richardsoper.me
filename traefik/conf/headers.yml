@@ -9,4 +9,4 @@ http:
         browserXssFilter: true
         stsIncludeSubdomains: true
         stsSeconds: 63072000
-        frameDeny: true
+        customFrameOptionsValue: "SAMEORIGIN"
