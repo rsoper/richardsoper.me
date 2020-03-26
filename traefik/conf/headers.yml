@@ -1,0 +1,13 @@
+http:
+  middlewares:
+    securedheaders:
+      headers:
+        forceSTSHeader: true
+        sslRedirect: true
+        stsPreload: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        stsIncludeSubdomains: true
+        stsSeconds: 63072000
+        customFrameOptionsValue: "SAMEORIGIN"
+        # contentSecurityPolicy: "default-src 'none'; connect-src 'self' https://ghost.org/changelog.json; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://s.w.org https://secure.gravatar.com https://images.unsplash.com https://static.ghost.org; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://code.jquery.com/jquery-3.2.1.min.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/; worker-src 'self'"
