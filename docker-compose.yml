@@ -33,6 +33,8 @@ services:
       - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirect-https.entrypoints=web"
       - "traefik.http.routers.redirect-https.middlewares=secure-redirect@file"
+      ## SECURE HEADERS
+      - "traefik.http.routers.redirect-https.middlewares=securedheaders@file"
     networks:
       - traefik_proxy
 
