@@ -17,7 +17,8 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
   file:
-    filename: "/etc/traefik/config.yml"
+    directory: "/etc/traefik/conf"
+    watch: true
 
 certificatesResolvers:
   cf-cert:
