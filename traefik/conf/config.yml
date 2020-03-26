@@ -11,6 +11,16 @@ http:
       redirectScheme:
         scheme: https
         permanent: true
+    securedheaders:
+      headers:
+        forceSTSHeader: true
+        sslRedirect: true
+        stsPreload: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        stsIncludeSubdomains: true
+        stsSeconds: 63072000
+        frameDeny: true
 
 
   services:
