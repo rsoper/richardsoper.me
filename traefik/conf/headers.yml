@@ -10,3 +10,4 @@ http:
         stsIncludeSubdomains: true
         stsSeconds: 63072000
         customFrameOptionsValue: "SAMEORIGIN"
+        contentSecurityPolicy: "default-src https:"
