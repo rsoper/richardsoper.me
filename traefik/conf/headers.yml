@@ -8,6 +8,5 @@ http:
         contentTypeNosniff: true
         browserXssFilter: true
         stsIncludeSubdomains: true
-        stsSeconds:
-          - "63072000"
+        stsSeconds: "63072000"
         frameDeny: true
