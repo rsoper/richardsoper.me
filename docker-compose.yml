@@ -24,6 +24,7 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
       ## Secure dashboard with basic authentication
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik.middlewares=securedheaders@file"
       - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/shared/.htpasswd"
       ## DNS CHALLENGE
       - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
