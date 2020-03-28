@@ -1,4 +1,4 @@
-# richardsoper.me Traefik 2.1
+# richardsoper.me Traefik 2.2
 
 Personal site used for developing my own skills.
 
@@ -11,10 +11,15 @@ https://www.richardsoper.me
     - NextCloud
     - WordPress
     - PHPMyAdmin
+    - Gitea
 
 ### Tools
 
     - mariaDB
+
+### Broken
+
+    - Nothing that Im aware of
 
 ### Usage
 
@@ -30,5 +35,5 @@ https://www.richardsoper.me
 ### Future work
 
     - Integrate non-docker services(Pi-hole, etc)
-    - Mount NFS volumes
+    - Mount NFS volumes(Progress made on swarm branch)
     - Deploy as docker swarm across architectures
