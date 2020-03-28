@@ -1,4 +1,4 @@
-# richardsoper.me Traefik 2.1
+# richardsoper.me Traefik 2.2
 
 Personal site used for developing my own skills.
 
@@ -11,11 +11,11 @@ https://www.richardsoper.me
     - NextCloud
     - WordPress
     - PHPMyAdmin
+    - Gitea
 
 ### Tools
 
     - mariaDB
-    - watchtower
 
 ### Broken
 
