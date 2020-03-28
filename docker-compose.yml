@@ -25,7 +25,6 @@ services:
       ## Secure dashboard with basic authentication
       - "traefik.http.routers.traefik.middlewares=secured-traefik"
       - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/shared/.htpasswd"
-      - "traefik.http.middlewares.secured-traefik.chain.middlewares=traefik-auth,securedheaders@file"
       ## DNS CHALLENGE
       - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
       - "traefik.http.routers.traefik.tls.domains[0].main=*.${DOMAINNAME}"
@@ -33,7 +32,8 @@ services:
       ## HTTP REDIRECT
       - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirect-https.entrypoints=web"
-      - "traefik.http.routers.redirect-https.middlewares=secure-redirect@file"
+      - "traefik.http.routers.redirect-https.middlewares=secured-traefik"
+      - "traefik.http.middlewares.secured-traefik.chain.middlewares=secure-redirect@file,securedheaders@file"
     networks:
       - traefik_proxy
 
