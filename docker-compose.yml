@@ -13,10 +13,7 @@ services:
 
   traefik:
     hostname: traefik
-    image: traefik:v2.1
-    secrets:
-      - "cf_api_email"
-      - "cf_api_key"
+    image: traefik:v2.2
     environment:
       - CF_API_EMAIL_FILE=/run/secrets/cf_api_email
       - CF_API_KEY_FILE=/run/secrets/cf_api_key

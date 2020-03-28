@@ -12,3 +12,4 @@ config.production.json
 .vscode/
 **__pycache__**
 mariadb.zip
+secrets

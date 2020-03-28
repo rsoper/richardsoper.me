@@ -3,14 +3,15 @@ http:
     route-to-rPi:
       rule: "Host(`pihole.richardsoper.me`)"
       service: route-to-rPi-service
-      middlewares:
-        - "secure-redirect"
+      entryPoints:
+        - websecure
 
   middlewares:
     secure-redirect:
       redirectScheme:
         scheme: https
         permanent: true
+
 
   services:
     route-to-rPi-service:
