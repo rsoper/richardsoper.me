@@ -6,7 +6,7 @@ services:
   traefik:
     container_name: traefik
     hostname: traefik
-    image: traefik:v2.1
+    image: traefik:v2.2
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
@@ -32,7 +32,8 @@ services:
       ## HTTP REDIRECT
       - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirect-https.entrypoints=web"
-      - "traefik.http.routers.redirect-https.middlewares=secure-redirect@file"
+      - "traefik.http.routers.redirect-https.middlewares=secured-traefik"
+      - "traefik.http.middlewares.secured-traefik.chain.middlewares=secure-redirect@file,securedheaders@file"
     networks:
       - traefik_proxy
 
@@ -57,6 +58,7 @@ services:
       - "traefik.http.routers.wordpress.entrypoints=websecure"
       - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
       - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
+      - "traefik.http.routers.wordpress.middlewares=securedheaders@file"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
     networks:
       - traefik_proxy
@@ -76,6 +78,7 @@ services:
       - "traefik.http.routers.ghost.entrypoints=websecure"
       - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
       - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
+      - "traefik.http.routers.ghost.middlewares=securedheaders@file"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
       - ${DOCKERDIR}/ghost:/var/lib/ghost/content
@@ -97,26 +100,20 @@ services:
       - "traefik.http.routers.nextcloud.entrypoints=websecure"
       - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
       - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
+      - "traefik.http.routers.nextcloud.middlewares=securedheaders@file"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-      ## Headers - Not sure if needed
-      - "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=SAMEORIGIN"
-      - "traefik.http.middlewares.nextcloud.headers.framedeny=true"
-      - "traefik.http.middlewares.nextcloud.headers.sslredirect=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
-      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000"
 
     volumes:
       - ${DOCKERDIR}/nextcloud:/var/www/html
     networks:
       - traefik_proxy
 
+  # Self hosted Git repository
+
   gitea:
     container_name: gitea
-    image: gitea/gitea:latest
+    image: kunde21/gitea-arm
     restart: always
-    depends_on:
-      - mariadb
     ports:
       - "3000:3000"
       - "2222:22"
@@ -125,6 +122,7 @@ services:
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
       - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
+      - "traefik.http.routers.gitea.middlewares=securedheaders@file"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
     volumes:
       - ${DOCKERDIR}/gitea:/data
@@ -149,6 +147,7 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
       - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
+      - "traefik.http.routers.portainer.middlewares=securedheaders@file"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks:
       - traefik_proxy
@@ -157,7 +156,7 @@ services:
 
   phpmyadmin:
     container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
+    image: jackgruber/phpmyadmin:latest
     restart: always
     depends_on:
       - mariadb
@@ -169,6 +168,7 @@ services:
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
+      - "traefik.http.routers.phpmyadmin.middlewares=securedheaders@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
     networks:
       - traefik_proxy
@@ -188,19 +188,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${TZ}
-    networks:
-      - traefik_proxy
-
-  # Watchtower - automatically update docker containers
-
-  watchtower:
-    container_name: watchtower
-    hostname: watchtower
-    restart: always
-    image: v2tec/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --schedule "0 0 4 * * *" --cleanup
     networks:
       - traefik_proxy
 
