@@ -1,6 +1,7 @@
 # richardsoper.me Traefik 2.2
 
 Personal site used for developing my own skills.
+Tested primarily on Raspberry Pi 4 running Raspbian lite. 
 
 https://www.richardsoper.me
 
