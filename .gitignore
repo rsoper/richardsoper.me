@@ -13,3 +13,4 @@ config.production.json
 **__pycache__**
 mariadb.zip
 secrets
+nextcloud/*
