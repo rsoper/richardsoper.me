@@ -7,6 +7,7 @@ services:
     container_name: traefik
     hostname: traefik
     image: traefik:v2.2
+    restart: always
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
@@ -114,6 +115,8 @@ services:
     container_name: gitea
     image: kunde21/gitea-arm
     restart: always
+    depends_on: 
+      - mariadb
     ports:
       - "3000:3000"
       - "2222:22"
