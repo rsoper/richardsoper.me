@@ -155,6 +155,8 @@ services:
       - /etc:/dockerhost/etc:ro
       - /proc:/dockerhost/proc:ro
       - /usr/lib:/dockerhost/usr/lib:ro
+    networks:
+      - traefik_proxy
 
   # Portainer - Remote access to docker containers via web UI
 
