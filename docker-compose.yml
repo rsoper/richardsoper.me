@@ -142,6 +142,7 @@ services:
       - "8888:8888"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.monitor.middlewares=traefik-auth"
       - "traefik.http.routers.monitor.entrypoints=websecure"
       - "traefik.http.routers.monitor.rule=Host(`monitor.${DOMAINNAME}`)"
       - "traefik.http.routers.monitor.tls.certresolver=cf-cert"
