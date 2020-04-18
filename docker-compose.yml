@@ -142,11 +142,11 @@ services:
       - "8888:8888"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.monitor.middlewares=traefik-auth"
       - "traefik.http.routers.monitor.entrypoints=websecure"
       - "traefik.http.routers.monitor.rule=Host(`monitor.${DOMAINNAME}`)"
       - "traefik.http.routers.monitor.tls.certresolver=cf-cert"
-      - "traefik.http.routers.monitor.middlewares=securedheaders@file"
+      - "traefik.http.middlewares.secured-monitor.chain.middlewares=secure-redirect@file,securedheaders@file,traefik-auth@docker"
+      - "traefik.http.routers.monitor.middlewares=secured-monitor"
       - "traefik.http.services.monitor.loadbalancer.server.port=8888"
     volumes:
       - /boot:/boot
