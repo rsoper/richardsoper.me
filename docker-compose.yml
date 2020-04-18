@@ -142,11 +142,11 @@ services:
       - "8888:8888"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.entrypoints=websecure"
-      - "traefik.http.routers.gitea.rule=Host(`monitor.${DOMAINNAME}`)"
-      - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
-      - "traefik.http.routers.gitea.middlewares=securedheaders@file"
-      - "traefik.http.services.gitea.loadbalancer.server.port=8888"
+      - "traefik.http.routers.monitor.entrypoints=websecure"
+      - "traefik.http.routers.monitor.rule=Host(`monitor.${DOMAINNAME}`)"
+      - "traefik.http.routers.monitor.tls.certresolver=cf-cert"
+      - "traefik.http.routers.monitor.middlewares=securedheaders@file"
+      - "traefik.http.services.monitor.loadbalancer.server.port=8888"
     volumes:
       - /boot:/boot
       - /dev/vchiq:/dev/vchiq
