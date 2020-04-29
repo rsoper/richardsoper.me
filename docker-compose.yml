@@ -132,6 +132,8 @@ services:
     networks:
       - traefik_proxy
 
+  # Rpi-Monitor - Raspberry Pi hardware
+
   monitor:
     container_name: monitor
     image: michaelmiklis/rpi-monitor:latest
@@ -158,6 +160,20 @@ services:
       - /usr/lib:/dockerhost/usr/lib:ro
     networks:
       - traefik_proxy
+
+  # Homebridge - Connecting more homekit things
+
+  homebridge:
+    container_name: homebridge
+    image: oznu/homebridge:latest
+    restart: unless-stopped
+    network_mode: host
+    environment: 
+      - TZ=${TZ}
+      - HOMEBRIDGE_CONFIG_UI=1
+      - HOMEBRIDGE_CONFIG_UI_PORT=8081
+    volumes: 
+      - ${DOCKERDIR}/homebridge:/homebridge
 
   # Portainer - Remote access to docker containers via web UI
 
