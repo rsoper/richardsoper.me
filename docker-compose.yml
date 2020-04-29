@@ -166,7 +166,7 @@ services:
   homebridge:
     container_name: homebridge
     image: oznu/homebridge:latest
-    restart: unless-stopped
+    restart: always
     network_mode: host
     environment: 
       - TZ=${TZ}
