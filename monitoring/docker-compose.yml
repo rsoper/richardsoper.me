@@ -1,0 +1,61 @@
+version: "3"
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_db:/var/lib/prometheus
+      - ./prometheus_db:/prometheus
+      - ./prometheus_db:/etc/prometheus
+      - ./alert.rules:/etc/prometheus/alert.rules
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.route-prefix=/"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    networks:
+      - monitor-net
+
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - "8181:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+  grafana:
+    image: grafana/grafana
+    user: "1000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secure_pass
+    volumes:
+      - ./grafana_db:/var/lib/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3001:3000"
+
+  reports:
+    image: skedler/reports:latest
+    container_name: reports
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - reportdata:/var/lib/skedler
+      - ./reporting.yml:/opt/skedler/config/reporting.yml
+    ports:
+      - 3002:3001
