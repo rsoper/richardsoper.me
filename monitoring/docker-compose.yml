@@ -17,8 +17,6 @@ services:
     restart: unless-stopped
     ports:
       - "9090:9090"
-    networks:
-      - monitor-net
 
   node-exporter:
     image: prom/node-exporter
