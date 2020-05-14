@@ -35,7 +35,7 @@ services:
 
   grafana:
     image: grafana/grafana
-    user: "472"
+    user: "1000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=secure_pass
     volumes:
