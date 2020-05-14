@@ -55,7 +55,7 @@ services:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - reportdata:/var/lib/skedler
+      - ./reportdata:/var/lib/skedler
       - ./reporting.yml:/opt/skedler/config/reporting.yml
     ports:
       - 3002:3001
