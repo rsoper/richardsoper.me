@@ -24,7 +24,7 @@ services:
       - "9100:9100"
 
   cadvisor:
-    image: google/cadvisor:latest
+    image: budry/cadvisor-arm
     ports:
       - "8181:8080"
     volumes:
