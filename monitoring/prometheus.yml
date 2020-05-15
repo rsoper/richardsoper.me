@@ -1,7 +1,9 @@
 global:
   scrape_interval: 5s
+  query_log_file: "/etc/prometheus/prom-file.log"
   external_labels:
     monitor: "prakash-monitor"
+
 scrape_configs:
   - job_name: "prometheus"
     static_configs:
