@@ -3,6 +3,7 @@ version: "3.7"
 services:
   ssh-log-to-influx:
     image: acouvreur/ssh-log-to-influx
+    container_name: ssh-log-to-influx
     build: ./
     restart: always
     environment:
@@ -18,6 +19,7 @@ services:
   #----------------------------------------------#
   influxdb:
     image: influxdb:latest
+    container_name: influxdb
     volumes:
       - ./influxdb:/var/lib/influxdb
     networks:
