@@ -22,3 +22,7 @@ services:
       - ./influxdb:/var/lib/influxdb
     networks:
       - monitoring
+
+networks:
+  monitoring:
+    external: true
