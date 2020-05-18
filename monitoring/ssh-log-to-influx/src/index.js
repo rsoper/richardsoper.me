@@ -11,7 +11,7 @@ logger.level = process.env.DEBUG_LEVEL || "info";
 const Influx = require("influx");
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
-  host: "192.168.1.22:8086",
+  host: process.env.INFLUX_URL,
   database: process.env.INFLUX_DB,
   username: process.env.INFLUX_USER || "",
   password: process.env.INFLUX_PWD || "",
