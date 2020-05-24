@@ -165,7 +165,7 @@ services:
 
   homeassistant:
     container_name: home-assistant
-    image: homeassistant/home-assistant:stable
+    image: homeassistant/home-assistant:0.100.3
     volumes:
       - ${DOCKERDIR}/homeassistant:/config
     environment:
