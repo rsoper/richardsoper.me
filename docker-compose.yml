@@ -166,6 +166,8 @@ services:
   homeassistant:
     container_name: home-assistant
     image: homeassistant/home-assistant:0.100.3
+    ports:
+      - "8123:8123"
     volumes:
       - ${DOCKERDIR}/homeassistant:/config
     environment:
