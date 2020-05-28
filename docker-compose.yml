@@ -167,7 +167,7 @@ services:
     container_name: home-assistant
     image: homeassistant/raspberrypi3-homeassistant:latest
     ports:
-      - "8888:8123"
+      - "8123:8123"
     volumes:
       - ${DOCKERDIR}/homeassistant:/config
     environment:
