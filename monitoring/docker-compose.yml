@@ -1,0 +1,65 @@
+version: "3"
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: budry/cadvisor-arm
+    container_name: cadvisor
+    ports:
+      - "8181:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    user: "1000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secure_pass
+    volumes:
+      - ./grafana_db:/var/lib/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3001:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
+      - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
+      - "traefik.http.middlewares.secured-grafana.chain.middlewares=secure-redirect@file,securedheaders@file,traefik-auth@docker"
+      - "traefik.http.routers.grafana.middlewares=secured-grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3001"
+    networks:
+      - monitoring
+      - traefik_proxy
+
+networks:
+  monitoring:
+    external: true
+  traefik_proxy:
+    external: true
