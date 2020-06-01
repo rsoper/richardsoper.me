@@ -16,6 +16,7 @@ services:
   node-exporter:
     image: prom/node-exporter
     container_name: node-exporter
+    restart: unless-stopped
     ports:
       - "9100:9100"
     networks:
@@ -24,6 +25,7 @@ services:
   cadvisor:
     image: budry/cadvisor-arm
     container_name: cadvisor
+    restart: unless-stopped
     ports:
       - "8181:8080"
     volumes:
@@ -37,6 +39,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
+    restart: unless-stopped
     user: "1000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=secure_pass
