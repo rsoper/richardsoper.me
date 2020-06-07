@@ -57,7 +57,7 @@ services:
     depends_on:
       - prometheus
     ports:
-      - "3001:3000"
+      - "3030:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.entrypoints=websecure"
@@ -65,7 +65,7 @@ services:
       - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
       - "traefik.http.middlewares.secured-grafana.chain.middlewares=secure-redirect@file,securedheaders@file,traefik-auth@docker"
       - "traefik.http.routers.grafana.middlewares=secured-grafana"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3030"
     networks:
       - monitoring
       - traefik_proxy
