@@ -1,7 +1,7 @@
 # richardsoper.me Traefik 2.2
 
 Personal site used for developing my own skills.
-Tested primarily on Raspberry Pi 4 running Raspbian lite. 
+Tested primarily on Raspberry Pi 4 running Raspbian lite.
 
 https://www.richardsoper.me
 
@@ -13,14 +13,24 @@ https://www.richardsoper.me
     - WordPress
     - PHPMyAdmin
     - Gitea
+    - Rpi-Monitor
 
-### Tools
+### Tools - Not exposed to traefik
 
     - mariaDB
+    - homeassistant
+
+### Monitoring
+
+    - Grafana
+    - Prometheus
+    - Node Exporter
+    - Arm Exporter
+    - cAdvisor
 
 ### Broken
 
-    - Nothing that Im aware of
+    - Grafana is showing a "Gateway Timeout" issue when attempting to access outside of the local network
 
 ### Usage
 
