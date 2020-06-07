@@ -22,6 +22,14 @@ services:
     networks:
       - monitoring
 
+  arm_exporter:
+    image: carlosedp/arm_exporter
+    restart: unless-stopped
+    ports:
+      - "9243:9243"
+    networks:
+      - monitoring
+
   cadvisor:
     image: budry/cadvisor-arm
     container_name: cadvisor
