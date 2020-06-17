@@ -16,6 +16,7 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
+    network: traefik_proxy
   file:
     directory: "/etc/traefik/conf"
     watch: true
