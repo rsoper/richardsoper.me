@@ -28,10 +28,6 @@ https://www.richardsoper.me
     - Arm Exporter
     - cAdvisor
 
-### Broken
-
-    - Grafana is showing a "Gateway Timeout" issue when attempting to access outside of the local network
-
 ### Usage
 
     - Create a .env file in the root directory of this repository
