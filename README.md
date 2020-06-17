@@ -13,7 +13,6 @@ https://www.richardsoper.me
     - WordPress
     - PHPMyAdmin
     - Gitea
-    - Rpi-Monitor
 
 ### Tools - Not exposed to traefik
 
@@ -27,10 +26,6 @@ https://www.richardsoper.me
     - Node Exporter
     - Arm Exporter
     - cAdvisor
-
-### Broken
-
-    - Grafana is showing a "Gateway Timeout" issue when attempting to access outside of the local network
 
 ### Usage
 
