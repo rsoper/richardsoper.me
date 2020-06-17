@@ -132,35 +132,6 @@ services:
     networks:
       - traefik_proxy
 
-  # Rpi-Monitor - Raspberry Pi hardware
-
-  monitor:
-    container_name: monitor
-    image: michaelmiklis/rpi-monitor:latest
-    restart: always
-    depends_on:
-      - traefik
-    ports:
-      - "8888:8888"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.monitor.entrypoints=websecure"
-      - "traefik.http.routers.monitor.rule=Host(`monitor.${DOMAINNAME}`)"
-      - "traefik.http.routers.monitor.tls.certresolver=cf-cert"
-      - "traefik.http.middlewares.secured-monitor.chain.middlewares=secure-redirect@file,securedheaders@file,traefik-auth@docker"
-      - "traefik.http.routers.monitor.middlewares=secured-monitor"
-      - "traefik.http.services.monitor.loadbalancer.server.port=8888"
-    volumes:
-      - /boot:/boot
-      - /dev/vchiq:/dev/vchiq
-      - /opt/vc:/opt/vc
-      - /sys:/dockerhost/sys:ro
-      - /etc:/dockerhost/etc:ro
-      - /proc:/dockerhost/proc:ro
-      - /usr/lib:/dockerhost/usr/lib:ro
-    networks:
-      - traefik_proxy
-
   # Homeassistant - Connecting more homekit things
 
   homeassistant:
