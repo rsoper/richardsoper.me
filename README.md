@@ -13,7 +13,6 @@ https://www.richardsoper.me
     - WordPress
     - PHPMyAdmin
     - Gitea
-    - Rpi-Monitor
 
 ### Tools - Not exposed to traefik
 
