@@ -132,32 +132,17 @@ services:
     networks:
       - traefik_proxy
 
-  monitor:
-    container_name: monitor
-    image: michaelmiklis/rpi-monitor:latest
-    restart: always
-    depends_on:
-      - traefik
-    ports:
-      - "8888:8888"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.monitor.entrypoints=websecure"
-      - "traefik.http.routers.monitor.rule=Host(`monitor.${DOMAINNAME}`)"
-      - "traefik.http.routers.monitor.tls.certresolver=cf-cert"
-      - "traefik.http.middlewares.secured-monitor.chain.middlewares=secure-redirect@file,securedheaders@file,traefik-auth@docker"
-      - "traefik.http.routers.monitor.middlewares=secured-monitor"
-      - "traefik.http.services.monitor.loadbalancer.server.port=8888"
+  # Homeassistant - Connecting more homekit things
+
+  homeassistant:
+    container_name: home-assistant
+    image: homeassistant/home-assistant:0.110.3
     volumes:
-      - /boot:/boot
-      - /dev/vchiq:/dev/vchiq
-      - /opt/vc:/opt/vc
-      - /sys:/dockerhost/sys:ro
-      - /etc:/dockerhost/etc:ro
-      - /proc:/dockerhost/proc:ro
-      - /usr/lib:/dockerhost/usr/lib:ro
-    networks:
-      - traefik_proxy
+      - ${DOCKERDIR}/homeassistant:/config
+    environment:
+      - TZ=America/Los_Angeles
+    restart: always
+    network_mode: host
 
   # Portainer - Remote access to docker containers via web UI
 

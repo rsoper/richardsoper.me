@@ -1,7 +1,7 @@
 # richardsoper.me Traefik 2.2
 
 Personal site used for developing my own skills.
-Tested primarily on Raspberry Pi 4 running Raspbian lite. 
+Tested primarily on Raspberry Pi 4 running Raspbian lite.
 
 https://www.richardsoper.me
 
@@ -14,13 +14,18 @@ https://www.richardsoper.me
     - PHPMyAdmin
     - Gitea
 
-### Tools
+### Tools - Not exposed to traefik
 
     - mariaDB
+    - homeassistant
 
-### Broken
+### Monitoring
 
-    - Nothing that Im aware of
+    - Grafana
+    - Prometheus
+    - Node Exporter
+    - Arm Exporter
+    - cAdvisor
 
 ### Usage
 
