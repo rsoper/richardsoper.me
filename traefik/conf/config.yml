@@ -4,17 +4,11 @@ http:
       rule: "Host(`pihole.richardsoper.me`)"
       service: route-to-rPi-service
       entryPoints:
+        - web
         - websecure
-
-  middlewares:
-    secure-redirect:
-      redirectScheme:
-        scheme: https
-        permanent: true
-
 
   services:
     route-to-rPi-service:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.14:80"
+          - url: "http://192.168.1.14"
