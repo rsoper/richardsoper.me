@@ -1,6 +1,6 @@
 http:
   routers:
-    route-to-rPi:
+    pihole-router:
       rule: "Host(`pihole.richardsoper.me`)"
       service: route-to-rPi-service
       entryPoints:
@@ -8,7 +8,7 @@ http:
         - websecure
 
   services:
-    route-to-rPi-service:
+    pihole-service:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.14:80"
+          - url: "http://192.168.1.14:80/"
