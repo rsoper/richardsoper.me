@@ -2,7 +2,7 @@ http:
   routers:
     pihole-router:
       rule: "Host(`pihole.richardsoper.me`)"
-      service: route-to-rPi-service
+      service: pihole-service
       entryPoints:
         - web
         - websecure
