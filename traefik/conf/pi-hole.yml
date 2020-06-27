@@ -10,4 +10,4 @@ http:
     pihole-service:
       loadBalancer:
         servers:
-          - url: "192.168.1.14:80"
+          - url: "http://192.168.1.14:80"
