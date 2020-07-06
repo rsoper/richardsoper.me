@@ -20,7 +20,8 @@ services:
       - "traefik.http.routers.bookstack.entrypoints=websecure"
       - "traefik.http.routers.bookstack.rule=Host(`wiki.richardsoper.me`)"
       - "traefik.http.routers.bookstack.tls.certresolver=cf-cert"
-      - "traefik.http.routers.bookstack.middlewares=securedheaders@file"
+      - "traefik.http.middlewares.secured-bookstack.chain.middlewares=secure-redirect@file,securedheaders@file"
+      - "traefik.http.routers.bookstack.middlewares=secured-bookstack"
       - "traefik.port=6875"
     restart: unless-stopped
     depends_on:
