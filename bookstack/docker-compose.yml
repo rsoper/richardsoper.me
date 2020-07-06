@@ -21,7 +21,7 @@ services:
       - "traefik.http.routers.bookstack.rule=Host(`wiki.richardsoper.me`)"
       - "traefik.http.routers.bookstack.tls.certresolver=cf-cert"
       - "traefik.http.routers.bookstack.middlewares=securedheaders@file"
-      - "traefik.http.services.bookstack.loadbalancer.server.port=6875"
+      - "traefik.port=6875"
     restart: unless-stopped
     depends_on:
       - bookstack_db
