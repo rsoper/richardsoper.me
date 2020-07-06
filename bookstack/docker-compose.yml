@@ -15,9 +15,19 @@ services:
       - ./config:/config
     ports:
       - 6875:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bookstack.entrypoints=websecure"
+      - "traefik.http.routers.bookstack.rule=Host(`wiki.richardsoper.me`)"
+      - "traefik.http.routers.bookstack.tls.certresolver=cf-cert"
+      - "traefik.http.routers.bookstack.middlewares=securedheaders@file"
+      - "traefik.http.services.bookstack.loadbalancer.server.port=6875"
     restart: unless-stopped
     depends_on:
       - bookstack_db
+    networks: 
+      - traefik_proxy
+      - bookstack_net
   bookstack_db:
     image: linuxserver/mariadb
     container_name: bookstack_db
@@ -32,7 +42,11 @@ services:
     volumes:
       - ./data:/config
     restart: unless-stopped
+    networks: 
+      - bookstack_net
 
 networks:
+  bookstack_net:
+    external: true
   traefik_proxy:
     external: true
