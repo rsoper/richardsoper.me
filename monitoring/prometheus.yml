@@ -19,3 +19,7 @@ scrape_configs:
     static_configs:
       - targets:
           - 192.168.1.22:9243
+  - job_name: traefik
+    static_configs:
+      - targets:
+          - 192.168.1.22:8008
