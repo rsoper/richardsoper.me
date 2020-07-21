@@ -6,11 +6,19 @@ log:
   filePath: /shared/traefik.log
   format: json
 
+metrics:
+  prometheus: 
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    entryPoint: metrics
+
 entryPoints:
   web:
     address: ":80"
   websecure:
     address: ":443"
+  metrics:
+    address: ":8008"
 
 providers:
   docker:
