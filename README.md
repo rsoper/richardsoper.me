@@ -5,7 +5,7 @@ Tested primarily on Raspberry Pi 4 running Raspbian lite.
 
 https://www.richardsoper.me
 
-### Frontend
+### Frontend - Exposed to traefik
 
     - Portainer
     - Ghost
@@ -13,15 +13,15 @@ https://www.richardsoper.me
     - WordPress
     - PHPMyAdmin
     - Gitea
+    - Grafana
 
 ### Tools - Not exposed to traefik
 
     - mariaDB
     - homeassistant
 
-### Monitoring
+### Monitoring backend - Not exposed to traefik
 
-    - Grafana
     - Prometheus
     - Node Exporter
     - Arm Exporter
@@ -36,7 +36,8 @@ https://www.richardsoper.me
     - Create .htpasswd basic auth file for Traefik dashboard "htpasswd -c richardsoper.me/shared/.htpasswd your_username"
     - Navigate to traefik/traefik.yml and update the email address(unless you want me to know about your certs)
     - Create traefik_proxy network with "docker network create traefik_proxy"
-    - With all variable created, run the docker-up.sh script or command "docker-compose -f richardsoper.me/docker-compose.yml up -d"
+    - With all variable created, run command "docker-compose up -d" from the root directory of this repository
+    - For monitoring, run command "docker-compose -f ./monitoring/docker-compose.yml up -d"
 
 ### Future work
 
