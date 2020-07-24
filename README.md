@@ -14,6 +14,7 @@ https://www.richardsoper.me
     - PHPMyAdmin
     - Gitea
     - Grafana
+    - Pi-Hole(Non-docker service)
 
 ### Tools - Not exposed to traefik
 
@@ -41,6 +42,5 @@ https://www.richardsoper.me
 
 ### Future work
 
-    - Integrate non-docker services(Pi-hole, etc)
     - Mount NFS volumes(Progress made on swarm branch)
     - Deploy as docker swarm across architectures
