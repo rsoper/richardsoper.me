@@ -1,10 +1,15 @@
 http:
   routers:
-    pihole-router:
+    pihole:
       rule: "Host(`pihole.richardsoper.me`)"
       service: pihole-service
       entryPoints:
         - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
+        - traefik-auth@docker
 
   services:
     pihole-service:
