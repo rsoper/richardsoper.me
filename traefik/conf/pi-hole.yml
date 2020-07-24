@@ -1,14 +1,15 @@
 http:
   routers:
-    pihole-router:
+    pihole:
       rule: "Host(`pihole.richardsoper.me`)"
       service: pihole-service
       entryPoints:
         - websecure
+      tls:
+        certResolver: cf-cert
 
   services:
     pihole-service:
       loadBalancer:
-        passHostHeader: true
         servers:
           - url: "http://192.168.1.14:80"
