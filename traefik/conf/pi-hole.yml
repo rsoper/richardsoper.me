@@ -7,6 +7,9 @@ http:
         - websecure
       tls:
         certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
+        - traefik-auth@docker
 
   services:
     pihole-service:
