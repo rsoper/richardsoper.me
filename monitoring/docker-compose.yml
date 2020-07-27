@@ -9,6 +9,7 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.retention.time=90d"
+      - "--storage.tsdb.path=/data/prometheus"
     restart: unless-stopped
     ports:
       - "9090:9090"
