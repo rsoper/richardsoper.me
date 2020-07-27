@@ -16,7 +16,6 @@ services:
       - "9090:9090"
     networks:
       - monitoring
-      - traefik_proxy
 
   node-exporter:
     image: prom/node-exporter
