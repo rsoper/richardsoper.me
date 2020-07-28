@@ -36,7 +36,7 @@ services:
       - monitoring
 
   cadvisor:
-    image: budry/cadvisor-arm
+    image: zcube/cadvisor
     container_name: cadvisor
     restart: unless-stopped
     ports:
