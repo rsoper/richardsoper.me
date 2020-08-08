@@ -10,16 +10,16 @@ scrape_configs:
   - job_name: "node-exporter"
     static_configs:
       - targets:
-          - 192.168.1.22:9100
+          - 192.168.1.26:9100
   - job_name: cadvisor
     static_configs:
       - targets:
-          - 192.168.1.22:8181
+          - 192.168.1.26:8181
   - job_name: arm-exporter
     static_configs:
       - targets:
-          - 192.168.1.22:9243
+          - 192.168.1.26:9243
   - job_name: traefik
     static_configs:
       - targets:
-          - 192.168.1.22:8008
+          - 192.168.1.26:8008
