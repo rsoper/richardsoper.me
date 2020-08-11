@@ -22,7 +22,9 @@ services:
       - "traefik.http.routers.bookstack.tls.certresolver=cf-cert"
       - "traefik.http.middlewares.secured-bookstack.chain.middlewares=secure-redirect@file,securedheaders@file"
       - "traefik.http.routers.bookstack.middlewares=secured-bookstack"
+      - "traefik.http.services.bookstack.loadbalancer.server.port=6875"
       - "traefik.port=6875"
+
     restart: unless-stopped
     depends_on:
       - bookstack_db
