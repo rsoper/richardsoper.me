@@ -11,6 +11,7 @@ services:
       - DB_USER=bookstack
       - DB_PASS=${DB_PASSWORD}
       - DB_DATABASE=bookstackapp
+      - APP_URL=https://wiki.${DOMAINNAME}
     volumes:
       - ./config:/config
     ports:
@@ -23,14 +24,14 @@ services:
       - "traefik.http.middlewares.secured-bookstack.chain.middlewares=secure-redirect@file,securedheaders@file"
       - "traefik.http.routers.bookstack.middlewares=secured-bookstack"
       - "traefik.http.services.bookstack.loadbalancer.server.port=6875"
-      - "traefik.port=6875"
-
+      # - "traefik.port=6875"
     restart: unless-stopped
     depends_on:
       - bookstack_db
     networks: 
       - traefik_proxy
       - bookstack_net
+      
   bookstack_db:
     image: linuxserver/mariadb
     container_name: bookstack_db
