@@ -8,6 +8,7 @@ http:
       tls:
         certResolver: cf-cert
       middlewares:
+        - admin-redirect@file
         - securedheaders@file
         - traefik-auth@docker
 
@@ -17,3 +18,9 @@ http:
         passHostHeader: true
         servers:
           - url: "http://10.0.20.3:80"
+  
+  middlewares:
+    admin-redirect:
+      redirectRegex:
+        regex: "^https://pihole.richardsoper.me/$"
+        replacement: "https://pihole.richardsoper.me/admin/"
