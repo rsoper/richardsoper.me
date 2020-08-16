@@ -168,6 +168,30 @@ services:
     networks:
       - traefik_proxy
 
+  # Heimdall - Dashboard for all the things. 
+
+  heimdall:
+    container_name: heimdall
+    image: linuxserver/heimdall
+    restart: unless-stopped
+    depends_on:
+      - traefik
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./heimdall/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.heimdall.entrypoints=websecure"
+      - "traefik.http.routers.heimdall.rule=Host(`dash.${DOMAINNAME}`)"
+      - "traefik.http.routers.heimdall.tls.certresolver=cf-cert"
+      - "traefik.http.routers.heimdall.middlewares=securedheaders@file"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=80"
+    networks:
+      - traefik_proxy
+
   # PHPmyadmin - Manage the database via web UI
 
   phpmyadmin:

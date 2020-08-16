@@ -1,5 +1,8 @@
 # richardsoper.me Traefik 2.2
 
+![mozilla-obs](https://img.shields.io/mozilla-observatory/grade-score/richardsoper.me?publish)
+![site-status](https://img.shields.io/website?url=https%3A%2F%2Frichardsoper.me)
+
 Personal site used for developing my own skills.
 Tested primarily on Raspberry Pi 4 running Raspbian lite.
 
