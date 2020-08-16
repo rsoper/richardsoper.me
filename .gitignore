@@ -14,3 +14,5 @@ config.production.json
 mariadb.zip
 secrets
 nextcloud/*
+bookstack/config
+bookstack/data
