@@ -138,6 +138,13 @@ services:
   homeassistant:
     container_name: home-assistant
     image: homeassistant/home-assistant:0.110.3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.entrypoints=websecure"
+      - "traefik.http.routers.homeassistant.rule=Host(`homeass.${DOMAINNAME}`)"
+      - "traefik.http.routers.homeassistant.tls.certresolver=cf-cert"
+      - "traefik.http.routers.homeassistant.middlewares=LAN-whitelist@file"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
     volumes:
       - ${DOCKERDIR}/homeassistant:/config
     environment:
