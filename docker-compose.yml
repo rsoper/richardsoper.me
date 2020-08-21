@@ -218,6 +218,7 @@ services:
       - "traefik.http.routers.phpmyadmin.middlewares=securedheaders@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
       - "traefik.http.middlewares.secure-lan.chain.middlewares=secure-redirect@file,securedheaders@file,LAN-whitelist@file"
+      - "traefik.http.routers.phpmyadmin-lan.middlewares=secure-lan"
     networks:
       - traefik_proxy
 
