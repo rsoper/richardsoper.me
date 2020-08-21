@@ -21,17 +21,16 @@ services:
       - "traefik.http.routers.bookstack.entrypoints=websecure"
       - "traefik.http.routers.bookstack.rule=Host(`wiki.${DOMAINNAME}`)"
       - "traefik.http.routers.bookstack.tls.certresolver=cf-cert"
-      - "traefik.http.middlewares.secured-bookstack.chain.middlewares=secure-redirect@file,securedheaders@file"
-      - "traefik.http.routers.bookstack.middlewares=secured-bookstack"
+      - "traefik.http.routers.bookstack.middlewares=secure-headers@file"
       - "traefik.http.services.bookstack.loadbalancer.server.port=6875"
       # - "traefik.port=6875"
     restart: unless-stopped
     depends_on:
       - bookstack_db
-    networks: 
+    networks:
       - traefik_proxy
       - bookstack_net
-      
+
   bookstack_db:
     image: linuxserver/mariadb
     container_name: bookstack_db
@@ -46,7 +45,7 @@ services:
     volumes:
       - ./data:/config
     restart: unless-stopped
-    networks: 
+    networks:
       - bookstack_net
 
 networks:
