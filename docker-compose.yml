@@ -59,7 +59,7 @@ services:
       - "traefik.http.routers.wordpress.entrypoints=websecure"
       - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
       - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
-      - "traefik.http.routers.wordpress.middlewares=securedheaders@file"
+      - "traefik.http.routers.wordpress.middlewares=secure-headers@file"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
     networks:
       - traefik_proxy
@@ -79,7 +79,7 @@ services:
       - "traefik.http.routers.ghost.entrypoints=websecure"
       - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
       - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
-      - "traefik.http.routers.ghost.middlewares=securedheaders@file"
+      - "traefik.http.routers.ghost.middlewares=secure-headers@file"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
       - ${DOCKERDIR}/ghost:/var/lib/ghost/content
@@ -101,7 +101,7 @@ services:
       - "traefik.http.routers.nextcloud.entrypoints=websecure"
       - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
       - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
-      - "traefik.http.routers.nextcloud.middlewares=securedheaders@file"
+      - "traefik.http.routers.nextcloud.middlewares=secure-headers@file"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
 
     volumes:
@@ -125,7 +125,7 @@ services:
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
       - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
-      - "traefik.http.routers.gitea.middlewares=securedheaders@file"
+      - "traefik.http.routers.gitea.middlewares=secure-headers@file"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
     volumes:
       - ${DOCKERDIR}/gitea:/data
@@ -169,7 +169,7 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
       - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
-      - "traefik.http.routers.portainer.middlewares=securedheaders@file"
+      - "traefik.http.routers.portainer.middlewares=secure-headers@file"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks:
       - traefik_proxy
@@ -193,7 +193,7 @@ services:
       - "traefik.http.routers.heimdall.entrypoints=websecure"
       - "traefik.http.routers.heimdall.rule=Host(`dash.${DOMAINNAME}`)"
       - "traefik.http.routers.heimdall.tls.certresolver=cf-cert"
-      - "traefik.http.routers.heimdall.middlewares=securedheaders@file"
+      - "traefik.http.routers.heimdall.middlewares=secure-headers@file"
       - "traefik.http.services.heimdall.loadbalancer.server.port=80"
     networks:
       - traefik_proxy

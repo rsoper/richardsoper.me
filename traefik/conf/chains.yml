@@ -3,12 +3,15 @@ http:
     secure-lan:
       chain:
         middlewares:
-          - secure-redirect@file
           - securedheaders@file
+          - compression@file
           - LAN-whitelist@file
 
     secure-headers:
       chain:
         middlewares:
           - securedheaders@file
-          - secure-redirect@file
+          - compression@file
+
+    compression:
+      compress: {}
