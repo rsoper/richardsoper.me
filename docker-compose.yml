@@ -175,7 +175,7 @@ services:
     networks:
       - traefik_proxy
 
-  # Heimdall - Dashboard for all the things. 
+  # Heimdall - Dashboard for all the things.
 
   heimdall:
     container_name: heimdall
@@ -217,6 +217,7 @@ services:
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
       - "traefik.http.routers.phpmyadmin.middlewares=securedheaders@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.secure-lan.chain.middlewares=secure-redirect@file,securedheaders@file,LAN-whitelist@file"
     networks:
       - traefik_proxy
 
