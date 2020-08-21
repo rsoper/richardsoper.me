@@ -142,7 +142,7 @@ services:
       - "traefik.http.routers.homeassistant.entrypoints=websecure"
       - "traefik.http.routers.homeassistant.rule=Host(`homeass.${DOMAINNAME}`)"
       - "traefik.http.routers.homeassistant.tls.certresolver=cf-cert"
-      - "traefik.http.routers.homeassistant.middlewares=LAN-whitelist@file"
+      - "traefik.http.routers.homeassistant.middlewares=secure-lan@file"
       - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
     volumes:
       - ${DOCKERDIR}/homeassistant:/config
@@ -169,7 +169,7 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
       - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
-      - "traefik.http.routers.portainer.middlewares=secure-headers@file"
+      - "traefik.http.routers.portainer.middlewares=secure-lan@file"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks:
       - traefik_proxy
