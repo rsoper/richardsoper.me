@@ -34,8 +34,7 @@ services:
       ## HTTP REDIRECT
       - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirect-https.entrypoints=web"
-      - "traefik.http.routers.redirect-https.middlewares=secured-traefik"
-      - "traefik.http.middlewares.secured-traefik.chain.middlewares=secure-redirect@file,securedheaders@file"
+      - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
     networks:
       - traefik_proxy
 
@@ -215,9 +214,8 @@ services:
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
-      - "traefik.http.routers.phpmyadmin.middlewares=secure-lan"
+      - "traefik.http.routers.phpmyadmin.middlewares=secure-lan@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
-      - "traefik.http.middlewares.secure-lan.chain.middlewares=secure-redirect@file,securedheaders@file,LAN-whitelist@file"
     networks:
       - traefik_proxy
 

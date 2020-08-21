@@ -1,0 +1,14 @@
+http:
+  middlewares:
+    secure-lan:
+      chain:
+        middlewares:
+          - secure-redirect@file
+          - securedheaders@file
+          - LAN-whitelist@file
+
+    secure-headers:
+      chain:
+        middlewares:
+          - securedheaders@file
+          - secure-redirect@file
