@@ -29,7 +29,6 @@ services:
       - bookstack_db
     networks:
       - traefik_proxy
-      - bookstack_net
 
   bookstack_db:
     image: linuxserver/mariadb
@@ -46,10 +45,8 @@ services:
       - ./data:/config
     restart: unless-stopped
     networks:
-      - bookstack_net
+      - traefik_proxy
 
 networks:
-  bookstack_net:
-    external: true
   traefik_proxy:
     external: true
