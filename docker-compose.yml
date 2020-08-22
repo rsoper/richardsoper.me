@@ -202,7 +202,7 @@ services:
 
   phpmyadmin:
     container_name: phpmyadmin
-    image: mhzawadi/phpmyadmin:latest
+    image: mhzawadi/phpmyadmin:5.0.2.4
     restart: always
     depends_on:
       - mariadb
