@@ -206,6 +206,8 @@ services:
     restart: always
     depends_on:
       - mariadb
+    ports:
+      - "8002:80"
     environment:
       - PMA_HOST=mariadb
       - PMA_ABSOLUTE_URI=https://db.${DOMAINNAME}/
@@ -215,7 +217,7 @@ services:
       - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
       - "traefik.http.routers.phpmyadmin.middlewares=secure-lan@file"
-      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=8002"
     networks:
       - traefik_proxy
 
