@@ -208,7 +208,7 @@ services:
       - mariadb
     environment:
       - PMA_HOST=mariadb
-      - PMA_ABSOLUTE_URL=https://db.${DOMAINNAME}/
+      - PMA_ABSOLUTE_URI=https://db.${DOMAINNAME}/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
