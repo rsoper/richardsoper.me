@@ -14,16 +14,13 @@ services:
       - APP_URL=https://wiki.${DOMAINNAME}
     volumes:
       - ./config:/config
-    ports:
-      - 6875:80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bookstack.entrypoints=websecure"
       - "traefik.http.routers.bookstack.rule=Host(`wiki.${DOMAINNAME}`)"
       - "traefik.http.routers.bookstack.tls.certresolver=cf-cert"
       - "traefik.http.routers.bookstack.middlewares=secure-headers@file"
-      - "traefik.http.services.bookstack.loadbalancer.server.port=6875"
-      # - "traefik.port=6875"
+      - "traefik.http.services.bookstack.loadbalancer.server.port=80"
     restart: unless-stopped
     depends_on:
       - bookstack_db
@@ -46,26 +43,6 @@ services:
       - ./data:/config
     restart: unless-stopped
     networks:
-      - bookstack_net
-
-  phpmyadmin:
-    container_name: bookstack_pma
-    image: jackgruber/phpmyadmin:latest
-    restart: always
-    depends_on:
-      - bookstack_db
-    environment:
-      - PMA_HOST=bookstack_db
-      - PMA_ABSOLUTE_URL=https://bookstack_db.${DOMAINNAME}/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bookstack_pma.entrypoints=websecure"
-      - "traefik.http.routers.bookstack_pma.rule=Host(`bookstack_db.${DOMAINNAME}`)"
-      - "traefik.http.routers.bookstack_pma.tls.certresolver=cf-cert"
-      - "traefik.http.routers.bookstack_pma.middlewares=secure-lan@file"
-      - "traefik.http.services.bookstack_pma.loadbalancer.server.port=80"
-    networks:
-      - traefik_proxy
       - bookstack_net
 
 networks:
