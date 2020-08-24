@@ -34,8 +34,7 @@ services:
       ## HTTP REDIRECT
       - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirect-https.entrypoints=web"
-      - "traefik.http.routers.redirect-https.middlewares=secured-traefik"
-      - "traefik.http.middlewares.secured-traefik.chain.middlewares=secure-redirect@file,securedheaders@file"
+      - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
     networks:
       - traefik_proxy
 
@@ -60,7 +59,7 @@ services:
       - "traefik.http.routers.wordpress.entrypoints=websecure"
       - "traefik.http.routers.wordpress.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`)"
       - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
-      - "traefik.http.routers.wordpress.middlewares=securedheaders@file"
+      - "traefik.http.routers.wordpress.middlewares=secure-headers@file"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
     networks:
       - traefik_proxy
@@ -80,7 +79,7 @@ services:
       - "traefik.http.routers.ghost.entrypoints=websecure"
       - "traefik.http.routers.ghost.rule=Host(`blog.${DOMAINNAME}`)"
       - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
-      - "traefik.http.routers.ghost.middlewares=securedheaders@file"
+      - "traefik.http.routers.ghost.middlewares=secure-headers@file"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
       - ${DOCKERDIR}/ghost:/var/lib/ghost/content
@@ -102,7 +101,7 @@ services:
       - "traefik.http.routers.nextcloud.entrypoints=websecure"
       - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAINNAME}`)"
       - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
-      - "traefik.http.routers.nextcloud.middlewares=securedheaders@file"
+      - "traefik.http.routers.nextcloud.middlewares=secure-headers@file"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
 
     volumes:
@@ -126,7 +125,7 @@ services:
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.rule=Host(`git.${DOMAINNAME}`)"
       - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
-      - "traefik.http.routers.gitea.middlewares=securedheaders@file"
+      - "traefik.http.routers.gitea.middlewares=secure-headers@file"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
     volumes:
       - ${DOCKERDIR}/gitea:/data
@@ -138,6 +137,13 @@ services:
   homeassistant:
     container_name: home-assistant
     image: homeassistant/home-assistant:0.110.3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.entrypoints=websecure"
+      - "traefik.http.routers.homeassistant.rule=Host(`homeass.${DOMAINNAME}`)"
+      - "traefik.http.routers.homeassistant.tls.certresolver=cf-cert"
+      - "traefik.http.routers.homeassistant.middlewares=secure-lan@file"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
     volumes:
       - ${DOCKERDIR}/homeassistant:/config
     environment:
@@ -163,12 +169,12 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
       - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
-      - "traefik.http.routers.portainer.middlewares=securedheaders@file"
+      - "traefik.http.routers.portainer.middlewares=secure-lan@file"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks:
       - traefik_proxy
 
-  # Heimdall - Dashboard for all the things. 
+  # Heimdall - Dashboard for all the things.
 
   heimdall:
     container_name: heimdall
@@ -187,7 +193,7 @@ services:
       - "traefik.http.routers.heimdall.entrypoints=websecure"
       - "traefik.http.routers.heimdall.rule=Host(`dash.${DOMAINNAME}`)"
       - "traefik.http.routers.heimdall.tls.certresolver=cf-cert"
-      - "traefik.http.routers.heimdall.middlewares=securedheaders@file"
+      - "traefik.http.routers.heimdall.middlewares=secure-headers@file"
       - "traefik.http.services.heimdall.loadbalancer.server.port=80"
     networks:
       - traefik_proxy
@@ -196,19 +202,19 @@ services:
 
   phpmyadmin:
     container_name: phpmyadmin
-    image: jackgruber/phpmyadmin:latest
+    image: biarms/phpmyadmin
     restart: always
     depends_on:
       - mariadb
     environment:
       - PMA_HOST=mariadb
-      - PMA_ABSOLUTE_URL=https://db.${DOMAINNAME}/
+      - PMA_ABSOLUTE_URI=https://db.${DOMAINNAME}/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
-      - "traefik.http.routers.phpmyadmin.middlewares=securedheaders@file"
+      - "traefik.http.routers.phpmyadmin.middlewares=secure-lan@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
     networks:
       - traefik_proxy

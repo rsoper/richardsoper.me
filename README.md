@@ -4,25 +4,29 @@
 ![site-status](https://img.shields.io/website?url=https%3A%2F%2Frichardsoper.me)
 
 Personal site used for developing my own skills.
-Tested primarily on Raspberry Pi 4 running Raspbian lite.
+Tested primarily on Raspberry Pi 4 running Ubuntu 20.04 64-bit
 
 https://www.richardsoper.me
 
 ### Frontend - Exposed to traefik
 
-    - Portainer
     - Ghost
     - NextCloud
     - WordPress
-    - PHPMyAdmin
     - Gitea
     - Grafana
+    - Bookstack
     - Pi-Hole(Non-docker service)
+
+### LAN Restricted - Exposed to traefik, but accessible only to specified subnet.
+
+    - Portainer
+    - PHPMyAdmin
+    - HomeAssistant
 
 ### Tools - Not exposed to traefik
 
     - mariaDB
-    - homeassistant
 
 ### Monitoring backend - Not exposed to traefik
 

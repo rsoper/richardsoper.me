@@ -68,8 +68,7 @@ services:
       - "traefik.http.routers.grafana.entrypoints=websecure"
       - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
       - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
-      - "traefik.http.middlewares.secured-grafana.chain.middlewares=secure-redirect@file,securedheaders@file"
-      - "traefik.http.routers.grafana.middlewares=secured-grafana"
+      - "traefik.http.routers.grafana.middlewares=secure-headers@file"
       - "traefik.port=3030"
     networks:
       - monitoring
