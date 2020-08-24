@@ -45,5 +45,4 @@ https://www.richardsoper.me
 
 ### Future work
 
-    - Mount NFS volumes(Progress made on swarm branch)
-    - Deploy as docker swarm across architectures
+    - All future work will continue on other branches.
