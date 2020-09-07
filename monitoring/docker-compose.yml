@@ -17,6 +17,15 @@ services:
     networks:
       - monitoring
 
+  loki:
+    image: grafana/loki
+    container_name: loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    networks:
+      - monitoring
+
   node-exporter:
     image: prom/node-exporter
     container_name: node-exporter

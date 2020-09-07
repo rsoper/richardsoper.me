@@ -6,8 +6,12 @@ log:
   filePath: /shared/traefik.log
   format: json
 
+accessLog:
+  filePath: /shared/traefik-access.log
+  format: json
+
 metrics:
-  prometheus: 
+  prometheus:
     addEntryPointsLabels: true
     addServicesLabels: true
     entryPoint: metrics
