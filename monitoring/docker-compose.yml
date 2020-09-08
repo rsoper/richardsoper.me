@@ -30,6 +30,8 @@ services:
     volumes:
       - /var/log:/var/log
       - ./promtail/docker-config.yaml:/etc/promtail/docker-config.yaml
+      - ../shared/traefik.log:/var/log/traefik.log
+      - ../shared/traefik-access.log:/var/log/traefik-access.log
     command: -config.file=/etc/promtail/docker-config.yaml
     networks:
       - monitoring
