@@ -29,6 +29,7 @@ services:
     image: grafana/promtail:1.5.0
     volumes:
       - /var/log:/var/log
+      - ./promtail/docker-config.yaml:/etc/promtail/docker-config.yaml
     command: -config.file=/etc/promtail/docker-config.yaml
     networks:
       - monitoring
