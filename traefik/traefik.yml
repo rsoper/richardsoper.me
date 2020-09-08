@@ -4,11 +4,9 @@ api:
 log:
   level: DEBUG
   filePath: /shared/traefik.log
-  format: json
 
 accessLog:
   filePath: /shared/traefik-access.log
-  format: json
 
 metrics:
   prometheus:
