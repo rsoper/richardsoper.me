@@ -16,13 +16,13 @@ https://www.richardsoper.me
     - Gitea
     - Grafana
     - Bookstack
-    - Pi-Hole(Non-docker service)
 
 ### LAN Restricted - Exposed to traefik, but accessible only to specified subnet.
 
     - Portainer
     - PHPMyAdmin
     - HomeAssistant
+    - Pi-Hole(Non-docker service)
 
 ### Tools - Not exposed to traefik
 
@@ -34,6 +34,8 @@ https://www.richardsoper.me
     - Node Exporter
     - Arm Exporter
     - cAdvisor
+    - Promtail
+    - Loki
 
 ### Usage
 
