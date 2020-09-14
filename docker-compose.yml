@@ -230,6 +230,17 @@ services:
     networks:
       - traefik_proxy
 
+  # Watch Tower - Automatically update containers.
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/timezone:/etc/timezone:ro
+    command: --cleanup
+
 networks:
   traefik_proxy:
     external: true
