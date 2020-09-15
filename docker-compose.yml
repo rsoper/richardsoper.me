@@ -239,7 +239,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/timezone:/etc/timezone:ro
-    command: --cleanup
+    command: --cleanup --interval 86400
 
 networks:
   traefik_proxy:
