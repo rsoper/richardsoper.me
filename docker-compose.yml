@@ -217,7 +217,7 @@ services:
   mariadb:
     container_name: mariadb
     hostname: mariadb
-    image: linuxserver/mariadb
+    image: linuxserver/mariadb:110.4.14mariabionic-ls80
     restart: always
     depends_on:
       - traefik
