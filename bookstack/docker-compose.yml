@@ -29,7 +29,7 @@ services:
       - bookstack_net
 
   bookstack_db:
-    image: linuxserver/mariadb
+    image: linuxserver/mariadb:110.4.14mariabionic-ls80
     container_name: bookstack_db
     environment:
       - PUID=1000

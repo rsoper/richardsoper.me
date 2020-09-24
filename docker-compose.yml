@@ -217,7 +217,7 @@ services:
   mariadb:
     container_name: mariadb
     hostname: mariadb
-    image: linuxserver/mariadb
+    image: linuxserver/mariadb:110.4.14mariabionic-ls80
     restart: always
     depends_on:
       - traefik
@@ -229,6 +229,17 @@ services:
       - TZ=${TZ}
     networks:
       - traefik_proxy
+
+  # Watch Tower - Automatically update containers.
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/timezone:/etc/timezone:ro
+    command: --cleanup --interval 86400
 
 networks:
   traefik_proxy:
