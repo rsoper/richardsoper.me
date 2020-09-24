@@ -27,6 +27,7 @@ https://www.richardsoper.me
 ### Tools - Not exposed to traefik
 
     - mariaDB
+    - watchtower
 
 ### Monitoring backend - Not exposed to traefik
 
