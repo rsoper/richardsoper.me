@@ -148,7 +148,7 @@ services:
 
   portainer:
     container_name: portainer
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:latest
     restart: always
     depends_on:
       - traefik
