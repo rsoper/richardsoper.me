@@ -260,29 +260,29 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/richardsoper.me/shared"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/shared"
   traefik_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/richardsoper.me/traefik"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/traefik"
   ghost_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/richardsoper.me/ghost"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/ghost"
   portainer_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/richardsoper.me/portainer/data"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/portainer/data"
   mariadb_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.1.22,nolock,soft,rw
-      device: ":/mnt/docker_storage/richardsoper.me/mariadb"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/mariadb"
