@@ -222,7 +222,7 @@ services:
     depends_on:
       - traefik
     volumes:
-      - ${DOCKERDIR}/mariadb:/config
+      - mariadb_vol:/config
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${TZ}
