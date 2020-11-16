@@ -71,7 +71,7 @@ services:
     image: ghost:latest
     restart: always
     env_file:
-      - ${DOCKERDIR}/ghost/ghost.env
+      - ghost_vol/ghost.env
     depends_on:
       - mariadb
     labels:
@@ -82,7 +82,7 @@ services:
       - "traefik.http.routers.ghost.middlewares=secure-headers@file"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
-      - ${DOCKERDIR}/ghost:/var/lib/ghost/content
+      - ghost_vol:/var/lib/ghost/content
     networks:
       - traefik_proxy
 
@@ -252,11 +252,18 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/richardsoper/traefik"
+      device: ":/volume1/richardsoper/traefik"
 
   shared_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/richardsoper/shared"
+      device: ":/volume1/richardsoper/shared"
+
+  ghost_vol:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/richardsoper/ghost"
