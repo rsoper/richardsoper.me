@@ -105,7 +105,7 @@ services:
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
 
     volumes:
-      - ${DOCKERDIR}/nextcloud:/var/www/html
+      - nextcloud_vol:/var/www/html
     networks:
       - traefik_proxy
 
@@ -223,7 +223,6 @@ services:
       - traefik
     volumes:
       - ${DOCKERDIR}/mariadb:/config
-      - ${DOCKERDIR}/shared:/shared
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${TZ}
@@ -267,3 +266,17 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/richardsoper/ghost"
+
+  nextcloud_vol:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/richardsoper/nextcloud"
+
+  mariadb_vol:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/richardsoper/mariadb"
