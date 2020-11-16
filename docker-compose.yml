@@ -17,8 +17,8 @@ services:
       - "8008:8008"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-      - ${DOCKERDIR}/traefik:/etc/traefik
-      - ${DOCKERDIR}/shared:/shared
+      - traefik_config:/etc/traefik
+      - shared_data:/shared
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAINNAME}`)"
@@ -244,3 +244,19 @@ services:
 networks:
   traefik_proxy:
     external: true
+
+
+volumes:
+  traefik_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/traefik"
+
+  shared_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/richardsoper/shared"
