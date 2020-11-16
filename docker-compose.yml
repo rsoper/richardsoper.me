@@ -71,7 +71,7 @@ services:
     image: ghost:latest
     restart: always
     env_file:
-      - ghost_vol/ghost.env
+      - ./ghost/ghost.env
     depends_on:
       - mariadb
     labels:
