@@ -40,7 +40,7 @@ services:
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ./data:/config
+      - bookstack_data:/config
     restart: unless-stopped
     networks:
       - bookstack_net
