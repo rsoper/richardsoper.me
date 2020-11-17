@@ -50,3 +50,11 @@ networks:
     external: true
   traefik_proxy:
     external: true
+
+volumes:
+  bookstack_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/richardsoper/bookstack/data"
