@@ -13,7 +13,7 @@ services:
       - DB_DATABASE=bookstackapp
       - APP_URL=https://wiki.${DOMAINNAME}
     volumes:
-      - ./config:/config
+      - bookstack_config:/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bookstack.entrypoints=websecure"
@@ -58,3 +58,10 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/richardsoper/bookstack/data"
+
+  bookstack_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/richardsoper/bookstack/config"
