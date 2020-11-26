@@ -70,9 +70,6 @@ services:
     container_name: ghost
     image: ghost:latest
     restart: always
-    environment:
-      - PUID=1026
-      - PGID=100
     env_file:
       - ./ghost/ghost.env
     depends_on:
@@ -85,7 +82,7 @@ services:
       - "traefik.http.routers.ghost.middlewares=secure-headers@file"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
     volumes:
-      - ghost_vol:/var/lib/ghost/content
+      - ${SMBDIR}:/var/lib/ghost/content
     networks:
       - traefik_proxy
 
@@ -262,13 +259,6 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/richardsoper/shared"
-
-  ghost_vol:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/richardsoper/ghost"
 
   nextcloud_vol:
     driver: local
