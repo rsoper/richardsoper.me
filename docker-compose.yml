@@ -70,6 +70,9 @@ services:
     container_name: ghost
     image: ghost:latest
     restart: always
+    environment:
+      - PUID=1026
+      - PGID=100
     env_file:
       - ./ghost/ghost.env
     depends_on:
