@@ -138,7 +138,7 @@ services:
     container_name: home-assistant
     image: homeassistant/home-assistant:0.110.3
     volumes:
-      - ${DOCKERDIR}/homeassistant:/config
+      - home-assistant_vol:/config
     environment:
       - TZ=America/Los_Angeles
     restart: always
@@ -273,3 +273,10 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/richardsoper/mariadb"
+
+  home-assistant_vol:
+    driver: local
+    driver_opts: 
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/richardsoper/homeassistant"
