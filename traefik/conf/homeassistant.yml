@@ -1,0 +1,19 @@
+http:
+  routers:
+    homeassistant:
+      rule: "Host(`home.richardsoper.me`)"
+      service: homeassistant-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - traefik-auth@docker
+
+  services:
+    homeassistant-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://master.server:8123"

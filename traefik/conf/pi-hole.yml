@@ -1,0 +1,26 @@
+http:
+  routers:
+    pihole:
+      rule: "Host(`pihole.richardsoper.me`)"
+      service: pihole-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - admin-redirect@file
+        - secure-headers@file
+        - traefik-auth@docker
+
+  services:
+    pihole-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://10.0.20.3:80"
+
+  middlewares:
+    admin-redirect:
+      redirectRegex:
+        regex: "^https://pihole.richardsoper.me/$"
+        replacement: "https://pihole.richardsoper.me/admin/"

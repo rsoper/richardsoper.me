@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: "pi-monitor"
+
+scrape_configs:
+  # - job_name: "prometheus"
+  #   static_configs:
+  #     - targets: ["10.0.20.2:9090"] ## IP Address of the localhost
+  - job_name: "node-exporter"
+    static_configs:
+      - targets:
+          - 10.0.20.2:9100
+  - job_name: cadvisor
+    static_configs:
+      - targets:
+          - 10.0.20.2:8181
+  - job_name: arm-exporter
+    static_configs:
+      - targets:
+          - 10.0.20.2:9243
+  - job_name: traefik
+    static_configs:
+      - targets:
+          - 10.0.20.2:8008

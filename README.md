@@ -1,25 +1,42 @@
 # richardsoper.me Traefik 2.2
 
+![mozilla-obs](https://img.shields.io/mozilla-observatory/grade-score/richardsoper.me?publish)
+![site-status](https://img.shields.io/website?url=https%3A%2F%2Frichardsoper.me)
+
 Personal site used for developing my own skills.
+Tested primarily on Raspberry Pi 4 running Ubuntu 20.04 64-bit
 
 https://www.richardsoper.me
 
-### Frontend
+### Frontend - Exposed to traefik
 
-    - Portainer
     - Ghost
     - NextCloud
     - WordPress
-    - PHPMyAdmin
     - Gitea
+    - Grafana
+    - Bookstack
 
-### Tools
+### LAN Restricted - Exposed to traefik, but accessible only to specified subnet.
+
+    - Portainer
+    - PHPMyAdmin
+    - HomeAssistant
+    - Pi-Hole(Non-docker service)
+
+### Tools - Not exposed to traefik
 
     - mariaDB
+    - watchtower
 
-### Broken
+### Monitoring backend - Not exposed to traefik
 
-    - Stuck trying to configure database connections appropriately.
+    - Prometheus
+    - Node Exporter
+    - Arm Exporter
+    - cAdvisor
+    - Promtail
+    - Loki
 
 ### Usage
 
@@ -30,9 +47,10 @@ https://www.richardsoper.me
     - Create .htpasswd basic auth file for Traefik dashboard "htpasswd -c richardsoper.me/shared/.htpasswd your_username"
     - Navigate to traefik/traefik.yml and update the email address(unless you want me to know about your certs)
     - Create traefik_proxy network with "docker network create traefik_proxy"
-    - With all variable created, run the docker-up.sh script or command "docker-compose -f richardsoper.me/docker-compose.yml up -d"
+    - With all variable created, run command "docker-compose up -d" from the root directory of this repository
+    - For monitoring, run command "docker-compose -f ./monitoring/docker-compose.yml up -d"
 
 ### Future work
 
-    - Integrate non-docker services(Pi-hole, etc)
+    - Mount NFS volumes(Progress made on swarm branch)
     - Deploy as docker swarm across architectures

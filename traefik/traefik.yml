@@ -4,19 +4,30 @@ api:
 log:
   level: DEBUG
   filePath: /shared/traefik.log
-  format: json
+
+accessLog:
+  filePath: /shared/traefik-access.log
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    entryPoint: metrics
 
 entryPoints:
   web:
     address: ":80"
   websecure:
     address: ":443"
+  metrics:
+    address: ":8008"
 
 providers:
   docker:
     swarmMode: true
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
+    network: traefik_proxy
   file:
     directory: "/etc/traefik/conf"
     watch: true

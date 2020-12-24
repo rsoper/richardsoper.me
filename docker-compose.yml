@@ -14,12 +14,14 @@ services:
   traefik:
     hostname: traefik
     image: traefik:v2.2
+    restart: always
     environment:
       - CF_API_EMAIL_FILE=/run/secrets/cf_api_email
       - CF_API_KEY_FILE=/run/secrets/cf_api_key
     ports:
       - "80:80"
       - "443:443"
+      - "8008:8008"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - traefik_data:/etc/traefik
@@ -149,10 +151,23 @@ services:
   #   networks:
   #     - traefik_proxy
 
+  # Homeassistant - Connecting more homekit things
+
+  homeassistant:
+    container_name: home-assistant
+    image: homeassistant/home-assistant:0.110.3
+    volumes:
+      - ${DOCKERDIR}/homeassistant:/config
+    environment:
+      - TZ=America/Los_Angeles
+    restart: always
+    network_mode: host
+
   # Portainer - Remote access to docker containers via web UI
 
   portainer:
-    image: portainer/portainer:latest
+    container_name: portainer
+    image: portainer/portainer-ce:latest
     restart: always
     depends_on:
       - traefik
@@ -221,7 +236,7 @@ services:
   mariadb:
     container_name: mariadb
     hostname: mariadb
-    image: linuxserver/mariadb
+    image: linuxserver/mariadb:110.4.14mariabionic-ls80
     restart: always
     depends_on:
       - traefik
@@ -241,15 +256,16 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # # Watchtower - automatically update docker containers
-  # watchtower:
-  #   container_name: watchtower
-  #   hostname: watchtower
-  #   restart: always
-  #   image: containrrr/watchtower:latest
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   command: --schedule "0 0 4 * * *" --cleanup
+  # Watch Tower - Automatically update containers.
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/timezone:/etc/timezone:ro
+    command: --cleanup --interval 86400
 
 networks:
   traefik_proxy:
