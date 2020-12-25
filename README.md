@@ -8,6 +8,12 @@ Tested primarily on Raspberry Pi 4 running Ubuntu 20.04 64-bit
 
 https://www.richardsoper.me
 
+### Work being done on this branch
+
+    - Deploy applications using swarm. 
+    - Data being stored on NAS share mounted via fstab on all nodes
+
+
 ### Frontend - Exposed to traefik
 
     - Ghost
@@ -49,8 +55,3 @@ https://www.richardsoper.me
     - Create traefik_proxy network with "docker network create traefik_proxy"
     - With all variable created, run command "docker-compose up -d" from the root directory of this repository
     - For monitoring, run command "docker-compose -f ./monitoring/docker-compose.yml up -d"
-
-### Future work
-
-    - Mount NFS volumes(Progress made on swarm branch)
-    - Deploy as docker swarm across architectures
