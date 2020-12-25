@@ -44,6 +44,7 @@ services:
 
         - "traefik.http.routers.edge.rule=Host(`edge.richardsoper.me`)"
         - "traefik.http.routers.edge.entrypoints=websecure"
+        - "traefik.http.routers.edge.tls.certresolver=cf-cert"
         - "traefik.http.services.edge.loadbalancer.server.port=8000"
         - "traefik.http.routers.edge.service=edge"
 
