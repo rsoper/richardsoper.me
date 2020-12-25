@@ -51,18 +51,18 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/traefik"
+      device: ":/volume1/docker/richardsoper.me/traefik"
 
   shared_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/shared"
+      device: ":/volume1/docker/richardsoper.me/shared"
 
   portainer_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/portainer/data"
+      device: ":/volume1/docker/richardsoper.me/portainer/data"
