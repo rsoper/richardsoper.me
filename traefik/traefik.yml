@@ -27,7 +27,7 @@ providers:
     swarmMode: true
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    network: traefik_proxy
+    network: traefik_swarm
   file:
     directory: "/etc/traefik/conf"
     watch: true
