@@ -19,7 +19,7 @@ services:
       - ${DOCKERDIR}/traefik:/etc/traefik
       - ${DOCKERDIR}/shared:/shared
     networks:
-      - traefik_proxy
+      - traefik_swarm
     deploy:
       mode: global
       placement:
@@ -54,7 +54,7 @@ services:
       - ${DOCKERDIR}/portainer/data:/data
     command: -H unix:///var/run/docker.sock
     networks:
-      - traefik_proxy
+      - traefik_swarm
     deploy:
       replicas: 1
       placement:
@@ -67,5 +67,5 @@ services:
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
 networks:
-  traefik_proxy:
+  traefik_swarm:
     external: true
