@@ -19,7 +19,7 @@ services:
       - traefik_swarm
       - bookstack_swarm
     deploy:
-      replicas: 2
+      replicas: 1
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.bookstack.entrypoints=websecure"
