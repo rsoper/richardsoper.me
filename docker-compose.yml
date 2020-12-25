@@ -64,7 +64,7 @@ services:
   phpmyadmin:
     image: arm64v8/phpmyadmin
     environment:
-      - PMA_ARBITRARY=1
+      - PMA_HOST=wiki_bookstack_db
       - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
     networks:
       - traefik_swarm
