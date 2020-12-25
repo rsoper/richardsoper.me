@@ -70,3 +70,9 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/docker/richardsoper.me/bookstack/data"
+
+secrets:
+  TZ:
+    external: true
+  bookstack_db_password:
+    external: true
