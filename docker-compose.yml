@@ -41,7 +41,7 @@ services:
         - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
 
   portainer:
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:latest
     depends_on:
       - traefik
     volumes:
