@@ -11,7 +11,7 @@ https://www.richardsoper.me
 ### Work being done on this branch
 
     - Deploy applications using swarm. 
-    - Data being stored on NAS share mounted via fstab on all nodes
+    - Data mounting occurs with NFS because local bind mount storage isnt an option for swarm.
 
 
 ### Frontend - Exposed to traefik
