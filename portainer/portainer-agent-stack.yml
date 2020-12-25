@@ -51,6 +51,8 @@ networks:
   agent_network:
     driver: overlay
     attachable: true
+  traefik_swarm:
+    external: true
 
 volumes:
   portainer_data:
