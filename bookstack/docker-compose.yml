@@ -3,12 +3,14 @@ version: "3.7"
 services:
   bookstack:
     image: linuxserver/bookstack
+    secrets:
+      - bookstack_db_password
     environment:
+      FILE__DB_PASS: /run/secrets/bookstack_db_password
       - PUID=1000
       - PGID=1000
       - DB_HOST=bookstack_db
       - DB_USER=bookstack
-      - DB_PASS=${DB_PASSWORD}
       - DB_DATABASE=bookstackapp
       - APP_URL=https://wiki.richardsoper.me
     volumes:
