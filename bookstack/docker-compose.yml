@@ -45,6 +45,9 @@ services:
       - bookstack_swarm
     deploy:
       replicas: 1
+    secrets:
+      - TZ
+      - bookstack_db_password
 
 networks:
   bookstack_swarm:
