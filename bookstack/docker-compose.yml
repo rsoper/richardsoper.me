@@ -34,10 +34,10 @@ services:
       FILE__TZ: /run/secrets/TZ
       FILE__MYSQL_ROOT_PASSWORD: /run/secrets/bookstack_db_password
       FILE__MYSQL_PASSWORD: /run/secrets/bookstack_db_password
-      - PUID=1000
-      - PGID=1000
-      - MYSQL_DATABASE=bookstackapp
-      - MYSQL_USER=bookstack
+      PUID: 1000
+      PGID: 1000
+      MYSQL_DATABASE: bookstackapp
+      MYSQL_USER: bookstack
     volumes:
       - bookstack_db_data:/config
     restart: unless-stopped
