@@ -1,14 +1,24 @@
 version: "3.7"
 
+secrets:
+  CF_API_EMAIL:
+    file: "./secrets/CF_API_EMAIL.secret"
+  CF_API_KEY:
+    file: "./secrets/CF_API_KEY.secret"
+
+
 services:
   # Traefik 2.0 reverse proxy with sub-domain configuration
 
   traefik:
     hostname: traefik
     image: traefik:v2.2
+    secrets:
+      - "CF_API_EMAIL"
+      - "CF_API_KEY"
     environment:
-      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
-      - CF_API_KEY=${CLOUDFLARE_API_KEY}
+      - CF_API_EMAIL_FILE=/run/secrets/CF_API_EMAIL
+      - CF_API_KEY_FILE=/run/secrets/CF_API_KEY
     ports:
       - "80:80"
       - "443:443"
