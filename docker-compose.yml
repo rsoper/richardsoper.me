@@ -6,7 +6,6 @@ services:
   traefik:
     hostname: traefik
     image: traefik:v2.2
-    restart: always
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
@@ -40,31 +39,6 @@ services:
         - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
         - "traefik.http.routers.redirect-https.entrypoints=web"
         - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
-
-  # Portainer - Remote access to docker containers via web UI
-
-  portainer:
-    container_name: portainer
-    image: portainer/portainer-ce:latest
-    restart: always
-    depends_on:
-      - traefik
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-    command: -H unix:///var/run/docker.sock
-    networks:
-      - traefik_swarm
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.portainer.entrypoints=websecure"
-        - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAINNAME}`)"
-        - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
-        - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
 networks:
   traefik_swarm:
