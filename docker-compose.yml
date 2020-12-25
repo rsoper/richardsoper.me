@@ -81,6 +81,8 @@ services:
 networks:
   traefik_swarm:
     external: true
+  bookstack_swarm:
+    external: true
 
 
 volumes:
