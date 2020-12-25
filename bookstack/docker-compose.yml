@@ -31,13 +31,13 @@ services:
   bookstack_db:
     image: linuxserver/mariadb:110.4.14mariabionic-ls80
     environment:
+      FILE__TZ: /run/secrets/TZ
+      FILE__MYSQL_ROOT_PASSWORD: /run/secrets/bookstack_db_password
+      FILE__MYSQL_PASSWORD: /run/secrets/bookstack_db_password
       - PUID=1000
       - PGID=1000
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - TZ=${TZ}
       - MYSQL_DATABASE=bookstackapp
       - MYSQL_USER=bookstack
-      - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - bookstack_db_data:/config
     restart: unless-stopped
