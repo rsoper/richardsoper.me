@@ -16,8 +16,8 @@ services:
       - "8008:8008"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-      - ${DOCKERDIR}/traefik:/etc/traefik
-      - ${DOCKERDIR}/shared:/shared
+      - traefik_data:/etc/traefik
+      - shared_data:/shared
     networks:
       - traefik_swarm
     deploy:
@@ -51,7 +51,7 @@ services:
       - traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERDIR}/portainer/data:/data
+      - portainer_data:/data
     command: -H unix:///var/run/docker.sock
     networks:
       - traefik_swarm
@@ -69,3 +69,26 @@ services:
 networks:
   traefik_swarm:
     external: true
+
+
+volumes:
+  traefik_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/docker/traefik"
+
+  shared_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/docker/shared"
+
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/docker/portainer/data"
