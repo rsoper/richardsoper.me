@@ -62,8 +62,9 @@ services:
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
   phpmyadmin:
-    image: biarms/phpmyadmin
+    image: arm64v8/phpmyadmin
     environment:
+      - PMA_ARBITRARY=1
       - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
     networks:
       - traefik_swarm
