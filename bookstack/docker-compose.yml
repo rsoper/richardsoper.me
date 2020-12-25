@@ -40,7 +40,6 @@ services:
       MYSQL_USER: bookstack
     volumes:
       - bookstack_db_data:/config
-    restart: unless-stopped
     networks:
       - bookstack_swarm
     deploy:
