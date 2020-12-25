@@ -64,7 +64,7 @@ services:
   phpmyadmin:
     image: biarms/phpmyadmin
     environment:
-      - PMA_ABSOLUTE_URI=https://db.${DOMAINNAME}/
+      - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
     networks:
       - traefik_swarm
       - bookstack_swarm
@@ -73,7 +73,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
-      - "traefik.http.routers.phpmyadmin.rule=Host(`db.${DOMAINNAME}`)"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`db.richardsoper.me`)"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
       - "traefik.http.routers.phpmyadmin.middlewares=secure-lan@file"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
