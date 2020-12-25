@@ -76,7 +76,7 @@ services:
         - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
         - "traefik.http.routers.phpmyadmin.rule=Host(`db.richardsoper.me`)"
         - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
-        - "traefik.http.routers.phpmyadmin.middlewares=secure-lan@file"
+        - "traefik.http.routers.phpmyadmin.middlewares=secure-headers@file"
         - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
 
 networks:
