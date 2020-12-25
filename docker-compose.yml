@@ -2,9 +2,9 @@ version: "3.7"
 
 secrets:
   CF_API_EMAIL:
-    file: "./secrets/CF_API_EMAIL.secret"
+    external: true
   CF_API_KEY:
-    file: "./secrets/CF_API_KEY.secret"
+    external: true
 
 
 services:
