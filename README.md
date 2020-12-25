@@ -52,6 +52,6 @@ https://www.richardsoper.me
     - Change permissions of acme.json to 600. "chmod 600 richardsoper.me/traefik/acme/acme.json"
     - Create .htpasswd basic auth file for Traefik dashboard "htpasswd -c richardsoper.me/shared/.htpasswd your_username"
     - Navigate to traefik/traefik.yml and update the email address(unless you want me to know about your certs)
-    - Create traefik_proxy network with "docker network create traefik_proxy"
+    - Create traefik_proxy network with "docker network create -d overlay traefik_swarm"
     - With all variable created, run command "docker-compose up -d" from the root directory of this repository
     - For monitoring, run command "docker-compose -f ./monitoring/docker-compose.yml up -d"
