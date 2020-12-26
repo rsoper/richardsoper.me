@@ -4,7 +4,8 @@ networks:
   traefik_swarm:
     external: true
   bookstack_swarm:
-    external: true
+    driver: overlay
+    attachable: true
 
 services:
   phpmyadmin:
