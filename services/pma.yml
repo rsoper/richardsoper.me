@@ -3,9 +3,6 @@ version: "3.7"
 networks:
   traefik_swarm:
     external: true
-  bookstack_swarm:
-    driver: overlay
-    attachable: true
 
 services:
   phpmyadmin:
@@ -15,7 +12,6 @@ services:
       - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
     networks:
       - traefik_swarm
-      - bookstack_swarm
     deploy:
       replicas: 1
       labels:
