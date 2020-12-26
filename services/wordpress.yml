@@ -38,7 +38,7 @@ services:
       WORDPRESS_DB_HOST: wordpress_db
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_password
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_NAME: wordpressapp
     volumes:
       - wordpress_data:/var/www/html
     networks:
