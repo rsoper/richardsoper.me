@@ -1,0 +1,26 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+  bookstack_swarm:
+    external: true
+
+services:
+  phpmyadmin:
+    image: arm64v8/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
+    networks:
+      - traefik_swarm
+      - bookstack_swarm
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+        - "traefik.http.routers.phpmyadmin.rule=Host(`db.richardsoper.me`)"
+        - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
+        - "traefik.http.routers.phpmyadmin.middlewares=secure-headers@file"
+        - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"

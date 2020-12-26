@@ -6,10 +6,26 @@ secrets:
   CF_API_KEY:
     external: true
 
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  traefik_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/docker/richardsoper.me/traefik"
+
+  shared_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/docker/richardsoper.me/shared"
 
 services:
-  # Traefik 2.0 reverse proxy with sub-domain configuration
-
   traefik:
     hostname: traefik
     image: traefik:v2.2
@@ -49,43 +65,3 @@ services:
         - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
         - "traefik.http.routers.redirect-https.entrypoints=web"
         - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
-
-  phpmyadmin:
-    image: arm64v8/phpmyadmin
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
-    networks:
-      - traefik_swarm
-      - bookstack_swarm
-    deploy:
-      replicas: 1
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
-        - "traefik.http.routers.phpmyadmin.rule=Host(`db.richardsoper.me`)"
-        - "traefik.http.routers.phpmyadmin.tls.certresolver=cf-cert"
-        - "traefik.http.routers.phpmyadmin.middlewares=secure-headers@file"
-        - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
-
-networks:
-  traefik_swarm:
-    external: true
-  bookstack_swarm:
-    external: true
-
-
-volumes:
-  traefik_data:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/traefik"
-
-  shared_data:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/shared"

@@ -1,10 +1,10 @@
-# richardsoper.me Traefik 2.2
+# richardsoper.me Traefik 2.2 with Docker Swarm
 
 ![mozilla-obs](https://img.shields.io/mozilla-observatory/grade-score/richardsoper.me?publish)
 ![site-status](https://img.shields.io/website?url=https%3A%2F%2Frichardsoper.me)
 
 Personal site used for developing my own skills.
-Tested primarily on Raspberry Pi 4 running Ubuntu 20.04 64-bit
+This is being run on two raspberry pi 4's with Ubuntu 20.04 Server LTS
 
 https://www.richardsoper.me
 
@@ -13,30 +13,22 @@ https://www.richardsoper.me
     - Deploy applications using swarm. 
     - Data mounting occurs with NFS because local bind mount storage isnt an option for swarm.
 
+### What is working
+    
+    - Traefik with LetsEncrypt cert generation via CloudFlare
+    - Portainer with agent configuration
+    - Bookstack
+    - Non-containerized config like Pihole, Home Assistant
+    - PHPmyadmin - It partially works, but currently cannot connect to databases. 
+    - mariaDB - Only one instance of each DB should be run. They are not configured for clustering. 
 
-### Frontend - Exposed to traefik
+### To-do
 
     - Ghost
     - NextCloud
     - WordPress
     - Gitea
     - Grafana
-    - Bookstack
-
-### LAN Restricted - Exposed to traefik, but accessible only to specified subnet.
-
-    - Portainer
-    - PHPMyAdmin
-    - HomeAssistant
-    - Pi-Hole(Non-docker service)
-
-### Tools - Not exposed to traefik
-
-    - mariaDB
-    - watchtower
-
-### Monitoring backend - Not exposed to traefik
-
     - Prometheus
     - Node Exporter
     - Arm Exporter
@@ -44,14 +36,6 @@ https://www.richardsoper.me
     - Promtail
     - Loki
 
-### Usage
+### How to use it
 
-    - Create a .env file in the root directory of this repository
-    - Create a ghost.env file in the ghost directory
-    - Create an acme.json file in traefik/acme directory
-    - Change permissions of acme.json to 600. "chmod 600 richardsoper.me/traefik/acme/acme.json"
-    - Create .htpasswd basic auth file for Traefik dashboard "htpasswd -c richardsoper.me/shared/.htpasswd your_username"
-    - Navigate to traefik/traefik.yml and update the email address(unless you want me to know about your certs)
-    - Create traefik_proxy network with "docker network create -d overlay traefik_swarm"
-    - With all variable created, run command "docker-compose up -d" from the root directory of this repository
-    - For monitoring, run command "docker-compose -f ./monitoring/docker-compose.yml up -d"
+Instructions are a work in progress. With the complexities of clustering services I will be experimenting with a lot of changes and restructuring the project. Will likely have a script to run for easier start up. 
