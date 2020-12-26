@@ -1,14 +1,26 @@
 version: '3.2'
 
+networks:
+  agent_network:
+    driver: overlay
+    attachable: true
+  traefik_swarm:
+    external: true
+
+volumes:
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/docker/richardsoper.me/portainer/data"
+
+
 services:
   agent:
     image: portainer/agent
     environment:
-      # REQUIRED: Should be equal to the service name prefixed by "tasks." when
-      # deployed inside an overlay network
       AGENT_CLUSTER_ADDR: tasks.agent
-      # AGENT_PORT: 9001
-      # LOG_LEVEL: debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
@@ -24,7 +36,6 @@ services:
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
       - "9000:9000"
-      - "8000:8000"
     volumes:
       - portainer_data:/data
     networks:
@@ -41,19 +52,3 @@ services:
         - "traefik.http.routers.portainer.rule=Host(`portainer.richardsoper.me`)"
         - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-
-        - "traefik.http.routers.edge.rule=Host(`edge.richardsoper.me`)"
-        - "traefik.http.routers.edge.entrypoints=websecure"
-        - "traefik.http.routers.edge.tls.certresolver=cf-cert"
-        - "traefik.http.services.edge.loadbalancer.server.port=8000"
-        - "traefik.http.routers.edge.service=edge"
-
-networks:
-  agent_network:
-    driver: overlay
-    attachable: true
-  traefik_swarm:
-    external: true
-
-volumes:
-  portainer_data:
