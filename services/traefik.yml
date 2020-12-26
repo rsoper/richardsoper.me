@@ -9,6 +9,8 @@ secrets:
 networks:
   traefik_swarm:
     external: true
+  legacy_traefik:
+    attachable: true
 
 volumes:
   traefik_data:
@@ -45,6 +47,7 @@ services:
       - shared_data:/shared
     networks:
       - traefik_swarm
+      - legacy_traefik
     deploy:
       mode: global
       placement:
