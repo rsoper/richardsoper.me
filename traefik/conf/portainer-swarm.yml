@@ -1,0 +1,19 @@
+http:
+  routers:
+    portainer:
+      rule: "Host(`portainer.richardsoper.me`)"
+      service: portainer-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - traefik-auth@docker
+
+  services:
+    portainer-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://10.0.20.3:9000"
