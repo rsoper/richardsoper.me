@@ -1,0 +1,52 @@
+version: '3.2'
+
+networks:
+  monitoring_agents:
+    driver: overlay
+    attachable: true
+  traefik_swarm:
+    external: true
+
+services:
+  cadvisor:
+    image: zcube/cadvisor
+    ports:
+      - "8181:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - monitoring_agents
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+
+  arm_exporter:
+    image: carlosedp/arm_exporter
+    container_name: arm_exporter
+    restart: unless-stopped
+    ports:
+      - "9243:9243"
+    networks:
+      - monitoring_agents
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+  
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    networks:
+      - monitoring_agents
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
