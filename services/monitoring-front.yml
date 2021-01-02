@@ -36,6 +36,7 @@ secrets:
 services:
   prometheus:
     image: prom/prometheus:latest
+    user: "1000"
     volumes:
       - prometheus_config:/etc/prometheus
       - prometheus_data:/data/prometheus
