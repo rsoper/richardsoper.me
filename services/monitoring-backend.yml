@@ -24,6 +24,11 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
 
   arm_exporter:
     image: carlosedp/arm_exporter
@@ -37,6 +42,11 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
   
   node-exporter:
     image: prom/node-exporter
@@ -50,3 +60,8 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
