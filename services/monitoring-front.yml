@@ -62,7 +62,6 @@ services:
   grafana:
     image: grafana/grafana
     user: "472"
-    group: "1"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/GF_ADMIN_PASSWORD
     volumes:
