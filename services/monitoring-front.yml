@@ -69,7 +69,8 @@ services:
       - monitoring_agents
       - traefik_swarm
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 1
       placement:
         constraints: [node.platform.os == linux]
       labels:
