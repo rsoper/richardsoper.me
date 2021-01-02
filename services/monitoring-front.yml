@@ -15,13 +15,6 @@ volumes:
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/docker/richardsoper.me/monitoring/prometheus_db"
 
-  prometheus_config:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/monitoring/prometheus.yml"
-
   grafana_data:
     driver: local
     driver_opts:
@@ -38,10 +31,9 @@ services:
     image: prom/prometheus:latest
     user: "1000:1000"
     volumes:
-      - prometheus_config:/etc/prometheus/prometheus.yml
       - prometheus_data:/data/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file=/data/prometheus/prometheus.yml"
       - "--storage.tsdb.retention.time=90d"
       - "--storage.tsdb.path=/data/prometheus"
     ports:
