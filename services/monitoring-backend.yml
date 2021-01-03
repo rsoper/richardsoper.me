@@ -24,11 +24,6 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
 
   arm_exporter:
     image: carlosedp/arm_exporter
@@ -42,11 +37,6 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
   
   node-exporter:
     image: prom/node-exporter
@@ -54,14 +44,13 @@ services:
     restart: unless-stopped
     ports:
       - "9100:9100"
+    volumes:
+      - /etc/hostname:/etc/nodename
+      - /:/rootfs:ro
+      - /proc:/host/proc:ro
     networks:
       - monitoring_agents
     deploy:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
