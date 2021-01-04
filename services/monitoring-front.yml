@@ -81,3 +81,4 @@ services:
       - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
       - "traefik.http.routers.grafana.middlewares=secure-headers@file"
       - "traefik.http.services.grafana.loadbalancer.server.port=3030"
+      - "traefik.port=3030"
