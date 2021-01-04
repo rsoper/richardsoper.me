@@ -80,4 +80,4 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
       - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
       - "traefik.http.routers.grafana.middlewares=secure-headers@file"
-      - "traefik.port=3030"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3030"
