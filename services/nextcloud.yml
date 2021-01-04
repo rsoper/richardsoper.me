@@ -68,6 +68,8 @@ services:
       - "TZ"
       - "MYSQL_ROOT"
     environment:
+      - PUID=1000
+      - PGID=1000
       - FILE__MYSQL_ROOT_PASSWORD=/run/secrets/MYSQL_ROOT
       - FILE__TZ=/run/secrets/TZ
       - MYSQL_USER=nextcloud
