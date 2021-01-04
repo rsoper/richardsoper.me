@@ -2,8 +2,7 @@ version: '3.2'
 
 networks:
   monitoring_agents:
-    driver: overlay
-    attachable: true
+    external: true
   traefik_swarm:
     external: true
 

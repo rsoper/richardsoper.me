@@ -2,8 +2,7 @@ version: '3.2'
 
 networks:
   monitoring_agents:
-    driver: overlay
-    attachable: true
+    external: true
   traefik_swarm:
     external: true
 
@@ -53,11 +52,6 @@ services:
       replicas: 1
       placement:
         constraints: [node.platform.os == linux]
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
 
   grafana:
     image: grafana/grafana
@@ -87,8 +81,3 @@ services:
       - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
       - "traefik.http.routers.grafana.middlewares=secure-headers@file"
       - "traefik.port=3030"
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
