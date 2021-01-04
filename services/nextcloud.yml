@@ -34,11 +34,15 @@ services:
     image: nextcloud:latest
     environment:
       - MYSQL_HOST=mariadb
-      - 
+      - MYSQL_USER=nextcloud
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_PASSWORD_FILE=/run/secrets/cloud_db_pass
     ports:
       - "8000:80"
     volumes:
       - application:/var/www/html
+    secrets:
+      - "cloud_db_pass"
     networks:
       - traefik_swarm
       - cloud_net
