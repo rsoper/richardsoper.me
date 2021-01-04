@@ -26,8 +26,6 @@ services:
 
   arm_exporter:
     image: carlosedp/arm_exporter
-    container_name: arm_exporter
-    restart: unless-stopped
     ports:
       - "9243:9243"
     networks:
@@ -39,8 +37,6 @@ services:
   
   node-exporter:
     image: prom/node-exporter
-    container_name: node-exporter
-    restart: unless-stopped
     ports:
       - "9100:9100"
     volumes:
