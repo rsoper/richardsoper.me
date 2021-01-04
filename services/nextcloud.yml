@@ -32,7 +32,7 @@ secrets:
 services:
   nextcloud:
     image: nextcloud:latest
-    user: "0"
+    user: "33"
     environment:
       - MYSQL_HOST=mariadb
       - MYSQL_USER=nextcloud
@@ -61,7 +61,7 @@ services:
 
   mariadb:
     image: linuxserver/mariadb:110.4.14mariabionic-ls80
-    user: "1000"
+    user: "33"
     volumes:
       - database:/config
     secrets:
