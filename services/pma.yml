@@ -3,6 +3,8 @@ version: "3.7"
 networks:
   traefik_swarm:
     external: true
+  cloud_net:
+    external: true
 
 services:
   phpmyadmin:
@@ -12,6 +14,7 @@ services:
       - PMA_ABSOLUTE_URI=https://db.richardsoper.me/
     networks:
       - traefik_swarm
+      - cloud_net
     deploy:
       replicas: 1
       labels:
