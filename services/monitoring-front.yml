@@ -62,8 +62,6 @@ services:
       - grafana_data:/var/lib/grafana
     depends_on:
       - prometheus
-    ports:
-      - "3030:3000"
     secrets:
       - "GF_ADMIN_PASSWORD"
     networks:
@@ -80,5 +78,4 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
       - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
       - "traefik.http.routers.grafana.middlewares=secure-headers@file"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3030"
-      - "traefik.port=3030"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
