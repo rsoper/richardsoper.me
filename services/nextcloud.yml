@@ -32,7 +32,7 @@ secrets:
 services:
   nextcloud:
     image: nextcloud:latest
-    user: "1024"
+    user: "0"
     environment:
       - MYSQL_HOST=mariadb
       - MYSQL_USER=nextcloud
@@ -61,6 +61,7 @@ services:
 
   mariadb:
     image: linuxserver/mariadb:110.4.14mariabionic-ls80
+    user: "1000"
     volumes:
       - database:/config
     secrets:
@@ -68,8 +69,6 @@ services:
       - "TZ"
       - "MYSQL_ROOT"
     environment:
-      - PUID=1000
-      - PGID=1000
       - FILE__MYSQL_ROOT_PASSWORD=/run/secrets/MYSQL_ROOT
       - FILE__TZ=/run/secrets/TZ
       - MYSQL_USER=nextcloud
