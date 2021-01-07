@@ -26,4 +26,3 @@ scrape_configs:
     static_configs:
       - targets:
           - 10.0.20.2:8008
-          - 10.0.20.146:8008
