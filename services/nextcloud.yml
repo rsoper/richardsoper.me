@@ -34,7 +34,7 @@ services:
     image: nextcloud:latest
     user: "33"
     environment:
-      - MYSQL_HOST=mariadb
+      - MYSQL_HOST=mariadb:3306
       - MYSQL_USER=nextcloud
       - MYSQL_DATABASE=nextcloud
       - MYSQL_PASSWORD_FILE=/run/secrets/cloud_db_pass
