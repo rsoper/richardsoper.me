@@ -61,7 +61,6 @@ services:
 
   mariadb:
     image: linuxserver/mariadb:110.4.14mariabionic-ls80
-    user: "33"
     volumes:
       - database:/config
     secrets:
@@ -74,6 +73,8 @@ services:
       - MYSQL_USER=nextcloud
       - MYSQL_DATABASE=nextcloud
       - FILE__MYSQL_PASSWORD=/run/secrets/cloud_db_pass
+      - PUID=1028
+      - PGID=100
     networks:
       - cloud_net
     deploy:
