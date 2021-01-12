@@ -40,7 +40,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - application:/var/www/html
+      - /mnt/docker/richardsoper.me/nextcloud/application:/var/www/html
     secrets:
       - "cloud_db_pass"
     networks:
@@ -61,7 +61,7 @@ services:
   mariadb:
     image: linuxserver/mariadb:110.4.14mariabionic-ls80
     volumes:
-      - database:/config
+      - /mnt/docker/richardsoper.me/nextcloud/data:/config
     secrets:
       - "cloud_db_pass"
       - "TZ"
