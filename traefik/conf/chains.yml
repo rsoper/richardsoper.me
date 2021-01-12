@@ -13,5 +13,12 @@ http:
           - securedheaders@file
           - compression@file
 
+    nextcloud-headers:
+      chain:
+        middlewares:
+          - securedheaders@file
+          - compression@file
+          - nextcloud-redirect@file
+
     compression:
       compress: {}

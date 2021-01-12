@@ -1,18 +1,7 @@
 http:
-  routers:
-    cloud:
-      rule: "Host(`cloud.richardsoper.me`)"
-      service: cloud-service
-      entryPoints:
-        - websecure
-      tls:
-        certResolver: cf-cert
-      middlewares:
-        - secure-headers@file
-
-  services:
-    cloud-service:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: "http://10.0.20.2:8000"
+  middlewares:
+    nextcloud-redirect:
+      redirectRegex:
+        permanent: true
+        regex: "https://(.*)/.well-known/(card|cal)dav"
+        replacement: "https://${1}/remote.php/dav/"

@@ -46,7 +46,7 @@ services:
         - "traefik.http.routers.nextcloud.entrypoints=websecure"
         - "traefik.http.routers.nextcloud.rule=Host(`cloud.richardsoper.me`)"
         - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
-        - "traefik.http.routers.nextcloud.middlewares=secure-headers@file"
+        - "traefik.http.routers.nextcloud.middlewares=nextcloud-headers@file"
         - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
       
 
