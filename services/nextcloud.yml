@@ -32,9 +32,8 @@ secrets:
 services:
   nextcloud:
     image: nextcloud:latest
-    user: "33"
     environment:
-      - MYSQL_HOST=mariadb:3306
+      - MYSQL_HOST=mariadb
       - MYSQL_USER=nextcloud
       - MYSQL_DATABASE=nextcloud
       - MYSQL_PASSWORD_FILE=/run/secrets/cloud_db_pass
@@ -73,8 +72,8 @@ services:
       - MYSQL_USER=nextcloud
       - MYSQL_DATABASE=nextcloud
       - FILE__MYSQL_PASSWORD=/run/secrets/cloud_db_pass
-      - PUID=1028
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
     networks:
       - cloud_net
     deploy:
