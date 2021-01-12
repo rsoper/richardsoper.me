@@ -10,19 +10,19 @@ scrape_configs:
   - job_name: "node-exporter"
     static_configs:
       - targets:
-          - 10.0.20.2:9100
-          - 10.0.20.146:9100
+          - master.server:9100
+          - worker.server:9100
   - job_name: cadvisor
     static_configs:
       - targets:
-          - 10.0.20.2:8181
-          - 10.0.20.146:8181
+          - master.server:8181
+          - worker.server:8181
   - job_name: arm-exporter
     static_configs:
       - targets:
-          - 10.0.20.2:9243
-          - 10.0.20.146:9243
+          - master.server:9243
+          - worker.server:9243
   - job_name: traefik
     static_configs:
       - targets:
-          - 10.0.20.2:8008
+          - master.server:8008
