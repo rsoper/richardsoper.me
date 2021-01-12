@@ -12,6 +12,9 @@ secrets:
   MYSQL_ROOT:
     external: true
 
+volumes:
+  application:
+
 services:
   nextcloud:
     image: nextcloud:latest
@@ -23,7 +26,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - /mnt/docker/richardsoper.me/nextcloud/application:/var/www/html
+      - application:/var/www/html
     secrets:
       - "cloud_db_pass"
     networks:
