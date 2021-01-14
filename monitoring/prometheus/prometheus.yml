@@ -24,7 +24,6 @@ scrape_configs:
       - targets:
           - master.server:9243
           - worker.server:9243
-          - worker-i3.server:9243
   - job_name: traefik
     static_configs:
       - targets:
