@@ -18,7 +18,7 @@ volumes:
 
 services:
   agent:
-    image: portainer/agent
+    image: portainer/agent:latest
     environment:
       AGENT_CLUSTER_ADDR: tasks.agent
     volumes:
@@ -32,11 +32,12 @@ services:
         constraints: [node.platform.os == linux]
 
   portainer:
-    image: portainer/portainer-ce
+    image: portainer/portainer-ce:latest
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
       - "9000:9000"
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
       - agent_network
