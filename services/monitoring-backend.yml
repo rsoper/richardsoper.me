@@ -39,7 +39,10 @@ services:
     image: prom/node-exporter
     ports:
       - "9100:9100"
+    environment:
+      - NODE_ID={{.Node.ID}}
     volumes:
+      - /sys:/host/sys:ro
       - /etc/hostname:/etc/nodename
       - /:/rootfs:ro
       - /proc:/host/proc:ro
