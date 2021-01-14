@@ -33,7 +33,7 @@ services:
     deploy:
       mode: global
       placement:
-        constraints: [node.platform.os == linux]
+        constraints: [node.platform.arch == aarch64]
   
   node-exporter:
     image: prom/node-exporter
