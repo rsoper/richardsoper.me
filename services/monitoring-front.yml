@@ -12,21 +12,21 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/monitoring/prometheus_db"
+      device: ":/volume1/swarm/monitoring/prometheus_db"
 
   prometheus_config:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/monitoring/prometheus"
+      device: ":/volume1/swarm/monitoring/prometheus"
 
   grafana_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/monitoring/grafana_db"
+      device: ":/volume1/swarm/monitoring/grafana_db"
 
 secrets:
   GF_ADMIN_PASSWORD:
