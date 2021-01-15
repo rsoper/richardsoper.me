@@ -18,7 +18,7 @@ scrape_configs:
       - names:
         - 'tasks.cadvisor'
         type: 'A'
-        port: 8181
+        port: 8080
   - job_name: arm_exporter
     dns_sd_configs:
       - names:
