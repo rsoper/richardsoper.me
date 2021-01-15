@@ -16,14 +16,14 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/traefik"
+      device: ":/volume1/swarm/traefik"
 
   shared_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/shared"
+      device: ":/volume1/swarm/shared"
 
 services:
   traefik:
