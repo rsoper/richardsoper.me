@@ -57,7 +57,7 @@ services:
         - "traefik.http.services.wordpress.loadbalancer.server.port=80"
 
   
-  mariadb:
+  wordpress_db:
     image: mariadb
     volumes:
       - wordpress_db_data:/config
