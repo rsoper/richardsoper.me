@@ -19,13 +19,13 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/wordpress/app"
+      device: ":/volume1/swarm/wordpress/app"
   wordpress_db_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/wordpress/data"
+      device: ":/volume1/swarm/wordpress/data"
 
 services:
   wordpress:
@@ -55,22 +55,20 @@ services:
         - "traefik.http.services.wordpress.loadbalancer.server.port=80"
 
   
-  wordpress_db:
-    image: linuxserver/mariadb:110.4.14mariabionic-ls80
-    secrets:
-      - "wordpress_db_password"
-      - "TZ"
+  mariadb:
+    image: mariadb
     volumes:
       - wordpress_db_data:/config
+    secrets:
+      - "wordpress_db_password"
+      - "MYSQL_ROOT"
     environment:
-      FILE__TZ: /run/secrets/TZ
-      FILE__MYSQL_ROOT_PASSWORD: /run/secrets/wordpress_db_password
-      FILE__MYSQL_PASSWORD: /run/secrets/wordpress_db_password
-      PUID: 1000
-      PGID: 1000
-      MYSQL_DATABASE: wordpressapp
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/MYSQL_ROOT
       MYSQL_USER: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_PASSWORD_FILE: /run/secrets/wordpress_db_password
     networks:
       - wp_private
     deploy:
+      mode: replicated
       replicas: 1
