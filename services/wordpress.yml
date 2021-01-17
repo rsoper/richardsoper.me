@@ -5,6 +5,8 @@ secrets:
     external: true
   TZ:
     external: true
+  MYSQL_ROOT:
+    external: true
 
 networks:
   traefik_swarm:
