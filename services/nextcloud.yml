@@ -18,7 +18,14 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/docker/richardsoper.me/nextcloud/application"
+      device: ":/volume1/swarm/nextcloud/application"
+
+  database:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/nextcloud/application"
 
 
 services:
@@ -30,9 +37,6 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_PASSWORD_FILE=/run/secrets/cloud_db_pass
       - NEXTCLOUD_TRUSTED_DOMAINS=https://cloud.richardsoper.me
-      - TRUSTED_PROXIES=
-    ports:
-      - "8000:80"
     volumes:
       - application:/var/www/html
     secrets:
@@ -55,7 +59,7 @@ services:
   mariadb:
     image: mariadb
     volumes:
-      - /mnt/docker/richardsoper.me/nextcloud/data:/config
+      - database:/config
     secrets:
       - "cloud_db_pass"
       - "MYSQL_ROOT"
