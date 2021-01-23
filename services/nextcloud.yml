@@ -3,6 +3,8 @@ version: '3.2'
 networks:
   traefik_swarm:
     external: true
+  cloud_net:
+    external: true
 
 secrets:
   cloud_db_pass:
