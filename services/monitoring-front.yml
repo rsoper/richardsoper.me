@@ -35,7 +35,7 @@ secrets:
 services:
   prometheus:
     image: prom/prometheus:latest
-    user: "65534"
+    user: "1028"
     volumes:
       - prometheus_config:/etc/prometheus
       - prometheus_data:/data/prometheus
@@ -55,7 +55,7 @@ services:
 
   grafana:
     image: grafana/grafana
-    user: "472"
+    user: "1028"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/GF_ADMIN_PASSWORD
     volumes:
