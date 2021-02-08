@@ -63,7 +63,6 @@ services:
 
   promtail:
     image: grafana/promtail:1.5.0
-    container_name: promtail
     volumes:
       - /var/log:/var/log
       - promtail_config:/etc/promtail/
