@@ -1,0 +1,40 @@
+# ansible-playbook ./playbooks/setup.yml --user swarm --ask-become-pass -i ./inventory/hosts
+- name: Configure machines with expected packages
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: install zsh
+      apt:
+        name: zsh
+        state: present
+        update_cache: true
+    - name: install git
+      apt:
+        name: git
+        state: present
+        update_cache: true
+    - name: install fail2ban
+      apt:
+        name: fail2ban
+        state: present
+        update_cache: true
+    - name: install pip3
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: true
+    - name: install micro
+      apt:
+        name: micro
+        state: present
+        update_cache: true
+    - name: install nfs mounting utilities
+      apt:
+        name: cifs-utils
+        state: present
+        update_cache: true
+    - name: install pip3
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: true
