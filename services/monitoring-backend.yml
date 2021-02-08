@@ -30,23 +30,25 @@ services:
       placement:
         constraints: [node.platform.os == linux]
   
-  node-exporter:
-    image: prom/node-exporter
-    ports:
-      - "9100:9100"
-    environment:
-      - NODE_ID={{.Node.ID}}
-    volumes:
-      - /sys:/host/sys:ro
-      - /etc/hostname:/etc/nodename
-      - /:/rootfs:ro
-      - /proc:/host/proc:ro
-    networks:
-      - monitoring_agents
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.platform.os == linux]
+ ## Commented out node exported because I have it running on each machine with host networking for proper identification.
+ ## Will likely remove this once I find a better solution. 
+  # node-exporter:
+  #   image: prom/node-exporter
+  #   ports:
+  #     - "9100:9100"
+  #   environment:
+  #     - NODE_ID={{.Node.ID}}
+  #   volumes:
+  #     - /sys:/host/sys:ro
+  #     - /etc/hostname:/etc/nodename
+  #     - /:/rootfs:ro
+  #     - /proc:/host/proc:ro
+  #   networks:
+  #     - monitoring_agents
+  #   deploy:
+  #     mode: global
+  #     placement:
+  #       constraints: [node.platform.os == linux]
 
   loki:
     image: grafana/loki:1.5.0
