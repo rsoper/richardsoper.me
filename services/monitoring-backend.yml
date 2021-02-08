@@ -3,8 +3,14 @@ version: '3.2'
 networks:
   monitoring_agents:
     external: true
-  traefik_swarm:
-    external: true
+
+volumes:
+  promtail_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/promtail"
 
 services:
   cadvisor:
@@ -23,17 +29,6 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
-
-  arm_exporter:
-    image: carlosedp/arm_exporter
-    ports:
-      - "9243:9243"
-    networks:
-      - monitoring_agents
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.platform.arch == aarch64]
   
   node-exporter:
     image: prom/node-exporter
@@ -46,6 +41,36 @@ services:
       - /etc/hostname:/etc/nodename
       - /:/rootfs:ro
       - /proc:/host/proc:ro
+    networks:
+      - monitoring_agents
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+
+  loki:
+    image: grafana/loki:1.5.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring_agents
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.platform.os == linux]
+
+  promtail:
+    image: grafana/promtail:1.5.0
+    container_name: promtail
+    volumes:
+      - /var/log:/var/log
+      - promtail_config:/etc/promtail/
+      ## Need to adjust the traefik log config to avoid accidentally sharing the .htpasswd file like a moron. 
+      # - ../shared/traefik.log:/var/log/traefik.log
+      # - ../shared/traefik-access.log:/var/log/traefik-access.log
+    command: -config.file=/etc/promtail/docker-config.yaml
     networks:
       - monitoring_agents
     deploy:
