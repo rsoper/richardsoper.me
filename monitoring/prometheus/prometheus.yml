@@ -8,11 +8,13 @@ scrape_configs:
   #   static_configs:
   #     - targets: ["10.0.20.2:9090"] ## IP Address of the localhost
   - job_name: "node-exporter"
-    dns_sd_configs:
-      - names:
-        - 'tasks.node-exporter'
-        type: 'A'
-        port: 9100
+    # dns_sd_configs:
+    #   - names:
+    #     - 'tasks.node-exporter'
+    #     type: 'A'
+    #     port: 9100
+    static_configs:
+      - targets: ["master.server:9100", "worker.server:9100", "worker-i3.server:9100"]
   - job_name: cadvisor
     dns_sd_configs:
       - names:
