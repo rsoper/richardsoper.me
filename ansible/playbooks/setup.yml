@@ -18,6 +18,13 @@
         name: fail2ban
         state: present
         update_cache: true
+    - name: Copy over fail2ban config
+      template: src=../templates/00-sshd.conf dest=/etc/fail2ban/jail.d/00-sshd.conf
+    - name: Restart fail2ban
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        name: fail2ban
     - name: install pip3
       apt:
         name: python3-pip
@@ -38,3 +45,5 @@
         name: python3-pip
         state: present
         update_cache: true
+    - name: set timezone
+      shell: timedatectl set-timezone America/Los_Angeles
