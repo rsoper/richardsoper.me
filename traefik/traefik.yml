@@ -3,10 +3,10 @@ api:
 
 log:
   level: DEBUG
-  filePath: /shared/traefik.log
+  filePath: /shared/logs/traefik.log
 
 accessLog:
-  filePath: /shared/traefik-access.log
+  filePath: /shared/logs/traefik-access.log
 
 metrics:
   prometheus:
