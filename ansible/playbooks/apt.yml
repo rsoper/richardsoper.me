@@ -1,0 +1,8 @@
+# ansible-playbook ./playbooks/apt.yml --user swarm --ask-become-pass -i ./inventory/hosts
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: apt
+      apt: 
+        update_cache: yes
+        upgrade: 'yes'
