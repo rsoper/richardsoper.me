@@ -22,7 +22,7 @@ services:
   ghost:
     image: ghost:3-alpine
     volumes:
-      - ghost_data:/ghost
+      - ghost_data:/var/lib/ghost
     networks:
       - traefik_swarm
     deploy:
