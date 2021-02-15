@@ -5,15 +5,10 @@ secrets:
     external: true
   TZ:
     external: true
-  MYSQL_ROOT:
-    external: true
 
 networks:
   traefik_swarm:
     external: true
-  wp_private:
-    driver: overlay
-    attachable: true
 
 volumes:
   wordpress_data:
@@ -22,30 +17,21 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/wordpress/app"
-  wordpress_db_data:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/wordpress/data"
 
 services:
   wordpress:
     image: wordpress:latest
     secrets:
       - "wordpress_db_password"
-    depends_on:
-      - wordpress_db
     environment:
-      WORDPRESS_DB_HOST: wordpress_db
+      WORDPRESS_DB_HOST: storage.local:3307
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_password
-      WORDPRESS_DB_NAME: wordpressapp
+      WORDPRESS_DB_NAME: wordpress
     volumes:
       - wordpress_data:/var/www/html
     networks:
       - traefik_swarm
-      - wp_private
     deploy:
       replicas: 1
       labels:
@@ -55,22 +41,3 @@ services:
         - "traefik.http.routers.wordpress.tls.certresolver=cf-cert"
         - "traefik.http.routers.wordpress.middlewares=secure-headers@file"
         - "traefik.http.services.wordpress.loadbalancer.server.port=80"
-
-  
-  wordpress_db:
-    image: mariadb
-    volumes:
-      - wordpress_db_data:/config
-    secrets:
-      - "wordpress_db_password"
-      - "MYSQL_ROOT"
-    environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/MYSQL_ROOT
-      MYSQL_USER: wordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_PASSWORD_FILE: /run/secrets/wordpress_db_password
-    networks:
-      - wp_private
-    deploy:
-      mode: replicated
-      replicas: 1
