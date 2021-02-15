@@ -33,4 +33,4 @@ services:
         - "traefik.http.routers.ghost.rule=Host(`www.richardsoper.me`) || Host(`richardsoper.me`)"
         - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
         - "traefik.http.routers.ghost.middlewares=secure-headers@file"
-        - "traefik.http.services.ghost.loadbalancer.server.port=80"
+        - "traefik.http.services.ghost.loadbalancer.server.port=2368"
