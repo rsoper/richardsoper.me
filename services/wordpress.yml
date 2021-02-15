@@ -21,13 +21,6 @@ volumes:
 services:
   wordpress:
     image: wordpress:latest
-    secrets:
-      - "wordpress_db_password"
-    environment:
-      WORDPRESS_DB_HOST: storage.local:3307
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_password
-      WORDPRESS_DB_NAME: wordpress
     volumes:
       - wordpress_data:/var/www/html
     networks:
