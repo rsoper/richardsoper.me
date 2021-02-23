@@ -18,6 +18,8 @@ services:
     command: jekyll serve --watch --force_polling --verbose
     environment:
       - JEKYLL_ENV=production
+      - JEKYLL_UID=1028
+      - JEKYLL_GID=1028
     volumes:
       - jekyll_data:/srv/jekyll
     networks:
