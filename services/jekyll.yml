@@ -15,7 +15,7 @@ volumes:
 services:
   jekyll:
     image: jekyll/jekyll:latest
-    command: bundle install && jekyll serve --watch --force_polling --verbose
+    command: jekyll serve --watch --force_polling --verbose
     environment:
       - JEKYLL_ENV=production
       - JEKYLL_UID=1028
@@ -26,7 +26,7 @@ services:
       - traefik_swarm
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jekyll.entrypoints=websecure"
