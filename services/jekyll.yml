@@ -23,7 +23,7 @@ services:
       - traefik_swarm
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 3
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jekyll.entrypoints=websecure"
