@@ -34,3 +34,5 @@ services:
         - "traefik.http.routers.jekyll.tls.certresolver=cf-cert"
         - "traefik.http.routers.jekyll.middlewares=secure-headers@file"
         - "traefik.http.services.jekyll.loadbalancer.server.port=4000"
+      placement:
+        constraints: [node.platform.arch == x86_64]
