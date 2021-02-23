@@ -15,6 +15,7 @@ volumes:
 services:
   jekyll:
     image: jekyll/jekyll:latest
+    command: jekyll serve --watch --force_polling --verbose
     environment:
       - JEKYLL_ENV=production
     volumes:
