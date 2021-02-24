@@ -14,14 +14,9 @@ volumes:
 
 services:
   jekyll:
-    image: jekyll/jekyll:latest
-    command: jekyll serve --watch --force_polling --verbose
-    environment:
-      - JEKYLL_ENV=production
-      - JEKYLL_UID=1028
-      - JEKYLL_GID=1028
+    image: richardsoper/jekyll:latest
     volumes:
-      - jekyll_data:/srv/jekyll
+      - jekyll_data:/usr/src/app
     networks:
       - traefik_swarm
     deploy:
@@ -34,5 +29,3 @@ services:
         - "traefik.http.routers.jekyll.tls.certresolver=cf-cert"
         - "traefik.http.routers.jekyll.middlewares=secure-headers@file"
         - "traefik.http.services.jekyll.loadbalancer.server.port=4000"
-      placement:
-        constraints: [node.platform.arch == x86_64]
