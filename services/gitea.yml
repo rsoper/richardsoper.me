@@ -20,6 +20,8 @@ services:
       - USER_GID=1028
     volumes:
       - gitea_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - traefik_swarm
     deploy:
