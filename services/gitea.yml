@@ -15,6 +15,9 @@ volumes:
 services:
   web:
     image: gitea/gitea:1.12.4
+    environment:
+      - USER_UID=1028
+      - USER_GID=1028
     volumes:
       - gitea_data:/data
     networks:
