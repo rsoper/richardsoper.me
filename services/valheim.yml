@@ -41,8 +41,6 @@ services:
       replicas: 1
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.valheim.entrypoints=websecure"
-        - "traefik.http.routers.valheim.rule=Host(`valheim.richardsoper.me`)"
-        - "traefik.http.routers.valheim.tls.certresolver=cf-cert"
-        - "traefik.http.routers.valheim.middlewares=secure-headers@file"
-        - "traefik.http.services.valheim.loadbalancer.server.port=2456"
+        - "traefik.udp.routers.valheim.entrypoints=valheim"
+        - "traefik.udp.routers.valheim.rule=Host(`valheim.richardsoper.me`)"
+        - "traefik.udp.services.valheim.loadbalancer.server.port=2456"
