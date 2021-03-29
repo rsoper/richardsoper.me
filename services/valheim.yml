@@ -33,15 +33,8 @@ services:
       - valheim_config:/config
       - valheim_data:/opt/valheim
     ports: 
-      - "2458:2456/udp"
+      - "2456:2456/udp"
       - "2457:2457/udp"
-    networks:
-      - traefik_swarm
     deploy:
       mode: replicated
       replicas: 1
-      labels:
-        - "traefik.enable=true"
-        - "traefik.udp.routers.valheim.entrypoints=valheim"
-        - "traefik.udp.routers.valheim.service=valheim"
-        - "traefik.udp.services.valheim.loadbalancer.server.port=2458"
