@@ -21,6 +21,8 @@ entryPoints:
     address: ":443"
   metrics:
     address: ":8008"
+  valheim:
+    address: ":2456/udp"
 
 providers:
   docker:
