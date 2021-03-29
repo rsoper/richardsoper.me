@@ -23,10 +23,10 @@ services:
   valheim: 
     image: lloesche/valheim-server
     environment:
-      - SERVER_NAME="Valkeld"
-      - SERVER_PASS="Victory"
+      - SERVER_NAME=Valkeld
+      - SERVER_PASS=Victory
       - UPDATE_IF_IDLE=true
-      - TZ="America/Los_Angeles"
+      - TZ=America/Los_Angeles
     cap_add:
       - sys_nice
     volumes: 
@@ -34,9 +34,6 @@ services:
       - valheim_data:/opt/valheim
     ports: 
       - "2456-2457:2456-2457/udp"
-      - "9002:9001/tcp"
-    # env_file:
-    #   - $HOME/valheim-server/valheim.env
     networks:
       - traefik_swarm
     deploy:
@@ -48,4 +45,4 @@ services:
         - "traefik.http.routers.valheim.rule=Host(`valheim.richardsoper.me`)"
         - "traefik.http.routers.valheim.tls.certresolver=cf-cert"
         - "traefik.http.routers.valheim.middlewares=secure-headers@file"
-        - "traefik.http.services.valheim.loadbalancer.server.port=9002"
+        - "traefik.http.services.valheim.loadbalancer.server.port=2456"
