@@ -42,5 +42,5 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.udp.routers.valheim.entrypoints=valheim"
-        - "traefik.udp.routers.valheim.rule=Host(`valheim.richardsoper.me`)"
+        - "traefik.udp.routers.valheim.service=valheim"
         - "traefik.udp.services.valheim.loadbalancer.server.port=2456"
