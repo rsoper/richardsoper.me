@@ -27,6 +27,7 @@ services:
       - SERVER_PASS=Victory
       - UPDATE_IF_IDLE=true
       - TZ=America/Los_Angeles
+      - WORLD_NAME=Valkeld
     cap_add:
       - sys_nice
     volumes: 
