@@ -32,3 +32,4 @@ services:
         - 'traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.richardsoper.me'
         - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
         - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
+        - "traefik.http.services.authelia.loadbalancer.server.port=9091"
