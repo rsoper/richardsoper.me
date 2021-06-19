@@ -10,7 +10,7 @@ http:
       middlewares:
         - admin-redirect@file
         - secure-headers@file
-        - traefik-auth@docker
+        - authelia@docker
 
   services:
     pihole-service:
