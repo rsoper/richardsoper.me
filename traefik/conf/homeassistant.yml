@@ -9,7 +9,7 @@ http:
         certResolver: cf-cert
       middlewares:
         - secure-headers@file
-        - traefik-auth@docker
+        - authelia@docker
 
   services:
     homeassistant-service:
