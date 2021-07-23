@@ -17,10 +17,18 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/nextcloud/application"
+  redis_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/nextcloud/redis"
 
 services:
   redis:
     image: redis:latest
+    volumes:
+      - redis_data:/data
     networks:
       - cloud_net
     deploy:
