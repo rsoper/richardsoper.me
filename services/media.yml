@@ -4,7 +4,8 @@ networks:
   traefik_swarm:
     external: true
   media_net:
-    external: true
+    driver: overlay
+    attachable: true
 
 secrets:
   TZ:
