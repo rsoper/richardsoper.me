@@ -87,8 +87,6 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     environment:
-      - PUID=1028
-      - PGID=1028
       - JELLYFIN_PublishedServerUrl=https://media.richardsoper.me
     volumes:
       - jellyfin_config:/config
