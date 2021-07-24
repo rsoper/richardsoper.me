@@ -42,8 +42,8 @@ services:
       - PUID=1028
       - PGID=1028
       - FILE_TZ=/run/secrets/TZ
-      - FILE_USER=/run/secrets/TM_USER
-      - FILE_PASS=/run/secrets/TM_PASS
+      # - FILE_USER=/run/secrets/TM_USER
+      # - FILE_PASS=/run/secrets/TM_PASS
     volumes:
       - transmission_config:/config
       - transmission_downloads:/downloads
