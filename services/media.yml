@@ -61,5 +61,5 @@ services:
         - "traefik.http.routers.transmission.entrypoints=websecure"
         - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
         - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
-        # - "traefik.http.routers.transmission.middlewares=nextcloud-headers@file"
+        - "traefik.http.routers.transmission.middlewares=authelia@docker"
         - "traefik.http.services.transmission.loadbalancer.server.port=9091"
