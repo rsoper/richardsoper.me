@@ -41,9 +41,9 @@ services:
     environment:
       - PUID=1028
       - PGID=1028
-      - FILE_TZ=/run/secrets/TZ
-      # - FILE_USER=/run/secrets/TM_USER
-      # - FILE_PASS=/run/secrets/TM_PASS
+      - FILE__TZ=/run/secrets/TZ
+      - FILE__USER=/run/secrets/TM_USER
+      - FILE__PASS=/run/secrets/TM_PASS
     volumes:
       - transmission_config:/config
       - transmission_downloads:/downloads
@@ -61,5 +61,5 @@ services:
         - "traefik.http.routers.transmission.entrypoints=websecure"
         - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
         - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
-        - "traefik.http.routers.transmission.middlewares=authelia@docker"
+        # - "traefik.http.routers.transmission.middlewares=authelia@docker"
         - "traefik.http.services.transmission.loadbalancer.server.port=9091"
