@@ -85,8 +85,10 @@ services:
         - "traefik.http.services.transmission.loadbalancer.server.port=9091"
 
   jellyfin:
-    image: jellyfin/jellyfin
+    image: ghcr.io/linuxserver/jellyfin
     environment:
+      - PUID=1028
+      - PGID=1028
       - JELLYFIN_PublishedServerUrl=https://media.richardsoper.me
     volumes:
       - jellyfin_config:/config
