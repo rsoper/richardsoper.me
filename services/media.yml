@@ -1,0 +1,57 @@
+version: "3.2"
+
+networks:
+  traefik_swarm:
+    external: true
+  media_net:
+    external: true
+
+secrets:
+  TZ:
+    external: true
+
+volumes:
+  transmission_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/transmission/config"
+  transmission_downloads:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/transmission/downloads"
+  transmission_watch:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/transmission/watch"
+
+  transmission:
+    image: ghcr.io/linuxserver/transmission
+    environment:
+      - FILE_TZ=/run/secrets/TZ
+      - USER=username #optional
+      - PASS=password #optional
+    volumes:
+      - transmission_config:/config
+      - transmission_downloads:/downloads
+      - transmission_watch:/watch
+    secrets:
+      - "TZ"
+    networks:
+      - traefik_swarm
+      - media_net
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.transmission.entrypoints=websecure"
+        - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
+        - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
+        # - "traefik.http.routers.transmission.middlewares=nextcloud-headers@file"
+        - "traefik.http.services.transmission.loadbalancer.server.port=9091"
