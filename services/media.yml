@@ -50,6 +50,8 @@ services:
       - transmission_watch:/watch
     secrets:
       - "TZ"
+      - "TM_USER"
+      - "TM_PASS"
     networks:
       - traefik_swarm
       - media_net
