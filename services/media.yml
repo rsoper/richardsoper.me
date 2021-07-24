@@ -50,8 +50,6 @@ services:
     networks:
       - traefik_swarm
       - media_net
-    ports:
-      - "9092:9091"
     deploy:
       mode: replicated
       replicas: 1
@@ -61,4 +59,4 @@ services:
         - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
         - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
         # - "traefik.http.routers.transmission.middlewares=nextcloud-headers@file"
-        - "traefik.http.services.transmission.loadbalancer.server.port=9092"
+        - "traefik.http.services.transmission.loadbalancer.server.port=9091"
