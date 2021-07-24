@@ -27,13 +27,31 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/transmission/downloads"
+      device: ":/volume1/swarm/media"
   transmission_watch:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/transmission/watch"
+  jellyfin_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/jellyfin/config"
+  jellyfin_media:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/media/complete"
+  jellyfin_cache:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/jellyfin/cache"
 
 services:
   transmission:
@@ -65,3 +83,27 @@ services:
         - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
         # - "traefik.http.routers.transmission.middlewares=authelia@docker"
         - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    environment:
+      - PUID=1028
+      - PGID=1028
+      - JELLYFIN_PublishedServerUrl=https://media.richardsoper.me
+    volumes:
+      - jellyfin_config:/config
+      - jellyfin_media:/media
+      - jellyfin_cache:/cache
+    networks:
+      - traefik_swarm
+      - media_net
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jellyfin.entrypoints=websecure"
+        - "traefik.http.routers.jellyfin.rule=Host(`media.richardsoper.me`)"
+        - "traefik.http.routers.jellyfin.tls.certresolver=cf-cert"
+        # - "traefik.http.routers.jellyfin.middlewares=authelia@docker"
+        - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
