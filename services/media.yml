@@ -55,15 +55,27 @@ volumes:
 
 services:
   transmission:
-    image: ghcr.io/linuxserver/transmission
+    image: haugene/transmission-openvpn
+    cap_add:
+      - NET_ADMIN
     environment:
       - PUID=1028
       - PGID=1028
-      - FILE__TZ=/run/secrets/TZ
-      - FILE__USER=/run/secrets/TM_USER
-      - FILE__PASS=/run/secrets/TM_PASS
+      - OPENVPN_PROVIDER=IPVANISH
+      - OPENVPN_USERNAME=ipvanish_username
+      - OPENVPN_PASSWORD=ipvanish_password
+      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
+      - LOCAL_NETWORK=192.168.10.0/24
+      - TZ=America/Los_Angeles
+      - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=true
+      - TRANSMISSION_RPC_HOST_WHITELIST="127.0.0.1,192.168.*.*"
+      - TRANSMISSION_RPC_PASSWORD=webui_password
+      - TRANSMISSION_RPC_USERNAME=webui_username
+      - TRANSMISSION_UMASK=002
+      - TRANSMISSION_RATIO_LIMIT=1.00
+      - TRANSMISSION_RATIO_LIMIT_ENABLED=true
     volumes:
-      - transmission_config:/config
+      - transmission_config:/data
       - transmission_downloads:/downloads
       - transmission_watch:/watch
     secrets:
@@ -81,7 +93,6 @@ services:
         - "traefik.http.routers.transmission.entrypoints=websecure"
         - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
         - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
-        # - "traefik.http.routers.transmission.middlewares=authelia@docker"
         - "traefik.http.services.transmission.loadbalancer.server.port=9091"
 
   jellyfin:
@@ -105,5 +116,4 @@ services:
         - "traefik.http.routers.jellyfin.entrypoints=websecure"
         - "traefik.http.routers.jellyfin.rule=Host(`media.richardsoper.me`)"
         - "traefik.http.routers.jellyfin.tls.certresolver=cf-cert"
-        # - "traefik.http.routers.jellyfin.middlewares=authelia@docker"
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
