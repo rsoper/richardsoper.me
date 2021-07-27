@@ -16,24 +16,6 @@ secrets:
     external: true
 
 volumes:
-  transmission_config:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/transmission/config"
-  transmission_downloads:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/media"
-  transmission_watch:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/transmission/watch"
   jellyfin_config:
     driver: local
     driver_opts:
@@ -54,47 +36,6 @@ volumes:
       device: ":/volume1/swarm/jellyfin/cache"
 
 services:
-  transmission:
-    image: haugene/transmission-openvpn
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1028
-      - PGID=1028
-      - OPENVPN_PROVIDER=IPVANISH
-      - OPENVPN_USERNAME=ipvanish_username
-      - OPENVPN_PASSWORD=ipvanish_password
-      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
-      - LOCAL_NETWORK=192.168.10.0/24
-      - TZ=America/Los_Angeles
-      - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=true
-      - TRANSMISSION_RPC_HOST_WHITELIST="127.0.0.1,192.168.*.*"
-      - TRANSMISSION_RPC_PASSWORD=webui_password
-      - TRANSMISSION_RPC_USERNAME=webui_username
-      - TRANSMISSION_UMASK=002
-      - TRANSMISSION_RATIO_LIMIT=1.00
-      - TRANSMISSION_RATIO_LIMIT_ENABLED=true
-    volumes:
-      - transmission_config:/data
-      - transmission_downloads:/downloads
-      - transmission_watch:/watch
-    secrets:
-      - "TZ"
-      - "TM_USER"
-      - "TM_PASS"
-    networks:
-      - traefik_swarm
-      - media_net
-    deploy:
-      mode: replicated
-      replicas: 1
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.transmission.entrypoints=websecure"
-        - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
-        - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
-        - "traefik.http.services.transmission.loadbalancer.server.port=9091"
-
   jellyfin:
     image: ghcr.io/linuxserver/jellyfin
     environment:
@@ -107,7 +48,6 @@ services:
       - jellyfin_cache:/cache
     networks:
       - traefik_swarm
-      - media_net
     deploy:
       mode: replicated
       replicas: 1
