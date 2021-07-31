@@ -16,24 +16,6 @@ secrets:
     external: true
 
 volumes:
-  transmission_config:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/transmission/config"
-  transmission_downloads:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/media"
-  transmission_watch:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/transmission/watch"
   jellyfin_config:
     driver: local
     driver_opts:
@@ -45,7 +27,7 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/media/complete"
+      device: ":/volume1/swarm/media_data"
   jellyfin_cache:
     driver: local
     driver_opts:
@@ -54,56 +36,24 @@ volumes:
       device: ":/volume1/swarm/jellyfin/cache"
 
 services:
-  transmission:
-    image: ghcr.io/linuxserver/transmission
-    environment:
-      - PUID=1028
-      - PGID=1028
-      - FILE__TZ=/run/secrets/TZ
-      - FILE__USER=/run/secrets/TM_USER
-      - FILE__PASS=/run/secrets/TM_PASS
-    volumes:
-      - transmission_config:/config
-      - transmission_downloads:/downloads
-      - transmission_watch:/watch
-    secrets:
-      - "TZ"
-      - "TM_USER"
-      - "TM_PASS"
-    networks:
-      - traefik_swarm
-      - media_net
-    deploy:
-      mode: replicated
-      replicas: 1
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.transmission.entrypoints=websecure"
-        - "traefik.http.routers.transmission.rule=Host(`transmission.richardsoper.me`)"
-        - "traefik.http.routers.transmission.tls.certresolver=cf-cert"
-        # - "traefik.http.routers.transmission.middlewares=authelia@docker"
-        - "traefik.http.services.transmission.loadbalancer.server.port=9091"
-
   jellyfin:
     image: ghcr.io/linuxserver/jellyfin
     environment:
       - PUID=1028
       - PGID=1028
-      - JELLYFIN_PublishedServerUrl=https://media.richardsoper.me
+      - JELLYFIN_PublishedServerUrl=https://watch.richardsoper.me
     volumes:
       - jellyfin_config:/config
       - jellyfin_media:/media
       - jellyfin_cache:/cache
     networks:
       - traefik_swarm
-      - media_net
     deploy:
       mode: replicated
       replicas: 1
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jellyfin.entrypoints=websecure"
-        - "traefik.http.routers.jellyfin.rule=Host(`media.richardsoper.me`)"
+        - "traefik.http.routers.jellyfin.rule=Host(`watch.richardsoper.me`)"
         - "traefik.http.routers.jellyfin.tls.certresolver=cf-cert"
-        # - "traefik.http.routers.jellyfin.middlewares=authelia@docker"
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"

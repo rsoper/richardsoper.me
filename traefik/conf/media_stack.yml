@@ -1,0 +1,64 @@
+http:
+  routers:
+    transmission:
+      rule: "Host(`transmission.richardsoper.me`)"
+      service: transmission-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - authelia@docker
+    jackett:
+      rule: "Host(`jackett.richardsoper.me`)"
+      service: jackett-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - authelia@docker
+    radarr:
+      rule: "Host(`movies.richardsoper.me`)"
+      service: radarr-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - authelia@docker
+    sonarr:
+      rule: "Host(`tv.richardsoper.me`)"
+      service: sonarr-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - authelia@docker
+
+  services:
+    transmission-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://worker.server:9091"
+    jackett-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://worker.server:9117"
+    radarr-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://worker.server:7878"
+    sonarr-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://worker.server:8989"
