@@ -27,7 +27,7 @@ volumes:
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/media/complete"
+      device: ":/volume1/swarm/media_data"
   jellyfin_cache:
     driver: local
     driver_opts:
@@ -41,7 +41,7 @@ services:
     environment:
       - PUID=1028
       - PGID=1028
-      - JELLYFIN_PublishedServerUrl=https://media.richardsoper.me
+      - JELLYFIN_PublishedServerUrl=https://watch.richardsoper.me
     volumes:
       - jellyfin_config:/config
       - jellyfin_media:/media
@@ -54,6 +54,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jellyfin.entrypoints=websecure"
-        - "traefik.http.routers.jellyfin.rule=Host(`media.richardsoper.me`)"
+        - "traefik.http.routers.jellyfin.rule=Host(`watch.richardsoper.me`)"
         - "traefik.http.routers.jellyfin.tls.certresolver=cf-cert"
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"

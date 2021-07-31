@@ -9,7 +9,7 @@ http:
         certResolver: cf-cert
       middlewares:
         - secure-headers@file
-        # - authelia@docker
+        - authelia@docker
     jackett:
       rule: "Host(`jackett.richardsoper.me`)"
       service: jackett-service
@@ -19,7 +19,7 @@ http:
         certResolver: cf-cert
       middlewares:
         - secure-headers@file
-        # - authelia@docker
+        - authelia@docker
     radarr:
       rule: "Host(`movies.richardsoper.me`)"
       service: radarr-service
@@ -29,7 +29,7 @@ http:
         certResolver: cf-cert
       middlewares:
         - secure-headers@file
-        # - authelia@docker
+        - authelia@docker
     sonarr:
       rule: "Host(`tv.richardsoper.me`)"
       service: sonarr-service
@@ -39,7 +39,7 @@ http:
         certResolver: cf-cert
       middlewares:
         - secure-headers@file
-        # - authelia@docker
+        - authelia@docker
 
   services:
     transmission-service:
