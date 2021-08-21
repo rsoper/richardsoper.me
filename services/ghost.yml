@@ -20,7 +20,7 @@ volumes:
 
 services:
   ghost:
-    image: ghost:3-alpine
+    image: ghost:4-alpine
     volumes:
       - ghost_data:/var/lib/ghost
     networks:
