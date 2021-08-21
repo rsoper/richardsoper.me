@@ -18,7 +18,7 @@ bookstack/config
 bookstack/data
 !ghost/example.ghost.env
 ghost/*
-!authelia/configuration.yml
+!authelia/example.configuration.yml
 authelia/*
 discord/
 monitoring/prometheus_db
