@@ -1,0 +1,18 @@
+http:
+  routers:
+    pma:
+      rule: "Host(`pma.richardsoper.me`)"
+      service: pma-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+
+  services:
+    pma-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://10.0.20.2:1002"
