@@ -28,7 +28,7 @@ volumes:
 services:
   traefik:
     hostname: traefik
-    image: traefik:v2.2
+    image: traefik:v2.5
     secrets:
       - "CF_API_EMAIL"
       - "CF_API_KEY"
