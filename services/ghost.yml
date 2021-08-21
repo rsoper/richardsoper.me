@@ -30,7 +30,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.ghost.entrypoints=websecure"
-        - "traefik.http.routers.ghost.rule=Host(`blog.richardsoper.me`)"
+        - "traefik.http.routers.ghost.rule=Host(`newblog.richardsoper.me`)"
         - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
         - "traefik.http.routers.ghost.middlewares=secure-headers@file"
         - "traefik.http.services.ghost.loadbalancer.server.port=2368"
