@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 networks:
   monitoring_agents:
@@ -73,9 +73,9 @@ services:
       placement:
         constraints: [node.platform.os == linux]
       labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
-      - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
-      - "traefik.http.routers.grafana.middlewares=secure-headers@file"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.entrypoints=websecure"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
+        - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
+        - "traefik.http.routers.grafana.middlewares=secure-headers@file"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"

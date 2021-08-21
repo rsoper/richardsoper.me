@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 networks:
   agent_network:
@@ -14,7 +14,6 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/portainer/data"
-
 
 services:
   agent:

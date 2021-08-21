@@ -20,14 +20,13 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/docker/richardsoper.me/bookstack/config"
-  
+
   bookstack_db_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/docker/richardsoper.me/bookstack/data"
-
 
 services:
   bookstack:
@@ -37,7 +36,7 @@ services:
     environment:
       FILE__DB_PASS: /run/secrets/bookstack_db_password
       PUID: 1000
-      PGID: 1000      
+      PGID: 1000
       DB_HOST: bookstack_db
       DB_USER: bookstack
       DB_DATABASE: bookstackapp
