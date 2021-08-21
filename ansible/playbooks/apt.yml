@@ -3,6 +3,6 @@
   become: yes
   tasks:
     - name: apt
-      apt: 
+      apt:
         update_cache: yes
-        upgrade: 'yes'
+        upgrade: "yes"

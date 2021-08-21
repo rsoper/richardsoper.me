@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 networks:
   traefik_swarm:
@@ -19,8 +19,8 @@ volumes:
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/valheim/config"
 
-services: 
-  valheim: 
+services:
+  valheim:
     image: lloesche/valheim-server
     environment:
       - SERVER_NAME=Valkeld
@@ -30,10 +30,10 @@ services:
       - WORLD_NAME=Valkeld
     cap_add:
       - sys_nice
-    volumes: 
+    volumes:
       - valheim_config:/config
       - valheim_data:/opt/valheim
-    ports: 
+    ports:
       - "2456:2456/udp"
       - "2457:2457/udp"
     deploy:
