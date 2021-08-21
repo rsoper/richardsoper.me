@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 networks:
   monitoring_agents:
@@ -29,9 +29,9 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
-  
- ## Commented out node exported because I have it running on each machine with host networking for proper identification.
- ## Will likely remove this once I find a better solution. 
+
+  ## Commented out node exported because I have it running on each machine with host networking for proper identification.
+  ## Will likely remove this once I find a better solution.
   # node-exporter:
   #   image: prom/node-exporter
   #   ports:
@@ -68,7 +68,7 @@ services:
     volumes:
       - /var/log:/var/log
       - promtail_config:/etc/promtail/
-      ## Need to adjust the traefik log config to avoid accidentally sharing the .htpasswd file like a moron. 
+      ## Need to adjust the traefik log config to avoid accidentally sharing the .htpasswd file like a moron.
       # - ../shared/traefik.log:/var/log/traefik.log
       # - ../shared/traefik-access.log:/var/log/traefik-access.log
     command: -config.file=/etc/promtail/docker-config.yaml

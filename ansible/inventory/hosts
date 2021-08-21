@@ -4,8 +4,10 @@ worker.server
 
 [x86]
 worker-i3.server
+imac.server
 
 [ubuntu]
 master.server
 worker.server
 worker-i3.server
+imac.server

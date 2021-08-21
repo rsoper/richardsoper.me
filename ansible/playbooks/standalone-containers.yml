@@ -5,9 +5,4 @@
     - name: Configure node_exporter
       shell: docker run -d --net="host" --pid="host" -v "/:/host:ro,rslave" --restart always --name node_exporter-`hostname` quay.io/prometheus/node-exporter:latest --path.rootfs=/host
     - name: Configure cadvisor
-      shell: docker run --volume=/:/rootfs:ro --volume=/var/run:/var/run:ro --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8181:8080 --detach=true --name cadvisor-`hostname` zcube/cadvisor:latest
-    - name: Inventory checking bot
-      when: inventory_hostname in groups['x86']
-      shell: git pull && ./docker_run.bash -c ./config/3070-gpu.yaml -a discord -w https://discord.com/api/webhooks/786684154594197535/-MdBsC3WDbUDcWXAeJMDLNCVNsHn216kKrcvLpzIhumFBJK-EV-_ZFPimympNVS9YBjZ && ./docker_run.bash -c ./config/3080-final.yaml -a discord -w https://discord.com/api/webhooks/786684154594197535/-MdBsC3WDbUDcWXAeJMDLNCVNsHn216kKrcvLpzIhumFBJK-EV-_ZFPimympNVS9YBjZ && ./docker_run.bash -c ./config/xbox.yaml -a discord -w https://discord.com/api/webhooks/786684154594197535/-MdBsC3WDbUDcWXAeJMDLNCVNsHn216kKrcvLpzIhumFBJK-EV-_ZFPimympNVS9YBjZ
-      args:
-        chdir: ~/inventory-hunter/
+      shell: docker run --restart always --volume=/:/rootfs:ro --volume=/var/run:/var/run:ro --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8181:8080 --detach=true --name cadvisor-`hostname` zcube/cadvisor:latest
