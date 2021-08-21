@@ -16,8 +16,6 @@ secrets
 nextcloud/*
 bookstack/config
 bookstack/data
-!ghost/example.ghost.env
-ghost/*
 !authelia/example.configuration.yml
 authelia/*
 discord/
