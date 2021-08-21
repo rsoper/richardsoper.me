@@ -21,6 +21,9 @@ volumes:
 services:
   ghost:
     image: ghost:4-alpine
+    environment:
+      - UID=1028
+      - GID=1028
     volumes:
       - ghost_data:/var/lib/ghost
     networks:
