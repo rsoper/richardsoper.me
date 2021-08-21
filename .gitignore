@@ -16,3 +16,15 @@ secrets
 nextcloud/*
 bookstack/config
 bookstack/data
+!authelia/example.configuration.yml
+authelia/*
+discord/
+monitoring/prometheus_db
+jackett/
+jellyfin/
+media_data/
+radarr/
+sonarr/
+transmission/
+valheim/
+wordpress/
