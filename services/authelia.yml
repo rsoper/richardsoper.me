@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 networks:
   traefik_swarm:
@@ -29,7 +29,7 @@ services:
         - "traefik.http.routers.authelia.entrypoints=websecure"
         - "traefik.http.routers.authelia.rule=Host(`auth.richardsoper.me`)"
         - "traefik.http.routers.authelia.tls.certresolver=cf-cert"
-        - 'traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.richardsoper.me'
-        - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
-        - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
+        - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.richardsoper.me"
+        - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
+        - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
         - "traefik.http.services.authelia.loadbalancer.server.port=9091"
