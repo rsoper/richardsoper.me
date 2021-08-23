@@ -20,10 +20,7 @@ volumes:
 
 services:
   ghost:
-    image: ghost:4-alpine
-    environment:
-      - PUID=1028
-      - PGID=1028
+    image: ghcr.io/rsoper/ghost:main
     volumes:
       - ghost_data:/var/lib/ghost
     networks:
