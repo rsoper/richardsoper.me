@@ -20,7 +20,7 @@ volumes:
 
 services:
   ghost:
-    image: ghcr.io/rsoper/ghost:main
+    image: ghcr.io/rsoper/ghost
     volumes:
       - ghost_data:/var/lib/ghost
     networks:
