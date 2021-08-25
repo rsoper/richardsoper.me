@@ -20,17 +20,25 @@ volumes:
 
 services:
   ghost:
-    image: ghcr.io/rsoper/ghost:main
+    image: ghost:4-alpine
     volumes:
-      - ghost_data:/var/lib/ghost
+      - ghost_data:/var/lib/ghost/content
     networks:
       - traefik_swarm
+    environment:
+      database__client: mysql
+      database__connection__host: 10.0.20.30
+      database__connection__port: 3307
+      database__connection__user: ghost
+      database__connection__password: SUPER_SECRET_PASSWORD
+      database__connection__database: ghost
+      url: https://blog.richardsoper.me
     deploy:
       replicas: 1
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.ghost.entrypoints=websecure"
-        - "traefik.http.routers.ghost.rule=Host(`newblog.richardsoper.me`)"
+        - "traefik.http.routers.ghost.rule=Host(`blog.richardsoper.me`)"
         - "traefik.http.routers.ghost.tls.certresolver=cf-cert"
         - "traefik.http.routers.ghost.middlewares=secure-headers@file"
         - "traefik.http.services.ghost.loadbalancer.server.port=2368"
