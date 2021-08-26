@@ -20,7 +20,7 @@ volumes:
 
 services:
   ghost:
-    image: ghost:4-alpine
+    image: ghost:4.12.1-alpine
     volumes:
       - ghost_data:/var/lib/ghost/content
     networks:
