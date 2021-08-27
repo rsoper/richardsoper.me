@@ -20,11 +20,19 @@ volumes:
 
 services:
   ghost:
-    image: ghost:3-alpine
+    image: ghost:4.12.1-alpine
     volumes:
-      - ghost_data:/var/lib/ghost
+      - ghost_data:/var/lib/ghost/content
     networks:
       - traefik_swarm
+    environment:
+      database__client: mysql
+      database__connection__host: 10.0.20.30
+      database__connection__port: 3307
+      database__connection__user: ghost
+      database__connection__password: SUPER_SECRET_PASSWORD
+      database__connection__database: ghost
+      url: https://blog.richardsoper.me
     deploy:
       replicas: 1
       labels:
