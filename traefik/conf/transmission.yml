@@ -1,0 +1,19 @@
+http:
+  routers:
+    transmission:
+      rule: "Host(`transmission.richardsoper.me`)"
+      service: transmission-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
+        - authelia@docker
+
+  services:
+    transmission-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://worker.server:9091"
