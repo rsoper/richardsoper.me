@@ -3,14 +3,9 @@ version: "3.2"
 networks:
   traefik_swarm:
     external: true
-
-secrets:
-  TZ:
-    external: true
-  TM_USER:
-    external: true
-  TM_PASS:
-    external: true
+  service_network:
+    driver: overlay
+    attachable: true
 
 volumes:
   jellyfin_config:
@@ -91,6 +86,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - traefik_swarm
+      - service_network
     deploy:
       mode: replicated
       replicas: 1
@@ -114,6 +110,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - traefik_swarm
+      - service_network
     deploy:
       mode: replicated
       replicas: 1
@@ -137,6 +134,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - traefik_swarm
+      - service_network
     deploy:
       mode: replicated
       replicas: 1
