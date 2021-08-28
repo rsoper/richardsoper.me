@@ -123,7 +123,7 @@ services:
         - "traefik.http.routers.jackett.rule=Host(`jackett.richardsoper.me`)"
         - "traefik.http.routers.jackett.tls.certresolver=cf-cert"
         - "traefik.http.routers.jackett.middlewares=secure-headers@file,authelia@docker"
-        - "traefik.http.services.jackett.loadbalancer.server.port=9177"
+        - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
   sonarr:
     image: linuxserver/sonarr
