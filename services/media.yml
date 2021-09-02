@@ -3,17 +3,9 @@ version: "3.2"
 networks:
   traefik_swarm:
     external: true
-  media_net:
+  service_network:
     driver: overlay
     attachable: true
-
-secrets:
-  TZ:
-    external: true
-  TM_USER:
-    external: true
-  TM_PASS:
-    external: true
 
 volumes:
   jellyfin_config:
@@ -34,10 +26,34 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/jellyfin/cache"
+  radarr_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/radarr"
+  jackett_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/jackett"
+  sonarr_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/sonarr"
+  media_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/media_data"
 
 services:
   jellyfin:
-    image: ghcr.io/linuxserver/jellyfin
+    image: ghcr.io/linuxserver/jellyfin:version-10.7.6-1
     environment:
       - PUID=1028
       - PGID=1028
@@ -57,3 +73,75 @@ services:
         - "traefik.http.routers.jellyfin.rule=Host(`watch.richardsoper.me`)"
         - "traefik.http.routers.jellyfin.tls.certresolver=cf-cert"
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+
+  radarr:
+    image: linuxserver/radarr:version-3.2.2.5080
+    environment:
+      - PUID=1028
+      - PGID=1028
+      - TZ=America/Los_Angeles
+    volumes:
+      - radarr_data:/config
+      - media_data:/data
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - traefik_swarm
+      - service_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.radarr.entrypoints=websecure"
+        - "traefik.http.routers.radarr.rule=Host(`movies.richardsoper.me`)"
+        - "traefik.http.routers.radarr.tls.certresolver=cf-cert"
+        - "traefik.http.routers.radarr.middlewares=secure-headers@file,authelia@docker"
+        - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+
+  jackett:
+    image: linuxserver/jackett:version-v0.18.641
+    environment:
+      - PUID=1028
+      - PGID=1028
+      - TZ=America/Los_Angeles
+    volumes:
+      - jackett_data:/config
+      - media_data:/data
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - traefik_swarm
+      - service_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jackett.entrypoints=websecure"
+        - "traefik.http.routers.jackett.rule=Host(`jackett.richardsoper.me`)"
+        - "traefik.http.routers.jackett.tls.certresolver=cf-cert"
+        - "traefik.http.routers.jackett.middlewares=secure-headers@file,authelia@docker"
+        - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+
+  sonarr:
+    image: linuxserver/sonarr:version-3.0.6.1265
+    environment:
+      - PUID=1028
+      - PGID=1028
+      - TZ=America/Los_Angeles
+    volumes:
+      - sonarr_data:/config
+      - media_data:/data
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - traefik_swarm
+      - service_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.sonarr.entrypoints=websecure"
+        - "traefik.http.routers.sonarr.rule=Host(`tv.richardsoper.me`)"
+        - "traefik.http.routers.sonarr.tls.certresolver=cf-cert"
+        - "traefik.http.routers.sonarr.middlewares=secure-headers@file,authelia@docker"
+        - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
