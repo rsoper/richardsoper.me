@@ -1,0 +1,36 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  gitea_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitea"
+
+services:
+  web:
+    image: gitea/gitea:1.12.4
+    environment:
+      - USER_UID=1028
+      - USER_GID=1028
+    volumes:
+      - gitea_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.gitea.entrypoints=websecure"
+        - "traefik.http.routers.gitea.rule=Host(`git.richardsoper.me`)"
+        - "traefik.http.routers.gitea.tls.certresolver=cf-cert"
+        - "traefik.http.routers.gitea.middlewares=secure-headers@file"
+        - "traefik.http.services.gitea.loadbalancer.server.port=3000"

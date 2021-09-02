@@ -1,0 +1,64 @@
+version: "3.2"
+
+networks:
+  traefik_swarm:
+    external: true
+  cloud_net:
+    external: true
+
+secrets:
+  cloud_db_pass:
+    external: true
+
+volumes:
+  application:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/nextcloud/application"
+  redis_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/nextcloud/redis"
+
+services:
+  redis:
+    image: redis:6.2.5
+    volumes:
+      - redis_data:/data
+    networks:
+      - cloud_net
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  nextcloud:
+    image: nextcloud:22.1.1
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_USER=nextcloud
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_PASSWORD_FILE=/run/secrets/cloud_db_pass
+      - NEXTCLOUD_TRUSTED_DOMAINS=https://cloud.richardsoper.me
+      - TRUSTED_PROXIES=10.0.0.0/8
+      - REDIS_HOST=redis
+    volumes:
+      - application:/var/www/html
+    secrets:
+      - "cloud_db_pass"
+    networks:
+      - traefik_swarm
+      - cloud_net
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nextcloud.entrypoints=websecure"
+        - "traefik.http.routers.nextcloud.rule=Host(`cloud.richardsoper.me`)"
+        - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
+        - "traefik.http.routers.nextcloud.middlewares=nextcloud-headers@file"
+        - "traefik.http.services.nextcloud.loadbalancer.server.port=80"

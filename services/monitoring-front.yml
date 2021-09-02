@@ -1,0 +1,81 @@
+version: "3.2"
+
+networks:
+  monitoring_agents:
+    external: true
+  traefik_swarm:
+    external: true
+
+volumes:
+  prometheus_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/prometheus_db"
+
+  prometheus_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/prometheus"
+
+  grafana_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/grafana_db"
+
+secrets:
+  GF_ADMIN_PASSWORD:
+    external: true
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.29.2
+    user: "1028"
+    volumes:
+      - prometheus_config:/etc/prometheus
+      - prometheus_data:/data/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=90d"
+      - "--storage.tsdb.path=/data/prometheus"
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring_agents
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.platform.os == linux]
+
+  grafana:
+    image: grafana/grafana:8.1.2
+    user: "1028"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/GF_ADMIN_PASSWORD
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    secrets:
+      - "GF_ADMIN_PASSWORD"
+    networks:
+      - monitoring_agents
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.platform.os == linux]
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.entrypoints=websecure"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.richardsoper.me`)"
+        - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
+        - "traefik.http.routers.grafana.middlewares=secure-headers@file"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"

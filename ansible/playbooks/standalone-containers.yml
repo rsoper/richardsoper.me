@@ -1,0 +1,8 @@
+# ansible-playbook ./playbooks/standalone-containers.yml --user swarm -i ./inventory/hosts
+- name: Run standalone docker containers
+  hosts: "*"
+  tasks:
+    - name: Configure node_exporter
+      shell: docker run -d --net="host" --pid="host" -v "/:/host:ro,rslave" --restart always --name node_exporter-`hostname` quay.io/prometheus/node-exporter:latest --path.rootfs=/host
+    - name: Configure cadvisor
+      shell: docker run --restart always --volume=/:/rootfs:ro --volume=/var/run:/var/run:ro --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8181:8080 --detach=true --name cadvisor-`hostname` zcube/cadvisor:latest

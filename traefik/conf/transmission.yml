@@ -1,19 +1,19 @@
 http:
   routers:
-    homeassistant:
-      rule: "Host(`home.richardsoper.me`)"
-      service: homeassistant-service
+    transmission:
+      rule: "Host(`transmission.richardsoper.me`)"
+      service: transmission-service
       entryPoints:
         - websecure
       tls:
         certResolver: cf-cert
       middlewares:
-        - secure-headers@file
+        - securedheaders@file
         - authelia@docker
 
   services:
-    homeassistant-service:
+    transmission-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://master.server:8123"
+          - url: "http://worker.server:9091"

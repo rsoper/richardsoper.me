@@ -1,0 +1,31 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  jekyll_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/jekyll"
+
+services:
+  jekyll:
+    image: richardsoper/jekyll:latest
+    volumes:
+      - jekyll_data:/usr/src/app
+    networks:
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jekyll.entrypoints=websecure"
+        - "traefik.http.routers.jekyll.rule=Host(`richardsoper.me`) || Host(`www.richardsoper.me`)"
+        - "traefik.http.routers.jekyll.tls.certresolver=cf-cert"
+        - "traefik.http.routers.jekyll.middlewares=secure-headers@file"
+        - "traefik.http.services.jekyll.loadbalancer.server.port=4000"

@@ -1,0 +1,41 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  valheim_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/valheim/data"
+
+  valheim_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/valheim/config"
+
+services:
+  valheim:
+    image: lloesche/valheim-server
+    environment:
+      - SERVER_NAME=Valkeld
+      - SERVER_PASS=Victory
+      - UPDATE_IF_IDLE=true
+      - TZ=America/Los_Angeles
+      - WORLD_NAME=Valkeld
+    cap_add:
+      - sys_nice
+    volumes:
+      - valheim_config:/config
+      - valheim_data:/opt/valheim
+    ports:
+      - "2456:2456/udp"
+      - "2457:2457/udp"
+    deploy:
+      mode: replicated
+      replicas: 1
