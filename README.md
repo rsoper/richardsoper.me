@@ -1,12 +1,6 @@
 # richardsoper.me Traefik 2.2
 
-![mozilla-obs](https://img.shields.io/mozilla-observatory/grade-score/richardsoper.me?publish)
-![site-status](https://img.shields.io/website?url=https%3A%2F%2Fwww.richardsoper.me)
-
-Personal site used for developing my own skills.
-Tested primarily on Raspberry Pi 4 running Ubuntu 20.04 64-bit
-
-https://www.richardsoper.me
+Branch no longer maintained. My focus has shifted to getting things running on a multi-arch docker swarm cluster.
 
 ### Frontend - Exposed to traefik
 
@@ -49,8 +43,3 @@ https://www.richardsoper.me
     - Create traefik_proxy network with "docker network create traefik_proxy"
     - With all variable created, run command "docker-compose up -d" from the root directory of this repository
     - For monitoring, run command "docker-compose -f ./monitoring/docker-compose.yml up -d"
-
-### Future work
-
-    - Mount NFS volumes(Progress made on swarm branch)
-    - Deploy as docker swarm across architectures
