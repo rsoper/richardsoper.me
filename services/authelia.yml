@@ -14,7 +14,7 @@ volumes:
 
 services:
   authelia:
-    image: authelia/authelia
+    image: authelia/authelia:4.30.4
     volumes:
       - authelia_data:/config
     networks:

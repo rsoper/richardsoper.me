@@ -53,7 +53,7 @@ volumes:
 
 services:
   jellyfin:
-    image: ghcr.io/linuxserver/jellyfin
+    image: ghcr.io/linuxserver/jellyfin:version-10.7.6-1
     environment:
       - PUID=1028
       - PGID=1028
@@ -75,7 +75,7 @@ services:
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
 
   radarr:
-    image: linuxserver/radarr
+    image: linuxserver/radarr:version-3.2.2.5080
     environment:
       - PUID=1028
       - PGID=1028
@@ -99,7 +99,7 @@ services:
         - "traefik.http.services.radarr.loadbalancer.server.port=7878"
 
   jackett:
-    image: "linuxserver/jackett"
+    image: linuxserver/jackett:version-v0.18.641
     environment:
       - PUID=1028
       - PGID=1028
@@ -123,7 +123,7 @@ services:
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
   sonarr:
-    image: linuxserver/sonarr
+    image: linuxserver/sonarr:version-3.0.6.1265
     environment:
       - PUID=1028
       - PGID=1028

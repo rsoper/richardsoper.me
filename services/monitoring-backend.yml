@@ -14,7 +14,7 @@ volumes:
 
 services:
   cadvisor:
-    image: zcube/cadvisor
+    image: zcube/cadvisor:latest
     ports:
       - "8181:8080"
     volumes:

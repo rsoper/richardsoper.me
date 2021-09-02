@@ -34,7 +34,7 @@ secrets:
 
 services:
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.29.2
     user: "1028"
     volumes:
       - prometheus_config:/etc/prometheus
@@ -54,7 +54,7 @@ services:
         constraints: [node.platform.os == linux]
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:8.1.2
     user: "1028"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/GF_ADMIN_PASSWORD
