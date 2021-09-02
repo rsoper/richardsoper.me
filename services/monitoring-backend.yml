@@ -13,43 +13,6 @@ volumes:
       device: ":/volume1/swarm/monitoring/promtail"
 
 services:
-  cadvisor:
-    image: zcube/cadvisor:latest
-    ports:
-      - "8181:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    networks:
-      - monitoring_agents
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.platform.os == linux]
-
-  ## Commented out node exported because I have it running on each machine with host networking for proper identification.
-  ## Will likely remove this once I find a better solution.
-  # node-exporter:
-  #   image: prom/node-exporter
-  #   ports:
-  #     - "9100:9100"
-  #   environment:
-  #     - NODE_ID={{.Node.ID}}
-  #   volumes:
-  #     - /sys:/host/sys:ro
-  #     - /etc/hostname:/etc/nodename
-  #     - /:/rootfs:ro
-  #     - /proc:/host/proc:ro
-  #   networks:
-  #     - monitoring_agents
-  #   deploy:
-  #     mode: global
-  #     placement:
-  #       constraints: [node.platform.os == linux]
-
   loki:
     image: grafana/loki:1.5.0
     ports:
@@ -68,9 +31,6 @@ services:
     volumes:
       - /var/log:/var/log
       - promtail_config:/etc/promtail/
-      ## Need to adjust the traefik log config to avoid accidentally sharing the .htpasswd file like a moron.
-      # - ../shared/traefik.log:/var/log/traefik.log
-      # - ../shared/traefik-access.log:/var/log/traefik-access.log
     command: -config.file=/etc/promtail/docker-config.yaml
     networks:
       - monitoring_agents
