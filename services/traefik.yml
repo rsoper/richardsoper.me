@@ -55,8 +55,7 @@ services:
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
         - "traefik.http.routers.traefik.service=api@internal"
         ## Secure dashboard with basic authentication
-        - "traefik.http.routers.traefik.middlewares=traefik-auth"
-        - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/shared/.htpasswd"
+        - "traefik.http.routers.traefik.middlewares=authelia@docker"
         ## DNS CHALLENGE
         - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
         - "traefik.http.routers.traefik.tls.domains[0].main=*.richardsoper.me"
