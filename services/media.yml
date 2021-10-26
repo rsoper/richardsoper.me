@@ -67,6 +67,9 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.platform.arch == x86_64
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jellyfin.entrypoints=websecure"
@@ -75,7 +78,7 @@ services:
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
 
   radarr:
-    image: linuxserver/radarr:version-3.2.2.5080
+    image: linuxserver/radarr:latest
     environment:
       - PUID=1028
       - PGID=1028
@@ -123,7 +126,7 @@ services:
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
   sonarr:
-    image: linuxserver/sonarr:version-3.0.6.1265
+    image: linuxserver/sonarr:version-3.0.6.1342
     environment:
       - PUID=1028
       - PGID=1028
