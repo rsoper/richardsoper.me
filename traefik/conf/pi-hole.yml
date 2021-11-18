@@ -38,5 +38,5 @@ http:
   middlewares:
     admin-redirect:
       redirectRegex:
-        regex: "^https://(pihole.|pihole2.)?richardsoper\.me/$"
+        regex: "^https://(pihole.|pihole2.)?richardsoper.me/$"
         replacement: "https://${1}richardsoper.me/admin/"
