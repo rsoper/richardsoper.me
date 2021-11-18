@@ -33,7 +33,7 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://10.0.20.22:80"
+          - url: "http://10.0.20.22:8080"
 
   middlewares:
     admin-redirect:
