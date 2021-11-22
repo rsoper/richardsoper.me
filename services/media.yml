@@ -65,7 +65,7 @@ services:
     networks:
       - traefik_swarm
     logging:
-      driver: loki
+      driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
@@ -92,7 +92,7 @@ services:
       - traefik_swarm
       - service_network
     logging:
-      driver: loki
+      driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
@@ -120,7 +120,7 @@ services:
       - traefik_swarm
       - service_network
     logging:
-      driver: loki
+      driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
@@ -148,7 +148,7 @@ services:
       - traefik_swarm
       - service_network
     logging:
-      driver: loki
+      driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:

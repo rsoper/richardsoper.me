@@ -29,7 +29,7 @@ services:
     networks:
       - monitoring_agents
     logging:
-      driver: loki
+      driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
@@ -47,7 +47,7 @@ services:
     networks:
       - monitoring_agents
     logging:
-      driver: loki
+      driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
