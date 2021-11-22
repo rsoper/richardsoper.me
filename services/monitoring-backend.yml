@@ -11,10 +11,18 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/monitoring/promtail"
+  loki_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/loki"
 
 services:
   loki:
     image: grafana/loki:1.5.0
+    volumes:
+      - loki_config:/etc/loki
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
