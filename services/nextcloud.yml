@@ -31,6 +31,10 @@ services:
       - redis_data:/data
     networks:
       - cloud_net
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -52,6 +56,10 @@ services:
     networks:
       - traefik_swarm
       - cloud_net
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1

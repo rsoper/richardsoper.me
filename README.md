@@ -18,7 +18,4 @@ https://www.richardsoper.me
     - Ghost, Nextcloud, Jellyfin, Sonarr, Radarr, Jackett, and more
     - Valheim game server
     - Uptime Kuma for service uptime alerts
-
-### To-do
-
-    - Logging driver
+    - Logging containers to Loki

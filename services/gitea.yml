@@ -24,6 +24,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
     networks:
       - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
