@@ -82,7 +82,7 @@ services:
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
 
   radarr:
-    image: linuxserver/radarr:latest
+    image: linuxserver/radarr:version-3.2.2.5080
     environment:
       - PUID=1028
       - PGID=1028
