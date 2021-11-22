@@ -135,7 +135,7 @@ services:
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
   sonarr:
-    image: linuxserver/sonarr:version-3.0.6.1265
+    image: linuxserver/sonarr:version-3.0.6.1342
     environment:
       - PUID=1028
       - PGID=1028
