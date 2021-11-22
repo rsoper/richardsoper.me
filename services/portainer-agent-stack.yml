@@ -25,6 +25,10 @@ services:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
       - agent_network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: global
       placement:
@@ -41,6 +45,10 @@ services:
     networks:
       - agent_network
       - traefik_swarm
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
