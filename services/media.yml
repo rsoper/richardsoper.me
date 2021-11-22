@@ -64,6 +64,10 @@ services:
       - jellyfin_cache:/cache
     networks:
       - traefik_swarm
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -87,6 +91,10 @@ services:
     networks:
       - traefik_swarm
       - service_network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -111,6 +119,10 @@ services:
     networks:
       - traefik_swarm
       - service_network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -135,6 +147,10 @@ services:
     networks:
       - traefik_swarm
       - service_network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
