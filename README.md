@@ -17,7 +17,4 @@ https://www.richardsoper.me
     - Portainer with agent configuration to monitor/manage all nodes
     - Ghost, Nextcloud, Jellyfin, Sonarr, Radarr, Jackett, and more
     - Valheim game server
-
-### To-do
-
-    - Logging driver
+    - Logging containers to Loki
