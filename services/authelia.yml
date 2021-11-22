@@ -4,6 +4,14 @@ networks:
   traefik_swarm:
     external: true
 
+secrets:
+  AUTHELIA_JWT:
+    external: true
+  AUTHELIA_SESSION:
+    external: true
+  AUTHELIA_SMTP:
+    external: true
+
 volumes:
   authelia_data:
     driver: local
@@ -17,10 +25,21 @@ services:
     image: authelia/authelia:4.30.4
     volumes:
       - authelia_data:/config
+    secrets:
+      - AUTHELIA_JWT
+      - AUTHELIA_SESSION
+      - AUTHELIA_SMTP
     networks:
       - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     environment:
       - TZ=America/Los_Angeles
+      - AUTHELIA_JWT_SECRET_FILE=/run/secrets/AUTHELIA_JWT
+      - AUTHELIA_SESSION_SECRET_FILE=/run/secrets/AUTHELIA_SESSION
+      - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/run/secrets/AUTHELIA_SMTP
     deploy:
       mode: replicated
       replicas: 1

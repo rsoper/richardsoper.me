@@ -25,6 +25,10 @@ services:
       - ghost_data:/var/lib/ghost/content
     networks:
       - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     environment:
       database__client: mysql
       database__connection__host: 10.0.20.30

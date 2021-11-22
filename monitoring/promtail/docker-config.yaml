@@ -23,3 +23,10 @@ scrape_configs:
         labels:
           job: traefik_logs
           __path__: /mnt/swarm/traefik/shared/logs/*log
+  - job_name: docker
+    pipeline_stages:
+      - docker: {}
+    static_configs:
+      - labels:
+          job: docker
+          __path__: /var/lib/docker/containers/*/*-json.log

@@ -47,6 +47,10 @@ services:
       - "9090:9090"
     networks:
       - monitoring_agents
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -67,6 +71,10 @@ services:
     networks:
       - monitoring_agents
       - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1

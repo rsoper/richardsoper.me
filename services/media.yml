@@ -64,6 +64,10 @@ services:
       - jellyfin_cache:/cache
     networks:
       - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -87,6 +91,10 @@ services:
     networks:
       - traefik_swarm
       - service_network
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -111,6 +119,10 @@ services:
     networks:
       - traefik_swarm
       - service_network
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -123,7 +135,7 @@ services:
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
   sonarr:
-    image: linuxserver/sonarr:version-3.0.6.1265
+    image: linuxserver/sonarr:version-3.0.6.1342
     environment:
       - PUID=1028
       - PGID=1028
@@ -135,6 +147,10 @@ services:
     networks:
       - traefik_swarm
       - service_network
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1

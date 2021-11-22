@@ -11,6 +11,17 @@ http:
         - admin-redirect@file
         - secure-headers@file
         - authelia@docker
+    pihole-backup:
+      rule: "Host(`pihole2.richardsoper.me`)"
+      service: pihole-backup-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - admin-redirect@file
+        - secure-headers@file
+        - authelia@docker
 
   services:
     pihole-service:
@@ -18,9 +29,14 @@ http:
         passHostHeader: true
         servers:
           - url: "http://10.0.20.3:80"
+    pihole-backup-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://10.0.20.22:8080"
 
   middlewares:
     admin-redirect:
       redirectRegex:
-        regex: "^https://pihole.richardsoper.me/$"
-        replacement: "https://pihole.richardsoper.me/admin/"
+        regex: "^https://(pihole.|pihole2.)?richardsoper.me/$"
+        replacement: "https://${1}richardsoper.me/admin/"
