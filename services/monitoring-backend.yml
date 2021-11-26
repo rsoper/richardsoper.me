@@ -62,8 +62,6 @@ services:
       - PIHOLE_PASSWORD=SUPER_SECRET_PASSWORD/API_KEY
       - INTERVAL=30s
       - PORT=9617
-    ports:
-      - "9617:9617"
     networks:
       - monitoring_agents
     logging:
@@ -80,10 +78,9 @@ services:
     environment:
       - PIHOLE_HOSTNAME=10.0.20.22
       - PIHOLE_PASSWORD=SUPER_SECRET_PASSWORD/API_KEY
+      - PIHOLE_PORT=8080
       - INTERVAL=30s
       - PORT=9617
-    ports:
-      - "9618:9617"
     networks:
       - monitoring_agents
     logging:
