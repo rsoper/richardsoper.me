@@ -39,5 +39,5 @@ scrape_configs:
       - targets: 
           [
             "pihole-exporter:9617",
-            "pihole-exporter2:9617"
+            "pihole-exporter2:9618"
           ]

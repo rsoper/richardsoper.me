@@ -83,7 +83,7 @@ services:
       - INTERVAL=30s
       - PORT=9617
     ports:
-      - "9617:9617"
+      - "9618:9617"
     networks:
       - monitoring_agents
     logging:
