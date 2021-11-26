@@ -71,7 +71,8 @@ services:
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 1
       placement:
         constraints: [node.platform.os == linux]
   pihole-exporter2:
@@ -90,6 +91,7 @@ services:
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 1
       placement:
         constraints: [node.platform.os == linux]
