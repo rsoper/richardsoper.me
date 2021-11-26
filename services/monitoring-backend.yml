@@ -54,3 +54,42 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+  
+  pihole-exporter:
+    image: ekofr/pihole-exporter:latest
+    environment:
+      - PIHOLE_HOSTNAME=10.0.20.3
+      - PIHOLE_PASSWORD=SUPER_SECRET_PASSWORD/API_KEY
+      - INTERVAL=30s
+      - PORT=9617
+    ports:
+      - "9617:9617"
+    networks:
+      - monitoring_agents
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+  pihole-exporter2:
+    image: ekofr/pihole-exporter:latest
+    environment:
+      - PIHOLE_HOSTNAME=10.0.20.22
+      - PIHOLE_PASSWORD=SUPER_SECRET_PASSWORD/API_KEY
+      - INTERVAL=30s
+      - PORT=9617
+    ports:
+      - "9617:9617"
+    networks:
+      - monitoring_agents
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
