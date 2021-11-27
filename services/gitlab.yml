@@ -60,4 +60,5 @@ services:
         - "traefik.http.routers.gitlab.entrypoints=websecure"
         - "traefik.http.routers.gitlab.rule=Host(`gitlab.richardsoper.me`)"
         - "traefik.http.routers.gitlab.tls.certresolver=cf-cert"
-        - "traefik.http.services.gitlab.loadbalancer.server.port=443"
+        - "traefik.http.routers.gitlab.service=gitlab"
+        - "traefik.http.services.gitlab.loadbalancer.server.port=80"
