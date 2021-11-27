@@ -6,7 +6,7 @@ networks:
 
 configs:
   gitlab:
-    file: ..gitlab/template/gitlab.rb
+    file: ../gitlab/template/gitlab.rb
 
 secrets:
   gitlab_root_password:
