@@ -1,0 +1,44 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+# secrets:
+#   AUTHELIA_JWT:
+#     external: true
+#   AUTHELIA_SESSION:
+#     external: true
+#   AUTHELIA_SMTP:
+#     external: true
+
+volumes:
+  registry_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/registry"
+
+services:
+  registry:
+    image: registry:2
+    volumes:
+      - registry_data:/var/lib/registry
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
+    environment:
+      - TZ=America/Los_Angeles
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.registry.entrypoints=websecure"
+        - "traefik.http.routers.registry.rule=Host(`img.richardsoper.me`)"
+        - "traefik.http.routers.registry.tls.certresolver=cf-cert"
+        - "traefik.http.services.registry.loadbalancer.server.port=5000"
