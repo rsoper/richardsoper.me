@@ -60,8 +60,15 @@ services:
       replicas: 1
       labels:
         - "traefik.enable=true"
+        # UI routers/service
         - "traefik.http.routers.gitlab.entrypoints=websecure"
         - "traefik.http.routers.gitlab.rule=Host(`gitlab.richardsoper.me`)"
         - "traefik.http.routers.gitlab.tls.certresolver=cf-cert"
         - "traefik.http.routers.gitlab.service=gitlab"
         - "traefik.http.services.gitlab.loadbalancer.server.port=80"
+        # Registry routers/service
+        - "traefik.http.routers.registry.entrypoints=websecure"
+        - "traefik.http.routers.registry.rule=Host(`registry.richardsoper.me`)"
+        - "traefik.http.routers.registry.tls.certresolver=cf-cert"
+        - "traefik.http.routers.registry.service=registry"
+        - "traefik.http.services.registry.loadbalancer.server.port=5005"
