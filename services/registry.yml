@@ -32,7 +32,7 @@ services:
     environment:
       - REGISTRY_AUTH=htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Registry
-      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd/.htpasswd
       - TZ=America/Los_Angeles
     volumes:
       - registry_data:/var/lib/registry
