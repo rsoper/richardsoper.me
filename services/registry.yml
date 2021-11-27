@@ -19,12 +19,12 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/registry"
-  shared_data:
+  auth_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/shared"
+      device: ":/volume1/swarm/shared/auth"
 
 services:
   registry:
@@ -32,11 +32,11 @@ services:
     environment:
       - REGISTRY_AUTH=htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Registry
-      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd/.htpasswd
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/.htpasswd
       - TZ=America/Los_Angeles
     volumes:
       - registry_data:/var/lib/registry
-      - shared_data:/auth/htpasswd
+      - auth_data:/auth
     networks:
       - traefik_swarm
     logging:
