@@ -13,7 +13,7 @@ https://www.richardsoper.me
     - Traefik v2.5 configured for Docker and File providers in Swarm mode
     - Authelia authentication middleware
     - NFS data storage configuration 
-    - Metrics with Grafana, Prometheus, cAdvisor, Node Exporter, Loki
+    - Metrics with Grafana, Prometheus, cAdvisor, Node Exporter, Loki, Pihole-Exporter
     - Portainer with agent configuration to monitor/manage all nodes
     - Ghost, Nextcloud, Jellyfin, Sonarr, Radarr, Jackett, and more
     - Valheim game server
