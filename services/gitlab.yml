@@ -11,6 +11,8 @@ configs:
 secrets:
   gitlab_root_password:
     external: true
+  AUTHELIA_SMTP:
+    external: true
 
 volumes:
   gitlab_data:
@@ -46,6 +48,7 @@ services:
         target: /omnibus_config.rb
     secrets:
       - gitlab_root_password
+      - AUTHELIA_SMTP
     networks:
       - traefik_swarm
     logging:
