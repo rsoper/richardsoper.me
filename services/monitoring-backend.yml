@@ -58,8 +58,8 @@ services:
   pihole-exporter:
     image: ekofr/pihole-exporter:latest
     environment:
-      - PIHOLE_HOSTNAME=10.0.20.3
-      - PIHOLE_PASSWORD=SUPER_SECRET_PASSWORD/API_KEY
+      - PIHOLE_HOSTNAME=pihole.server
+      - PIHOLE_API_TOKEN=SUPER_SECRET_PASSWORD/API_KEY
       - INTERVAL=30s
       - PORT=9617
     networks:
@@ -76,8 +76,8 @@ services:
   pihole-exporter2:
     image: ekofr/pihole-exporter:latest
     environment:
-      - PIHOLE_HOSTNAME=10.0.20.22
-      - PIHOLE_PASSWORD=SUPER_SECRET_PASSWORD/API_KEY
+      - PIHOLE_HOSTNAME=pihole2.server
+      - PIHOLE_API_TOKEN=SUPER_SECRET_PASSWORD/API_KEY
       - PIHOLE_PORT=8080
       - INTERVAL=30s
       - PORT=9617
