@@ -19,20 +19,30 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/registry"
+  shared_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/shared"
 
 services:
   registry:
     image: registry:2
+    environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - TZ=America/Los_Angeles
     volumes:
       - registry_data:/var/lib/registry
+      - shared_data:/auth/htpasswd
     networks:
       - traefik_swarm
     logging:
       driver: loki:latest
       options:
         loki-url: "http://master.server:3100/loki/api/v1/push"
-    environment:
-      - TZ=America/Los_Angeles
     deploy:
       mode: replicated
       replicas: 1
