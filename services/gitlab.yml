@@ -1,0 +1,74 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+configs:
+  gitlab:
+    file: ../gitlab/template/gitlab.rb
+
+secrets:
+  gitlab_root_password:
+    external: true
+  AUTHELIA_SMTP:
+    external: true
+
+volumes:
+  gitlab_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitlab/data"
+  gitlab_logs:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitlab/logs"
+  gitlab_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitlab/config"
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:latest
+    volumes:
+      - gitlab_data:/var/opt/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_config:/etc/gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+    configs:
+      - source: gitlab
+        target: /omnibus_config.rb
+    secrets:
+      - gitlab_root_password
+      - AUTHELIA_SMTP
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        # UI routers/service
+        - "traefik.http.routers.gitlab.entrypoints=websecure"
+        - "traefik.http.routers.gitlab.rule=Host(`gitlab.richardsoper.me`)"
+        - "traefik.http.routers.gitlab.tls.certresolver=cf-cert"
+        - "traefik.http.routers.gitlab.service=gitlab"
+        - "traefik.http.services.gitlab.loadbalancer.server.port=80"
+        # Registry routers/service
+        - "traefik.http.routers.registry.entrypoints=websecure"
+        - "traefik.http.routers.registry.rule=Host(`registry.richardsoper.me`)"
+        - "traefik.http.routers.registry.tls.certresolver=cf-cert"
+        - "traefik.http.routers.registry.service=registry"
+        - "traefik.http.services.registry.loadbalancer.server.port=5005"
