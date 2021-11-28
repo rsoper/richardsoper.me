@@ -1,5 +1,6 @@
 external_url 'https://gitlab.richardsoper.me/'
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
+prometheus_monitoring['enable'] = false
 
 nginx['listen_https'] = false
 nginx['listen_port'] = 80
@@ -18,5 +19,6 @@ gitlab_rails['gitlab_email_reply_to'] = 'noreply@richardsoper.me'
 
 # Registry
 registry_nginx['enable'] = true
+registry_nginx['listen_https'] = false
 registry_nginx['listen_port'] = '5005'
 registry_external_url 'https://registry.richardsoper.me'
