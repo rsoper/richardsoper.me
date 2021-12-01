@@ -18,3 +18,4 @@ https://www.richardsoper.me
     - Ghost, Nextcloud, Jellyfin, Sonarr, Radarr, Jackett, and more
     - Valheim game server
     - Logging containers to Loki
+    - Gitlab repository and container registry
