@@ -80,11 +80,11 @@ services:
         - "traefik.http.services.registry.loadbalancer.server.port=5005"
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
-    # volumes:
-    #   - gitlab_runner:/etc/gitlab-runner
-    #   - /var/run/docker.sock:/var/run/docker.sock
+    volumes:
+      - gitlab_runner:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       TZ: America/Los_Angeles
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
