@@ -39,6 +39,12 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/gitlab-runner"
+  gitlab_ssl:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitlab/ssl"
 
 services:
   gitlab:
@@ -82,6 +88,7 @@ services:
     image: gitlab/gitlab-runner:alpine
     volumes:
       - gitlab_runner:/etc/gitlab-runner
+      - gitlab_ssl:/etc/gitlab-runner/certs
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       TZ: America/Los_Angeles
