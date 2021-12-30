@@ -1,0 +1,23 @@
+version: "3.7"
+
+volumes:
+  reddit_scrape_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/reddit_scrape"
+
+services:
+  reddit_scrape:
+    image: registry.richardsoper.me/richardsoper/reddit-scrape
+    environment:
+    volumes:
+      - reddit_scrape_data:/app/config
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
