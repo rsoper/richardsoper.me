@@ -17,5 +17,6 @@ https://www.richardsoper.me
     - Portainer with agent configuration to monitor/manage all nodes
     - Ghost, Nextcloud, Jellyfin, Sonarr, Radarr, Jackett, and more
     - Valheim game server
+    - Uptime Kuma for service uptime alerts
     - Logging containers to Loki
     - Gitlab repository and container registry
