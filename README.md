@@ -19,3 +19,4 @@ https://www.richardsoper.me
     - Valheim game server
     - Uptime Kuma for service uptime alerts
     - Logging containers to Loki
+    - Gitlab repository and container registry
