@@ -1,21 +1,18 @@
 version: "3.7"
 
 volumes:
-  discord_bot_data:
+  reddit_scrape_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
-      device: ":/volume1/swarm/discord"
+      device: ":/volume1/swarm/reddit_scrape"
 
 services:
-  discord_role_bot:
-    image: richardsoper/discord-role-bot:latest
-    environment:
-      - DISCORD_TOKEN=asd123
-      - CHANNEL_ID=123
+  reddit_scrape:
+    image: registry.richardsoper.me/richardsoper/reddit-scrape
     volumes:
-      - discord_bot_data:/app/config
+      - reddit_scrape_data:/app/config
     logging:
       driver: loki:latest
       options:

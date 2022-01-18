@@ -21,3 +21,8 @@ registry_nginx['enable'] = true
 registry_nginx['listen_https'] = false
 registry_nginx['listen_port'] = '5005'
 registry_external_url 'https://registry.richardsoper.me'
+
+# Monitoring 
+prometheus_monitoring['enable'] = false
+grafana['enable'] = false
+consul['enable'] = false
