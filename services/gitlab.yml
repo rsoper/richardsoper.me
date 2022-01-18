@@ -33,6 +33,18 @@ volumes:
       type: "nfs"
       o: addr=10.0.20.30,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/config"
+  gitlab_runner:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitlab/gitlab-runner"
+  gitlab_ssl:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/gitlab/ssl"
 
 services:
   gitlab:
@@ -72,3 +84,14 @@ services:
         - "traefik.http.routers.registry.tls.certresolver=cf-cert"
         - "traefik.http.routers.registry.service=registry"
         - "traefik.http.services.registry.loadbalancer.server.port=5005"
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    volumes:
+      - gitlab_runner:/etc/gitlab-runner
+      - gitlab_ssl:/etc/gitlab-runner/certs
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: America/Los_Angeles
+    deploy:
+      mode: replicated
+      replicas: 1
