@@ -1,5 +1,11 @@
 version: "3.7"
 
+secrets:
+  DISCORD_TOKEN_FILE:
+    external: true
+  CHANNEL_ID_FILE:
+    external: true
+
 volumes:
   discord_bot_data:
     driver: local
@@ -10,10 +16,10 @@ volumes:
 
 services:
   discord_role_bot:
-    image: richardsoper/discord-role-bot:latest
-    environment:
-      - DISCORD_TOKEN=asd123
-      - CHANNEL_ID=123
+    image: registry.richardsoper.me/richardsoper/discord-role-bot
+    secrets:
+      - DISCORD_TOKEN_FILE
+      - CHANNEL_ID_FILE
     volumes:
       - discord_bot_data:/app/config
     logging:
