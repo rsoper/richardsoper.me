@@ -84,6 +84,12 @@ services:
         - "traefik.http.routers.registry.tls.certresolver=cf-cert"
         - "traefik.http.routers.registry.service=registry"
         - "traefik.http.services.registry.loadbalancer.server.port=5005"
+        # Pages routers/service
+        - "traefik.http.routers.gitlab-pages.entrypoints=websecure"
+        - "traefik.http.routers.gitlab-pages.rule=Host(`pages.richardsoper.me`)"
+        - "traefik.http.routers.gitlab-pages.tls.certresolver=cf-cert"
+        - "traefik.http.routers.gitlab-pages.service=gitlab-pages"
+        - "traefik.http.services.gitlab-pages.loadbalancer.server.port=8888"
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
     volumes:
