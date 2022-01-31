@@ -1,4 +1,5 @@
 external_url 'https://gitlab.richardsoper.me/'
+pages_external_url 'https://pages.richardsoper.me/'
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
 
 nginx['listen_https'] = false
