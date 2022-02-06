@@ -164,3 +164,17 @@ services:
         - "traefik.http.routers.sonarr.tls.certresolver=cf-cert"
         - "traefik.http.routers.sonarr.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+
+  solverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    environment:
+      - LOG_LEVEL=info
+    networks:
+      - service_network
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://master.server:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
