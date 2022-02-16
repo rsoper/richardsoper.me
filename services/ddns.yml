@@ -12,7 +12,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://richardsoper.me:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       - TZ=America/Los_Angeles
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
@@ -29,7 +29,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://richardsoper.me:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       - TZ=America/Los_Angeles
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
