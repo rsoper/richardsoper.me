@@ -10,6 +10,16 @@ http:
       middlewares:
         - secure-headers@file
         - authelia@docker
+    scrypted:
+      rule: "Host(`scrypted.richardsoper.me`)"
+      service: scrypted-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - secure-headers@file
+        - authelia@docker
 
   services:
     homeassistant-service:
@@ -17,3 +27,8 @@ http:
         passHostHeader: true
         servers:
           - url: "http://master.server:8123"
+    scrypted-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "https://imac.server:10443"

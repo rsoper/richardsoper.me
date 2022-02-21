@@ -34,7 +34,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       - TZ=America/Los_Angeles
       - AUTHELIA_JWT_SECRET_FILE=/run/secrets/AUTHELIA_JWT
