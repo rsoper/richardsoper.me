@@ -1,13 +1,6 @@
 api:
   dashboard: true
 
-log:
-  level: DEBUG
-  filePath: /shared/logs/traefik.log
-
-accessLog:
-  filePath: /shared/logs/traefik-access.log
-
 metrics:
   prometheus:
     addEntryPointsLabels: true
