@@ -2,11 +2,11 @@ external_url 'https://gitlab.richardsoper.me/'
 pages_external_url 'https://pages.richardsoper.me/'
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
 
+gitlab_pages['enable'] = true
 pages_nginx['enable'] = true
 pages_nginx['listen_port'] = 8888
 pages_nginx['listen_https'] = false
 gitlab_pages['artifacts_server'] = true
-gitlab_pages['enable'] = true
 
 nginx['listen_https'] = false
 nginx['listen_port'] = 80
