@@ -5,6 +5,7 @@ gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_pass
 pages_nginx['enable'] = true
 pages_nginx['listen_port'] = 8888
 pages_nginx['listen_https'] = false
+gitlab_pages['artifacts_server'] = true
 
 nginx['listen_https'] = false
 nginx['listen_port'] = 80
