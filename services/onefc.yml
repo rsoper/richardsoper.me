@@ -1,5 +1,9 @@
 version: "3.7"
 
+networks:
+  traefik_swarm:
+    external: true
+
 services:
   OFC_Cal:
     image: registry.richardsoper.me/richardsoper/onechampcalendar:latest
