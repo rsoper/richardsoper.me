@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  discord_role_bot:
+    image: registry.richardsoper.me/richardsoper/onechampcalendar:latest
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
