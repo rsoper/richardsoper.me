@@ -22,4 +22,4 @@ services:
         - "traefik.http.routers.onefc-calendar.rule=Host(`onefccalendar.com`)"
         - "traefik.http.routers.onefc-calendar.tls.certresolver=cf-cert"
         - "traefik.http.routers.onefc-calendar.middlewares=secure-headers@file"
-        - "traefik.http.services.onefc-calendar.loadbalancer.server.port=3001"
+        - "traefik.http.services.onefc-calendar.loadbalancer.server.port=5000"
