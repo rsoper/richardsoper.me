@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  discord_role_bot:
+  OFC_Cal:
     image: registry.richardsoper.me/richardsoper/onechampcalendar:latest
     logging:
       driver: loki:latest
