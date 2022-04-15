@@ -19,7 +19,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.onefc-calendar.entrypoints=websecure"
-        - "traefik.http.routers.onefc-calendar.rule=Host(`onefccalendar.com`)"
+        - "traefik.http.routers.onefc-calendar.rule=Host(`onefccalendar.com`) || Host(`www.onefccalendar.com`)"
         - "traefik.http.routers.onefc-calendar.tls.certresolver=cf-cert"
         - "traefik.http.routers.onefc-calendar.middlewares=secure-headers@file"
         - "traefik.http.services.onefc-calendar.loadbalancer.server.port=5000"
