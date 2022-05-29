@@ -25,7 +25,7 @@ services:
         loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 3
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.rs.entrypoints=websecure"
