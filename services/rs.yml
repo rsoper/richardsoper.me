@@ -1,0 +1,35 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  rs_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=10.0.20.30,nolock,soft,rw
+      device: ":/volume1/swarm/rs"
+
+services:
+  rs:
+    image: sebp/lighttpd:1.4.61-r1
+    volumes:
+      - rs_data:/var/www/localhost/htdocs
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.rs.entrypoints=websecure"
+        - "traefik.http.routers.rs.rule=Host(`richardsoper.me`) || Host(`www.richardsoper.me`)"
+        - "traefik.http.routers.rs.tls.certresolver=cf-cert"
+        - "traefik.http.routers.rs.middlewares=secure-headers@file"
+        - "traefik.http.services.rs.loadbalancer.server.port=80"
