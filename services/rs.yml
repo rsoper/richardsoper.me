@@ -14,9 +14,9 @@ volumes:
 
 services:
   rs:
-    image: sebp/lighttpd:1.4.61-r1
+    image: nginx:stable-alpine
     volumes:
-      - rs_data:/var/www/localhost/htdocs
+      - rs_data:/usr/share/nginx/html:ro
     networks:
       - traefik_swarm
     logging:
