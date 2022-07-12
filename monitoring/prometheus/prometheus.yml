@@ -20,6 +20,7 @@ scrape_configs:
             "worker.server:9100",
             "worker-i3.server:9100",
             "imac.server:9100",
+            "richflix.server:9100",
           ]
   - job_name: cadvisor
     static_configs:
@@ -29,8 +30,13 @@ scrape_configs:
             "worker.server:8181",
             "worker-i3.server:8181",
             "imac.server:8181",
+            "richflix.server:8181",
           ]
   - job_name: traefik
     static_configs:
       - targets:
           - master.server:8008
+  - job_name: mtg
+    static_configs:
+      - targets:
+          - imac.server:8000
