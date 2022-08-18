@@ -9,7 +9,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=storage.local,nolock,soft,rw
+      o: addr=192.168.33.31,nolock,soft,rw
       device: ":/volume1/swarm/rs"
 
 services:

@@ -19,31 +19,31 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=storage.local,nolock,soft,rw
+      o: addr=192.168.33.31,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/data"
   gitlab_logs:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=storage.local,nolock,soft,rw
+      o: addr=192.168.33.31,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/logs"
   gitlab_config:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=storage.local,nolock,soft,rw
+      o: addr=192.168.33.31,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/config"
   gitlab_runner:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=storage.local,nolock,soft,rw
+      o: addr=192.168.33.31,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/gitlab-runner"
   gitlab_ssl:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=storage.local,nolock,soft,rw
+      o: addr=192.168.33.31,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/ssl"
 
 services:
