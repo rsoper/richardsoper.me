@@ -12,7 +12,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.33.31,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/portainer/data"
 
 services:
