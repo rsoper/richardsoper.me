@@ -12,43 +12,43 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/jellyfin/config"
   jellyfin_media:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/media_data"
   jellyfin_cache:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/jellyfin/cache"
   radarr_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/radarr"
   jackett_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/jackett"
   sonarr_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/sonarr"
   media_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.30,nolock,soft,rw
       device: ":/volume1/swarm/media_data"
 
 services:

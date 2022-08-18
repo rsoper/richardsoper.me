@@ -18,7 +18,7 @@ services:
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
       - ZONE=richardsoper.me
       - PROXIED=true
-      - DNS_SERVER=10.0.20.3
+      - DNS_SERVER=192.168.33.2
     deploy:
       mode: replicated
       replicas: 1
@@ -35,7 +35,7 @@ services:
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
       - ZONE=peregrinesparlor.com
       - PROXIED=true
-      - DNS_SERVER=10.0.20.3
+      - DNS_SERVER=192.168.33.2
     deploy:
       mode: replicated
       replicas: 1
@@ -52,7 +52,7 @@ services:
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
       - ZONE=onefccalendar.com
       - PROXIED=true
-      - DNS_SERVER=10.0.20.3
+      - DNS_SERVER=192.168.33.2
     deploy:
       mode: replicated
       replicas: 1
@@ -69,7 +69,7 @@ services:
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
       - ZONE=rdsv.me
       - PROXIED=true
-      - DNS_SERVER=10.0.20.3
+      - DNS_SERVER=192.168.33.2
     deploy:
       mode: replicated
       replicas: 1
