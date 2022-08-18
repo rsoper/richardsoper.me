@@ -15,13 +15,13 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.33.30,nolock,soft,rw
+      o: addr=storage.local,nolock,soft,rw
       device: ":/volume1/swarm/nextcloud/application"
   redis_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.33.30,nolock,soft,rw
+      o: addr=storage.local,nolock,soft,rw
       device: ":/volume1/swarm/nextcloud/redis"
 
 services:
