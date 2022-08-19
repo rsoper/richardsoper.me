@@ -40,7 +40,7 @@ services:
       replicas: 1
 
   nextcloud:
-    image: nextcloud:22.1.1
+    image: nextcloud:22.2.1
     environment:
       - MYSQL_HOST=mariadb
       - MYSQL_USER=nextcloud
