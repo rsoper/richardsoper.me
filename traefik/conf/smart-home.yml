@@ -26,9 +26,9 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://master.server:8123"
+          - url: "http://nylea.lan.richardsoper.me:8123"
     scrypted-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "https://imac.server:10443"
+          - url: "https://heliod.lan.richardsoper.me:10443"

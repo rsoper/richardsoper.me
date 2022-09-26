@@ -16,27 +16,27 @@ scrape_configs:
     static_configs:
       - targets:
           [
-            "master.server:9100",
-            "worker.server:9100",
-            "worker-i3.server:9100",
-            "imac.server:9100",
-            "richflix.server:9100",
+            "nylea.lan.richardsoper.me:9100",
+            "erebos.lan.richardsoper.me:9100",
+            "thassa.lan.richardsoper.me:9100",
+            "heliod.lan.richardsoper.me:9100",
+            "purphoros.lan.richardsoper.me:9100",
           ]
   - job_name: cadvisor
     static_configs:
       - targets:
           [
-            "master.server:8181",
-            "worker.server:8181",
-            "worker-i3.server:8181",
-            "imac.server:8181",
-            "richflix.server:8181",
+            "nylea.lan.richardsoper.me:8181",
+            "erebos.lan.richardsoper.me:8181",
+            "thassa.lan.richardsoper.me:8181",
+            "heliod.lan.richardsoper.me:8181",
+            "purphoros.lan.richardsoper.me:8181",
           ]
   - job_name: traefik
     static_configs:
       - targets:
-          - master.server:8008
+          - nylea.lan.richardsoper.me:8008
   - job_name: mtg
     static_configs:
       - targets:
-          - imac.server:8000
+          - heliod.lan.richardsoper.me:8000
