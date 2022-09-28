@@ -12,7 +12,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/portainer/data"
 
 services:
@@ -28,7 +28,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: global
       placement:
@@ -48,7 +48,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -59,4 +59,5 @@ services:
         - "traefik.http.routers.portainer.entrypoints=websecure"
         - "traefik.http.routers.portainer.rule=Host(`portainer.richardsoper.me`)"
         - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
+        - "traefik.http.routers.portainer.middlewares=authelia@docker"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"

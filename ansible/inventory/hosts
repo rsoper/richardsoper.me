@@ -1,13 +1,13 @@
 [arm]
-master.server
-worker.server
+nylea.lan.richardsoper.me
+erebos.lan.richardsoper.me
 
 [x86]
-worker-i3.server
-imac.server
+thassa.lan.richardsoper.me
+heliod.lan.richardsoper.me
 
 [ubuntu]
-master.server
-worker.server
-worker-i3.server
-imac.server
+nylea.lan.richardsoper.me
+erebos.lan.richardsoper.me
+thassa.lan.richardsoper.me
+heliod.lan.richardsoper.me

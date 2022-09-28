@@ -11,21 +11,21 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/monitoring/prometheus_db"
 
   prometheus_config:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/monitoring/prometheus"
 
   grafana_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/monitoring/grafana_db"
 
 secrets:
@@ -41,7 +41,7 @@ services:
       - prometheus_data:/data/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.retention.time=90d"
+      - "--storage.tsdb.retention.size=4GB"
       - "--storage.tsdb.path=/data/prometheus"
     ports:
       - "9090:9090"
@@ -50,7 +50,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -74,7 +74,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1

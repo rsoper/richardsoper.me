@@ -12,13 +12,21 @@ services:
     logging:
       driver: loki:latest
       options:
+<<<<<<< HEAD
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+=======
         loki-url: "http://master.server:3100/loki/api/v1/push"
+>>>>>>> 745c2eac0865cff52b07a1904dde5f98b2a38365
     environment:
       - TZ=America/Los_Angeles
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
       - ZONE=richardsoper.me
       - PROXIED=true
+<<<<<<< HEAD
+      - DNS_SERVER=192.168.33.2
+=======
       - DNS_SERVER=10.0.20.3
+>>>>>>> 745c2eac0865cff52b07a1904dde5f98b2a38365
     deploy:
       mode: replicated
       replicas: 1
@@ -29,13 +37,55 @@ services:
     logging:
       driver: loki:latest
       options:
+<<<<<<< HEAD
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+=======
         loki-url: "http://master.server:3100/loki/api/v1/push"
+>>>>>>> 745c2eac0865cff52b07a1904dde5f98b2a38365
     environment:
       - TZ=America/Los_Angeles
       - API_KEY_FILE=/run/secrets/CF_API_DDNS
       - ZONE=peregrinesparlor.com
       - PROXIED=true
+<<<<<<< HEAD
+      - DNS_SERVER=192.168.33.2
+    deploy:
+      mode: replicated
+      replicas: 1
+  ONE:
+    image: oznu/cloudflare-ddns:latest
+    secrets:
+      - CF_API_DDNS
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      - TZ=America/Los_Angeles
+      - API_KEY_FILE=/run/secrets/CF_API_DDNS
+      - ZONE=onefccalendar.com
+      - PROXIED=true
+      - DNS_SERVER=192.168.33.2
+    deploy:
+      mode: replicated
+      replicas: 1
+  RDSV:
+    image: oznu/cloudflare-ddns:latest
+    secrets:
+      - CF_API_DDNS
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      - TZ=America/Los_Angeles
+      - API_KEY_FILE=/run/secrets/CF_API_DDNS
+      - ZONE=rdsv.me
+      - PROXIED=true
+      - DNS_SERVER=192.168.33.2
+=======
       - DNS_SERVER=10.0.20.3
+>>>>>>> 745c2eac0865cff52b07a1904dde5f98b2a38365
     deploy:
       mode: replicated
       replicas: 1

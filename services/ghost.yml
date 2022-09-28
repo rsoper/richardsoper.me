@@ -15,7 +15,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/ghost"
 
 services:
@@ -28,10 +28,10 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       database__client: mysql
-      database__connection__host: 10.0.20.30
+      database__connection__host: 192.168.33.32
       database__connection__port: 3307
       database__connection__user: ghost
       database__connection__password: SUPER_SECRET_PASSWORD

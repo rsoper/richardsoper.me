@@ -19,31 +19,31 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/data"
   gitlab_logs:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/logs"
   gitlab_config:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/config"
   gitlab_runner:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/gitlab-runner"
   gitlab_ssl:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/gitlab/ssl"
 
 services:
@@ -66,7 +66,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -84,6 +84,12 @@ services:
         - "traefik.http.routers.registry.tls.certresolver=cf-cert"
         - "traefik.http.routers.registry.service=registry"
         - "traefik.http.services.registry.loadbalancer.server.port=5005"
+        # Pages routers/service
+        - "traefik.http.routers.gitlab-pages.entrypoints=websecure"
+        - "traefik.http.routers.gitlab-pages.rule=Host(`pages.richardsoper.me`)"
+        - "traefik.http.routers.gitlab-pages.tls.certresolver=cf-cert"
+        - "traefik.http.routers.gitlab-pages.service=gitlab-pages"
+        - "traefik.http.services.gitlab-pages.loadbalancer.server.port=8888"
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
     volumes:
