@@ -28,12 +28,12 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://10.0.20.3:80"
+          - url: "http://192.168.33.2:80"
     pihole-backup-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://10.0.20.22:8080"
+          - url: "http://192.168.33.3:80"
 
   middlewares:
     admin-redirect:

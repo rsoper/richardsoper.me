@@ -1,25 +1,31 @@
 version: "3.7"
 
+secrets:
+  DISCORD_TOKEN_FILE:
+    external: true
+  CHANNEL_ID_FILE:
+    external: true
+
 volumes:
   discord_bot_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/discord"
 
 services:
   discord_role_bot:
-    image: richardsoper/discord-role-bot:latest
-    environment:
-      - DISCORD_TOKEN=asd123
-      - CHANNEL_ID=123
+    image: registry.richardsoper.me/richardsoper/discord-role-bot
+    secrets:
+      - DISCORD_TOKEN_FILE
+      - CHANNEL_ID_FILE
     volumes:
       - discord_bot_data:/app/config
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1

@@ -12,48 +12,48 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/jellyfin/config"
   jellyfin_media:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/media_data"
   jellyfin_cache:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/jellyfin/cache"
   radarr_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/radarr"
   jackett_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/jackett"
   sonarr_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/sonarr"
   media_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=10.0.20.30,nolock,soft,rw
+      o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/media_data"
 
 services:
   jellyfin:
-    image: ghcr.io/linuxserver/jellyfin:version-10.7.6-1
+    image: lscr.io/linuxserver/jellyfin:latest
     environment:
       - PUID=1028
       - PGID=1028
@@ -67,7 +67,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -82,7 +82,7 @@ services:
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
 
   radarr:
-    image: linuxserver/radarr:version-3.2.2.5080
+    image: lscr.io/linuxserver/radarr:latest
     environment:
       - PUID=1028
       - PGID=1028
@@ -97,7 +97,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -110,7 +110,7 @@ services:
         - "traefik.http.services.radarr.loadbalancer.server.port=7878"
 
   jackett:
-    image: linuxserver/jackett:version-v0.18.641
+    image: lscr.io/linuxserver/jackett:latest
     environment:
       - PUID=1028
       - PGID=1028
@@ -125,7 +125,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -138,7 +138,7 @@ services:
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
   sonarr:
-    image: linuxserver/sonarr:version-3.0.6.1342
+    image: lscr.io/linuxserver/sonarr:latest
     environment:
       - PUID=1028
       - PGID=1028
@@ -153,7 +153,7 @@ services:
     logging:
       driver: loki:latest
       options:
-        loki-url: "http://master.server:3100/loki/api/v1/push"
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     deploy:
       mode: replicated
       replicas: 1
@@ -164,3 +164,17 @@ services:
         - "traefik.http.routers.sonarr.tls.certresolver=cf-cert"
         - "traefik.http.routers.sonarr.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+
+  solverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    environment:
+      - LOG_LEVEL=info
+    networks:
+      - service_network
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
