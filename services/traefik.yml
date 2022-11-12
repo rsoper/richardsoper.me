@@ -3,7 +3,7 @@ version: "3.7"
 secrets:
   CF_API_EMAIL:
     external: true
-  CF_API_KEY:
+  CF_API_NOV22:
     external: true
 
 networks:
@@ -18,23 +18,16 @@ volumes:
       o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/traefik"
 
-  shared_data:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=192.168.33.32,nolock,soft,rw
-      device: ":/volume1/swarm/shared"
-
 services:
   traefik:
     hostname: traefik
-    image: traefik:v2.5
+    image: traefik:v2.7
     secrets:
       - "CF_API_EMAIL"
-      - "CF_API_KEY"
+      - "CF_API_NOV22"
     environment:
       - CF_API_EMAIL_FILE=/run/secrets/CF_API_EMAIL
-      - CF_API_KEY_FILE=/run/secrets/CF_API_KEY
+      - CF_API_KEY_FILE=/run/secrets/CF_API_NOV22
     ports:
       - "80:80"
       - "443:443"
@@ -42,7 +35,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - traefik_data:/etc/traefik
-      - shared_data:/shared
     networks:
       - traefik_swarm
     logging:
@@ -62,9 +54,10 @@ services:
         - "traefik.http.routers.traefik.middlewares=authelia@docker"
         ## DNS CHALLENGE
         - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
-        - "traefik.http.routers.traefik.tls.domains[0].main=*.richardsoper.me"
-        - "traefik.http.routers.traefik.tls.domains[0].sans=richardsoper.me"
+        - "traefik.http.routers.traefik.tls.domains[0].main=richardsoper.me"
+        - "traefik.http.routers.traefik.tls.domains[0].sans=*.richardsoper.me"
         ## HTTP REDIRECT
         - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
         - "traefik.http.routers.redirect-https.entrypoints=web"
         - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
+
