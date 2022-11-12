@@ -36,6 +36,8 @@ certificatesResolvers:
       #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       storage: /etc/traefik/acme/acme.json
       email: richardwebdesigner@me.com
+      httpChallenge:
+        entryPoint: web
       dnsChallenge:
         provider: cloudflare
         resolvers:
