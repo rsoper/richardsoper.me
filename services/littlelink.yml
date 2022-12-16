@@ -1,0 +1,58 @@
+version: "3.0"
+services:
+  littlelink-server:
+    image: ghcr.io/techno-tim/littlelink-server:latest
+    environment:
+      - META_TITLE=Richard Soper
+      - META_DESCRIPTION=QA Automation Engineer @ Apple | Gamer | Collector | Homelab
+      - META_AUTHOR=Richard Soper
+      - META_KEYWORDS=HomeLab, Engineering, MTG, 
+      - LANG=en
+      - META_INDEX_STATUS=all
+      - OG_SITE_NAME=Richard Soper
+      - OG_TITLE=Richard Soper
+      - OG_DESCRIPTION=The home of Richard Soper
+      - OG_URL=https://richardsoper.me
+      - OG_IMAGE=https://pbs.twimg.com/profile_images/1391619940642267136/rEP0tNnD_400x400.jpg
+      - OG_IMAGE_WIDTH=400
+      - OG_IMAGE_HEIGHT=400
+      - THEME=Dark
+      - FAVICON_URL=https://pbs.twimg.com/profile_images/1391619940642267136/rEP0tNnD_200x200.jpg
+      - AVATAR_URL=https://pbs.twimg.com/profile_images/1391619940642267136/rEP0tNnD_200x200.jpg
+      - AVATAR_2X_URL=https://pbs.twimg.com/profile_images/1391619940642267136/rEP0tNnD_400x400.jpg
+      - AVATAR_ALT=Richard Soper Profile Pic
+      - NAME=Richard Soper
+      - BIO=QA Automation Engineer @ Apple | Gamer | Collector | Homelab
+      # use ENV variable names for order, listed buttons will be boosted to the top
+      - BUTTON_ORDER=TWITTER,GITHUB,LINKED_IN
+      # you can render an unlimited amount of custom buttons by adding 
+      # the CUSTOM_BUTTON_* variables and by using a comma as a separator.
+      # - CUSTOM_BUTTON_TEXT=Documentation,Recommended Gear
+      # - CUSTOM_BUTTON_URL=https://l.technotim.live/docs,https://l.technotim.live/gear
+      # - CUSTOM_BUTTON_COLOR=#000000,#000000
+      # - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
+      # - CUSTOM_BUTTON_ALT_TEXT=Tech documentation site for my videos and more,Recommended Gear
+      # - CUSTOM_BUTTON_NAME=DOCUMENTATION,GEAR
+      # - CUSTOM_BUTTON_ICON=fas file-alt,fas fa-cog
+      - GITHUB=https://github.com/rsoper/
+      - TWITTER=https://twitter.com/richardsoper
+      - LINKED_IN=https://www.linkedin.com/in/richardsoper/
+      - FOOTER=Richard Soper © 2022
+    ports:
+      - 8080:3000
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jekyll.entrypoints=websecure"
+        - "traefik.http.routers.jekyll.rule=Host(`richardsoper.me`) || Host(`www.richardsoper.me`)"
+        - "traefik.http.routers.jekyll.tls.certresolver=cf-cert"
+        - "traefik.http.routers.jekyll.middlewares=secure-headers@file"
+        - "traefik.http.services.jekyll.loadbalancer.server.port=4000"
