@@ -29,16 +29,16 @@ services:
       - NAME=Richard Soper
       - BIO=QA Automation Engineer | Gamer | Collector | Homelab
       # use ENV variable names for order, listed buttons will be boosted to the top
-      - BUTTON_ORDER=MASTODON,TWITTER
+      - BUTTON_ORDER=MASTODON,TWITTER,ONE FC CALENDAR
       # you can render an unlimited amount of custom buttons by adding 
       # the CUSTOM_BUTTON_* variables and by using a comma as a separator.
-      - CUSTOM_BUTTON_TEXT=Personal Projects
-      - CUSTOM_BUTTON_URL=https://blog.richardsoper.me/projects/
-      - CUSTOM_BUTTON_COLOR=#000000
-      - CUSTOM_BUTTON_TEXT_COLOR=#ffffff
-      - CUSTOM_BUTTON_ALT_TEXT=Some of the projects I am currently working on
-      - CUSTOM_BUTTON_NAME=PERSONAL PROJECTS
-      - CUSTOM_BUTTON_ICON=fas fa-cog
+      - CUSTOM_BUTTON_TEXT=Personal Projects,One FC Calendar
+      - CUSTOM_BUTTON_URL=https://blog.richardsoper.me/projects/,https://onefccalendar.com
+      - CUSTOM_BUTTON_COLOR=#000000,#000000
+      - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
+      - CUSTOM_BUTTON_ALT_TEXT=Some of the projects I am currently working on,A subscribable calendar for One FC
+      - CUSTOM_BUTTON_NAME=PERSONAL PROJECTS,ONE FC CALENDAR
+      - CUSTOM_BUTTON_ICON=fas fa-cog,fas fa-hand-fist
       - GHOST=https://blog.richardsoper.me
       - MASTODON=https://fosstodon.org/@richards
       - GITHUB=https://github.com/rsoper
