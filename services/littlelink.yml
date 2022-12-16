@@ -9,7 +9,7 @@ services:
     image: ghcr.io/techno-tim/littlelink-server:latest
     environment:
       - META_TITLE=Richard Soper
-      - META_DESCRIPTION=QA Automation Engineer @ Apple | Gamer | Collector | Homelab
+      - META_DESCRIPTION=QA Automation Engineer | Gamer | Collector | Homelab
       - META_AUTHOR=Richard Soper
       - META_KEYWORDS=HomeLab, Engineering, MTG, 
       - LANG=en
@@ -27,7 +27,7 @@ services:
       - AVATAR_2X_URL=https://pbs.twimg.com/profile_images/1391619940642267136/rEP0tNnD_400x400.jpg
       - AVATAR_ALT=Richard Soper Profile Pic
       - NAME=Richard Soper
-      - BIO=QA Automation Engineer @ Apple | Gamer | Collector | Homelab
+      - BIO=QA Automation Engineer | Gamer | Collector | Homelab
       # use ENV variable names for order, listed buttons will be boosted to the top
       - BUTTON_ORDER=MASTODON,TWITTER
       # you can render an unlimited amount of custom buttons by adding 
