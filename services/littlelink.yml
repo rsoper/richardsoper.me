@@ -29,19 +29,22 @@ services:
       - NAME=Richard Soper
       - BIO=QA Automation Engineer @ Apple | Gamer | Collector | Homelab
       # use ENV variable names for order, listed buttons will be boosted to the top
-      - BUTTON_ORDER=TWITTER,GITHUB,LINKED_IN
+      - BUTTON_ORDER=MASTODON,TWITTER
       # you can render an unlimited amount of custom buttons by adding 
       # the CUSTOM_BUTTON_* variables and by using a comma as a separator.
-      # - CUSTOM_BUTTON_TEXT=Documentation,Recommended Gear
-      # - CUSTOM_BUTTON_URL=https://l.technotim.live/docs,https://l.technotim.live/gear
+      # - CUSTOM_BUTTON_TEXT=Personal Blog,Recommended Gear
+      # - CUSTOM_BUTTON_URL=https://blog.richardsoper.me,https://l.technotim.live/gear
       # - CUSTOM_BUTTON_COLOR=#000000,#000000
       # - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
-      # - CUSTOM_BUTTON_ALT_TEXT=Tech documentation site for my videos and more,Recommended Gear
-      # - CUSTOM_BUTTON_NAME=DOCUMENTATION,GEAR
+      # - CUSTOM_BUTTON_ALT_TEXT=A place to post my thoughts,Recommended Gear
+      # - CUSTOM_BUTTON_NAME=PERSONAL BLOG,GEAR
       # - CUSTOM_BUTTON_ICON=fas file-alt,fas fa-cog
-      - GITHUB=https://github.com/rsoper/
+      - GHOST=https://blog.richardsoper.me
+      - MASTODON=https://fosstodon.org/@richards
+      - GITHUB=https://github.com/rsoper
+      - GITLAB=https://gitlab.richardsoper.me
       - TWITTER=https://twitter.com/richardsoper
-      - LINKED_IN=https://www.linkedin.com/in/richardsoper/
+      - LINKED_IN=https://www.linkedin.com/in/richardsoper
       - FOOTER=Richard Soper © 2022
     networks:
       - traefik_swarm
