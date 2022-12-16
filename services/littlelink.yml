@@ -43,8 +43,6 @@ services:
       - TWITTER=https://twitter.com/richardsoper
       - LINKED_IN=https://www.linkedin.com/in/richardsoper/
       - FOOTER=Richard Soper © 2022
-    ports:
-      - 8080:3000
     networks:
       - traefik_swarm
     logging:
@@ -56,8 +54,8 @@ services:
       replicas: 1
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.jekyll.entrypoints=websecure"
-        - "traefik.http.routers.jekyll.rule=Host(`richardsoper.me`) || Host(`www.richardsoper.me`)"
-        - "traefik.http.routers.jekyll.tls.certresolver=cf-cert"
-        - "traefik.http.routers.jekyll.middlewares=secure-headers@file"
-        - "traefik.http.services.jekyll.loadbalancer.server.port=4000"
+        - "traefik.http.routers.littlelink.entrypoints=websecure"
+        - "traefik.http.routers.littlelink.rule=Host(`richardsoper.me`) || Host(`www.richardsoper.me`)"
+        - "traefik.http.routers.littlelink.tls.certresolver=cf-cert"
+        - "traefik.http.routers.littlelink.middlewares=secure-headers@file"
+        - "traefik.http.services.littlelink.loadbalancer.server.port=3000"
