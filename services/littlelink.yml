@@ -1,4 +1,9 @@
 version: "3.0"
+
+networks:
+  traefik_swarm:
+    external: true
+
 services:
   littlelink-server:
     image: ghcr.io/techno-tim/littlelink-server:latest
