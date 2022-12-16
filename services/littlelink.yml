@@ -42,7 +42,7 @@ services:
       - GHOST=https://blog.richardsoper.me
       - MASTODON=https://fosstodon.org/@richards
       - GITHUB=https://github.com/rsoper
-      - GITLAB=https://gitlab.richardsoper.me
+      - GITLAB=https://gitlab.richardsoper.me/richardsoper
       - TWITTER=https://twitter.com/richardsoper
       - LINKED_IN=https://www.linkedin.com/in/richardsoper
       - FOOTER=Richard Soper © 2022
