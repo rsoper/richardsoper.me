@@ -34,14 +34,14 @@ secrets:
 
 services:
   prometheus:
-    image: prom/prometheus:v2.29.2
+    image: prom/prometheus:v2.41.0
     user: "1028"
     volumes:
       - prometheus_config:/etc/prometheus
       - prometheus_data:/data/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.retention.size=4GB"
+      - "--storage.tsdb.retention.size=3GB"
       - "--storage.tsdb.path=/data/prometheus"
     ports:
       - "9090:9090"
@@ -58,7 +58,7 @@ services:
         constraints: [node.platform.os == linux]
 
   grafana:
-    image: grafana/grafana:8.2.7
+    image: grafana/grafana:9.3.2
     user: "1028"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/GF_ADMIN_PASSWORD

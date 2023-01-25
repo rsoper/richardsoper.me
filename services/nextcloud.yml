@@ -26,7 +26,7 @@ volumes:
 
 services:
   redis:
-    image: redis:6.2.5
+    image: redis:latest
     volumes:
       - redis_data:/data
     networks:
@@ -40,7 +40,7 @@ services:
       replicas: 1
 
   nextcloud:
-    image: nextcloud:22.2.10
+    image: nextcloud:25
     environment:
       - MYSQL_HOST=mariadb
       - MYSQL_USER=nextcloud
