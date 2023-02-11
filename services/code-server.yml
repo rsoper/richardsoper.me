@@ -1,0 +1,46 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+secrets:
+  CODE_ROOT:
+    external: true
+
+
+volumes:
+  code_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/code"
+
+services:
+  code:
+    image: lscr.io/linuxserver/code-server:latest
+    volumes:
+      - code_data:/config
+    secrets:
+      - CODE_ROOT
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      - TZ=America/Los_Angeles
+      - PROXY_DOMAIN=code.richardsoper.me
+      - FILE__SUDO_PASSWORD=/run/secrets/CODE_ROOT
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.code-server.entrypoints=websecure"
+        - "traefik.http.routers.code-server.middlewares=authelia@docker"
+        - "traefik.http.routers.code-server.rule=Host(`code.richardsoper.me`)"
+        - "traefik.http.routers.code-server.tls.certresolver=cf-cert"
+        - "traefik.http.services.code-server.loadbalancer.server.port=8443"
