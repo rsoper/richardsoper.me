@@ -53,6 +53,7 @@ services:
       - gitlab_data:/var/opt/gitlab
       - gitlab_logs:/var/log/gitlab
       - gitlab_config:/etc/gitlab
+      - /home/swarm/postgres:/var/opt/gitlab/postgresql
     environment:
       GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
     configs:
@@ -70,6 +71,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints: [node.hostname == purphoros.lan.richardsoper.me]
       labels:
         - "traefik.enable=true"
         # UI routers/service
