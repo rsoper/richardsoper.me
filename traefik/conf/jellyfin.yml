@@ -1,0 +1,18 @@
+http:
+  routers:
+    jellyfin:
+      rule: "Host(`watch.richardsoper.me`)"
+      service: jellyfin-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
+
+  services:
+    jellyfin-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://192.168.33.156:8096"
