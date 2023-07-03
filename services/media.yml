@@ -52,35 +52,6 @@ volumes:
       device: ":/volume1/swarm/media_data"
 
 services:
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest
-    environment:
-      - PUID=1028
-      - PGID=1028
-      - JELLYFIN_PublishedServerUrl=https://watch.richardsoper.me
-    volumes:
-      - jellyfin_config:/config
-      - jellyfin_media:/media
-      - jellyfin_cache:/cache
-    networks:
-      - traefik_swarm
-    logging:
-      driver: loki:latest
-      options:
-        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.platform.arch == x86_64
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.jellyfin.entrypoints=websecure"
-        - "traefik.http.routers.jellyfin.rule=Host(`watch.richardsoper.me`)"
-        - "traefik.http.routers.jellyfin.tls.certresolver=cf-cert"
-        - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
-
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     environment:
