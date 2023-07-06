@@ -1,0 +1,42 @@
+version: "3.3"
+
+volumes:
+  vpn_transmission_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/media_data"
+  vpn_transmission_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/transmission"
+
+services:
+  transmission-openvpn:
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - "vpn_transmission_data:/data"
+      - "vpn_transmission_config:/config"
+    environment:
+      - PUID=1028
+      - PGID=1028
+      - OPENVPN_PROVIDER=$OPENVPN_PROVIDER
+      - OPENVPN_USERNAME=$OPENVPN_USERNAME
+      - OPENVPN_PASSWORD=$OPENVPN_PASSWORD
+      - LOCAL_NETWORK=$LOCAL_NETWORK
+      - HEALTH_CHECK_HOST=$HEALTH_CHECK_HOST
+      - TRANSMISSION_RPC_PASSWORD=$TRANSMISSION_RPC_PASSWORD
+      - TRANSMISSION_RPC_USERNAME=$TRANSMISSION_RPC_USERNAME
+      - TZ=$TZ
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    ports:
+      - "9091:9091"
+    image: haugene/transmission-openvpn
+    container_name: transmission
