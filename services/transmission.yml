@@ -32,6 +32,7 @@ services:
       - TRANSMISSION_RPC_PASSWORD=$TRANSMISSION_RPC_PASSWORD
       - TRANSMISSION_RPC_USERNAME=$TRANSMISSION_RPC_USERNAME
       - TZ=$TZ
+      - TRANSMISSION_WEB_UI=flood-for-transmission
     logging:
       driver: json-file
       options:
