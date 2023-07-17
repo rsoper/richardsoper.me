@@ -18,7 +18,6 @@ scrape_configs:
           [
             "nylea.lan.richardsoper.me:9100",
             "erebos.lan.richardsoper.me:9100",
-            "thassa.lan.richardsoper.me:9100",
             "heliod.lan.richardsoper.me:9100",
             "purphoros.lan.richardsoper.me:9100",
           ]
@@ -28,7 +27,6 @@ scrape_configs:
           [
             "nylea.lan.richardsoper.me:8181",
             "erebos.lan.richardsoper.me:8181",
-            "thassa.lan.richardsoper.me:8181",
             "heliod.lan.richardsoper.me:8181",
             "purphoros.lan.richardsoper.me:8181",
           ]
@@ -36,7 +34,3 @@ scrape_configs:
     static_configs:
       - targets:
           - nylea.lan.richardsoper.me:8008
-  - job_name: mtg
-    static_configs:
-      - targets:
-          - heliod.lan.richardsoper.me:8000
