@@ -44,4 +44,4 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.hostname == heliod.lan.richardsoper.me]
+        constraints: [node.hostname == heliod]
