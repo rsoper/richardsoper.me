@@ -20,6 +20,7 @@ scrape_configs:
             "erebos.lan.richardsoper.me:9100",
             "heliod.lan.richardsoper.me:9100",
             "purphoros.lan.richardsoper.me:9100",
+            "thassa.lan.richardsoper.me:9100",
           ]
   - job_name: cadvisor
     static_configs:
@@ -29,6 +30,7 @@ scrape_configs:
             "erebos.lan.richardsoper.me:8181",
             "heliod.lan.richardsoper.me:8181",
             "purphoros.lan.richardsoper.me:8181",
+            "thassa.lan.richardsoper.me:8181",
           ]
   - job_name: traefik
     static_configs:
