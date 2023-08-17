@@ -1,0 +1,17 @@
+version: "3"
+services:
+  orbital-sync:
+    image: mattwebbio/orbital-sync:1
+    environment:
+      PRIMARY_HOST_BASE_URL: "http://pihole.server"
+      PRIMARY_HOST_PASSWORD: "your_password1"
+      SECONDARY_HOST_1_BASE_URL: "http://pihole3.server"
+      SECONDARY_HOST_1_PASSWORD: "your_password2"
+      INTERVAL_MINUTES: 30
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
