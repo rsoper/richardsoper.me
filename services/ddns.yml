@@ -18,6 +18,7 @@ services:
       - CF_API_TOKEN_FILE=/run/secrets/CF_API_DDNS
       - DOMAINS=richardsoper.me,peregrinesparlor.com,onefccalendar.com,rdsv.me
       - PROXIED=true
+      - IP6_PROVIDER=none
     deploy:
       mode: replicated
       replicas: 1
