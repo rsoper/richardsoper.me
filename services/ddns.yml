@@ -5,8 +5,8 @@ secrets:
     external: true
 
 services:
-  RS:
-    image: oznu/cloudflare-ddns:latest
+  ALL_DOMAINS:
+    image: favonia/cloudflare-ddns:latest
     secrets:
       - CF_API_DDNS
     logging:
@@ -15,61 +15,9 @@ services:
         loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       - TZ=America/Los_Angeles
-      - API_KEY_FILE=/run/secrets/CF_API_DDNS
-      - ZONE=richardsoper.me
+      - CF_API_TOKEN_FILE=/run/secrets/CF_API_DDNS
+      - DOMAINS=richardsoper.me,peregrinesparlor.com,onefccalendar.com,rdsv.me
       - PROXIED=true
-      - DNS_SERVER=192.168.33.2
-    deploy:
-      mode: replicated
-      replicas: 1
-  PP:
-    image: oznu/cloudflare-ddns:latest
-    secrets:
-      - CF_API_DDNS
-    logging:
-      driver: loki:latest
-      options:
-        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
-    environment:
-      - TZ=America/Los_Angeles
-      - API_KEY_FILE=/run/secrets/CF_API_DDNS
-      - ZONE=peregrinesparlor.com
-      - PROXIED=true
-      - DNS_SERVER=192.168.33.2
-    deploy:
-      mode: replicated
-      replicas: 1
-  ONE:
-    image: oznu/cloudflare-ddns:latest
-    secrets:
-      - CF_API_DDNS
-    logging:
-      driver: loki:latest
-      options:
-        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
-    environment:
-      - TZ=America/Los_Angeles
-      - API_KEY_FILE=/run/secrets/CF_API_DDNS
-      - ZONE=onefccalendar.com
-      - PROXIED=true
-      - DNS_SERVER=192.168.33.2
-    deploy:
-      mode: replicated
-      replicas: 1
-  RDSV:
-    image: oznu/cloudflare-ddns:latest
-    secrets:
-      - CF_API_DDNS
-    logging:
-      driver: loki:latest
-      options:
-        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
-    environment:
-      - TZ=America/Los_Angeles
-      - API_KEY_FILE=/run/secrets/CF_API_DDNS
-      - ZONE=rdsv.me
-      - PROXIED=true
-      - DNS_SERVER=192.168.33.2
     deploy:
       mode: replicated
       replicas: 1
