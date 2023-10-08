@@ -1,0 +1,40 @@
+version: "3"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  homarr_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/homarr/config"
+  homarr_icons:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/homarr/icons"
+
+services:
+  homarr:
+    image: ghcr.io/ajnart/homarr:latest
+    environment:
+      - TZ=America/Los_Angeles
+      - EDIT_MODE_PASSWORD=SECURE_PASSWORD
+    volumes:
+      - homarr_config:/app/data/configs
+      - homarr_icons:/app/public/icons
+    networks:
+      - traefik_swarm
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.homarr.entrypoints=websecure"
+        - "traefik.http.routers.homarr.rule=Host(`dashboard.richardsoper.me`)"
+        - "traefik.http.routers.homarr.tls.certresolver=cf-cert"
+        - "traefik.http.routers.homarr.middlewares=secure-headers@file,authelia@docker"
+        - "traefik.http.services.homarr.loadbalancer.server.port=7575"

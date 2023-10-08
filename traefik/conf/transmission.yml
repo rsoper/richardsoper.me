@@ -16,4 +16,4 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://erebos.lan.richardsoper.me:9091"
+          - url: "http://transmission.lan.richardsoper.me:9091"
