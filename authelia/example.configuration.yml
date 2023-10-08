@@ -20,7 +20,7 @@ authentication_backend:
       salt_length: 16
       parallelism: 8
       memory: 64
-      
+
 access_control:
   default_policy: deny
   rules:
@@ -39,12 +39,14 @@ access_control:
       policy: two_factor
     - domain: jackett.richardsoper.me
       policy: two_factor
+    - domain: dashboard.richardsoper.me
+      policy: two_factor
 
 session:
   name: authelia_session
-  expiration: 3600  # 1 hour
-  inactivity: 300  # 5 minutes
-  domain: richardsoper.me  # Should match whatever your root protected domain is
+  expiration: 3600 # 1 hour
+  inactivity: 300 # 5 minutes
+  domain: richardsoper.me # Should match whatever your root protected domain is
 
   # redis:
   #   host: redis
@@ -69,4 +71,3 @@ notifier:
     sender: "noreply@richardsoper.me"
   # filesystem:
   #   filename: /config/notification.txt
-...
