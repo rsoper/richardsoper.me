@@ -17,6 +17,12 @@ volumes:
       type: "nfs"
       o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/homarr/icons"
+  homarr_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/homarr/data"
 
 services:
   homarr:
@@ -26,6 +32,7 @@ services:
       - EDIT_MODE_PASSWORD=SECURE_PASSWORD
     volumes:
       - homarr_config:/app/data/configs
+      - homarr_data:/data
       - homarr_icons:/app/public/icons
     networks:
       - traefik_swarm
