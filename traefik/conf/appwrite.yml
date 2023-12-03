@@ -9,6 +9,7 @@ http:
         certResolver: cf-cert
       middlewares:
         - securedheaders@file
+        - authelia@docker
 
   services:
     appwrite-service:
