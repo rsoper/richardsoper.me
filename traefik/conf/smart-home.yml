@@ -1,15 +1,5 @@
 http:
   routers:
-    homeassistant:
-      rule: "Host(`home.richardsoper.me`)"
-      service: homeassistant-service
-      entryPoints:
-        - websecure
-      tls:
-        certResolver: cf-cert
-      middlewares:
-        - secure-headers@file
-        - authelia@docker
     scrypted:
       rule: "Host(`scrypted.richardsoper.me`)"
       service: scrypted-service
@@ -22,13 +12,8 @@ http:
         - authelia@docker
 
   services:
-    homeassistant-service:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: "http://nylea.lan.richardsoper.me:8123"
     scrypted-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "https://heliod.lan.richardsoper.me:10443"
+          - url: "https://scrypted.lan.richardsoper.me:10443"
