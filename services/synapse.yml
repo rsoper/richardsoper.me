@@ -21,6 +21,9 @@ services:
       driver: loki:latest
       options:
         loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      - UID=1028
+      - GID=1028
     networks:
       - traefik_swarm
     deploy:
