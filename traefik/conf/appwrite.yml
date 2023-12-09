@@ -1,19 +1,19 @@
 http:
   routers:
-    scrypted:
-      rule: "Host(`scrypted.richardsoper.me`)"
-      service: scrypted-service
+    appwrite:
+      rule: "Host(`appwrite.richardsoper.me`)"
+      service: appwrite-service
       entryPoints:
         - websecure
       tls:
         certResolver: cf-cert
       middlewares:
-        - secure-headers@file
+        - securedheaders@file
         - authelia@docker
 
   services:
-    scrypted-service:
+    appwrite-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "https://scrypted.lan.richardsoper.me:10443"
+          - url: "http://192.168.33.16:80"
