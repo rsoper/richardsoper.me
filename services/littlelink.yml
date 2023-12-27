@@ -28,6 +28,7 @@ services:
       - LANG=en
       - LINKED_IN=https://www.linkedin.com/in/richardsoper
       - MASTODON=https://fosstodon.org/@richards
+      - MATRIX=https://matrix.to/#/@richard:matrix.richardsoper.me
       - META_AUTHOR=Richard Soper
       - META_DESCRIPTION=QA Automation Engineer | Cardboard Collector | Homelab
       - META_INDEX_STATUS=all
