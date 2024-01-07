@@ -1,9 +1,9 @@
 version: "3.7"
 
 secrets:
-  CF_API_EMAIL:
+  CF_API_EMAIL_2024:
     external: true
-  CF_API_NOV22:
+  CF_GLOBAL_KEY:
     external: true
 
 networks:
@@ -23,11 +23,11 @@ services:
     hostname: traefik
     image: traefik:v2.10
     secrets:
-      - "CF_API_EMAIL"
-      - "CF_API_NOV22"
+      - "CF_API_EMAIL_2024"
+      - "CF_GLOBAL_KEY"
     environment:
-      - CF_API_EMAIL_FILE=/run/secrets/CF_API_EMAIL
-      - CF_API_KEY_FILE=/run/secrets/CF_API_NOV22
+      - CF_API_EMAIL_FILE=/run/secrets/CF_API_EMAIL_2024
+      - CF_API_KEY_FILE=/run/secrets/CF_GLOBAL_KEY
     ports:
       - "80:80"
       - "443:443"
@@ -50,14 +50,10 @@ services:
         - "traefik.http.routers.traefik.rule=Host(`traefik.richardsoper.me`)"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
         - "traefik.http.routers.traefik.service=api@internal"
-        ## Secure dashboard with basic authentication
+        ## Secure dashboard with authelia middleware
         - "traefik.http.routers.traefik.middlewares=authelia@docker"
         ## DNS CHALLENGE
         - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
         - "traefik.http.routers.traefik.tls.domains[0].main=richardsoper.me"
         - "traefik.http.routers.traefik.tls.domains[0].sans=*.richardsoper.me"
-        ## HTTP REDIRECT
-        - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
-        - "traefik.http.routers.redirect-https.entrypoints=web"
-        - "traefik.http.routers.redirect-https.middlewares=secure-headers@file"
 

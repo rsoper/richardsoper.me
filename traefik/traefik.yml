@@ -15,6 +15,11 @@ metrics:
 entryPoints:
   web:
     address: ":80"
+    http:
+      redirections:
+        entrypoint:
+          to: websecure
+          scheme: https
   websecure:
     address: ":443"
   metrics:
@@ -35,7 +40,7 @@ certificatesResolvers:
     acme:
       #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       storage: /etc/traefik/acme/acme.json
-      email: richardwebdesigner@me.com
+      email: 00.trodden.bench@icloud.com
       httpChallenge:
         entryPoint: web
       dnsChallenge:

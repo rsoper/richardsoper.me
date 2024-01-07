@@ -12,14 +12,14 @@ services:
       - AVATAR_ALT=Richard Soper Profile Pic
       - AVATAR_URL=https://gitlab.richardsoper.me/uploads/-/system/user/avatar/2/avatar.png?width=200
       - BIO=QA Automation Engineer | Cardboard Collector | Homelab
-      - BUTTON_ORDER=MASTODON,LINKED_IN,ONE FC CALENDAR
-      - CUSTOM_BUTTON_ALT_TEXT=Some of the projects I am currently working on,A subscribable calendar for One FC
+      - BUTTON_ORDER=MASTODON,LINKED_IN,MMA CALENDARS
+      - CUSTOM_BUTTON_ALT_TEXT=Some of the projects I am currently working on,A subscribable calendar for MMA
       - CUSTOM_BUTTON_COLOR=#000000,#000000
       - CUSTOM_BUTTON_ICON=fas fa-cog,fas fa-hand-fist
-      - CUSTOM_BUTTON_NAME=PERSONAL PROJECTS,ONE FC CALENDAR
-      - CUSTOM_BUTTON_TEXT=Personal Projects,One FC Calendar
+      - CUSTOM_BUTTON_NAME=PERSONAL PROJECTS,MMA CALENDARS
+      - CUSTOM_BUTTON_TEXT=Personal Projects,MMA Calendars
       - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
-      - CUSTOM_BUTTON_URL=https://blog.richardsoper.me/projects/,https://onefccalendar.com
+      - CUSTOM_BUTTON_URL=https://blog.richardsoper.me/projects/,https://mmacalendars.com
       - FAVICON_URL=https://gitlab.richardsoper.me/uploads/-/system/user/avatar/2/avatar.png?width=200
       - FOOTER=Richard Soper © 2023
       - GHOST=https://blog.richardsoper.me
