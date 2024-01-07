@@ -1,0 +1,25 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+services:
+  mma_cal:
+    image: registry.richardsoper.me/richardsoper/mma-calendar:latest
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    networks:
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.mma-calendar.entrypoints=websecure"
+        - "traefik.http.routers.mma-calendar.rule=Host(`mmacalendars.com`) || Host(`www.mmacalendars.com`) || Host(`onefccalendar.com`) || Host(`www.onefccalendar.com`)"
+        - "traefik.http.routers.mma-calendar.tls.certresolver=cf-cert"
+        - "traefik.http.routers.mma-calendar.middlewares=secure-headers@file"
+        - "traefik.http.services.mma-calendar.loadbalancer.server.port=5000"
