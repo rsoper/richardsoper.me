@@ -1,0 +1,11 @@
+http:
+  routers:
+    portainer-hooks:
+      rule: "Host(`portainer.richardsoper.me`) && Method(`POST`) && PathPrefix(`/api/webhooks`)"
+      service: portainer@docker
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
