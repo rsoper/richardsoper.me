@@ -60,4 +60,5 @@ services:
         - "traefik.http.routers.portainer.rule=Host(`portainer.richardsoper.me`)"
         - "traefik.http.routers.portainer.tls.certresolver=cf-cert"
         - "traefik.http.routers.portainer.middlewares=authelia@docker"
+        - "traefik.http.routers.portainer.service=portainer"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
