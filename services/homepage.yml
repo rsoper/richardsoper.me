@@ -1,0 +1,38 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  homepage_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/homepage"
+
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    volumes:
+      - homepage_data:/app/config
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      - UID=1028
+      - GID=1028
+    networks:
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.homepage.entrypoints=websecure"
+        - "traefik.http.routers.homepage.rule=Host(`homepage.richardsoper.me`)"
+        - "traefik.http.routers.homepage.tls.certresolver=cf-cert"
+        - "traefik.http.routers.homepage.middlewares=secure-headers@file"
+        - "traefik.http.services.homepage.loadbalancer.server.port=3000"
