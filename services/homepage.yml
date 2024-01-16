@@ -34,5 +34,5 @@ services:
         - "traefik.http.routers.homepage.entrypoints=websecure"
         - "traefik.http.routers.homepage.rule=Host(`homepage.richardsoper.me`)"
         - "traefik.http.routers.homepage.tls.certresolver=cf-cert"
-        - "traefik.http.routers.homepage.middlewares=secure-headers@file"
+        - "traefik.http.routers.homepage.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.homepage.loadbalancer.server.port=3000"
