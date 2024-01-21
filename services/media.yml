@@ -163,7 +163,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jellyseerr.entrypoints=websecure"
-        - "traefik.http.routers.jellyseerr.rule=Host(`request.richardsoper.me`)"
+        - "traefik.http.routers.jellyseerr.rule=Host(`request.richardsoper.me`) || Host(`request.rdsv.me`)"
         - "traefik.http.routers.jellyseerr.tls.certresolver=cf-cert"
         - "traefik.http.routers.jellyseerr.middlewares=secure-headers@file"
         - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"

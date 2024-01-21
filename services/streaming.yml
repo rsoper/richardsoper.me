@@ -1,0 +1,51 @@
+version: "3.0"
+
+networks:
+  traefik_swarm:
+    external: true
+
+services:
+  littlelink-rdsv:
+    image: ghcr.io/techno-tim/littlelink-server:latest
+    environment:
+      - AVATAR_2X_URL=https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png
+      - AVATAR_ALT=JellyFin logo
+      - AVATAR_URL=https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png
+      - BIO=Watch and request content from the home server
+      - BUTTON_ORDER=WATCH,REQUEST
+      - CUSTOM_BUTTON_ALT_TEXT=Watch content,Request content
+      - CUSTOM_BUTTON_COLOR=#000000,#000000
+      - CUSTOM_BUTTON_ICON=fas fa-clapperboard,fas fa-download
+      - CUSTOM_BUTTON_NAME=WATCH,REQUEST
+      - CUSTOM_BUTTON_TEXT=Watch,Request
+      - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
+      - CUSTOM_BUTTON_URL=https://watch.rdsv.me/,https://request.rdsv.me/
+      - FAVICON_URL=https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png
+      - FOOTER=Richard Soper © 2024
+      - LANG=en
+      - META_TITLE=JellyFin Streaming
+      - NAME=JellyFin Streaming
+      - OG_DESCRIPTION=Jellyfin Streaming
+      - OG_IMAGE=https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png
+      - OG_IMAGE_HEIGHT=400
+      - OG_IMAGE_WIDTH=400
+      - OG_SITE_NAME=Jellyfin Streaming
+      - OG_TITLE=Jellyfin Streaming
+      - OG_URL=https://rdsv.me
+      - THEME=Dark
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 3
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.littlelink-rdsv.entrypoints=websecure"
+        - "traefik.http.routers.littlelink-rdsv.rule=Host(`rdsv.me`) || Host(`www.rdsv.me`)"
+        - "traefik.http.routers.littlelink-rdsv.tls.certresolver=cf-cert"
+        - "traefik.http.routers.littlelink-rdsv.middlewares=secure-headers@file"
+        - "traefik.http.services.littlelink-rdsv.loadbalancer.server.port=3000"
