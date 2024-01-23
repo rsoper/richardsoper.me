@@ -23,6 +23,7 @@ scrape_configs:
             "thassa.lan.richardsoper.me:9100",
             "liliana.lan.richardsoper.me:9100",
             "ephara.lan.richardsoper.me:9100",
+            "athreos.lan.richardsoper.me:9100",
           ]
   - job_name: cadvisor
     static_configs:
@@ -35,6 +36,7 @@ scrape_configs:
             "thassa.lan.richardsoper.me:8181",
             "liliana.lan.richardsoper.me:8181",
             "ephara.lan.richardsoper.me:8181",
+            "athreos.lan.richardsoper.me:8181",
           ]
   - job_name: traefik
     static_configs:
