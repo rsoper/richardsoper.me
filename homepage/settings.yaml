@@ -1,0 +1,22 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: Homelab Services
+theme: dark
+color: stone
+useEqualHeights: true
+
+layout:
+  DNS:
+    style: row
+    columns: 3
+  Media Services:
+    style: row
+    columns: 5
+  Admin Services:
+    style: row
+    columns: 2
+  Everything Else:
+    style: row
+    columns: 3

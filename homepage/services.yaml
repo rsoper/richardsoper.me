@@ -1,0 +1,105 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- DNS:
+    - Primary Pi-Hole:
+        icon: pi-hole.png
+        href: https://pihole.richardsoper.me
+        description: Primary Pi-hole
+        widget:
+            type: pihole
+            url: http://192.168.33.2
+            key: API KEY HERE
+    - Secondary Pi-Hole:
+        icon: pi-hole.png
+        href: https://pihole2.richardsoper.me
+        description: Secondary Pi-hole
+        widget:
+            type: pihole
+            url: http://192.168.33.3
+            key: API KEY HERE
+    - Tertiary Pi-Hole:
+        icon: pi-hole.png
+        href: https://pihole3.richardsoper.me
+        description: Tertiary Pi-hole
+        widget:
+            type: pihole
+            url: http://192.168.33.15
+            key: API KEY HERE
+- Media Services:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: https://watch.richardsoper.me
+        description: Jellyfin streaming server
+        widget:
+            type: jellyfin
+            url: https://watch.richardsoper.me
+            key: API KEY HERE
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: true # optional, defaults to true
+    - Jellyseerr:
+        icon: jellyseerr.png
+        href: https://request.richardsoper.me
+        description: Jellyfin request server
+        widget:
+            type: jellyseerr
+            url: https://request.richardsoper.me
+            key: API KEY HERE
+    - Transmission:
+        icon: transmission.png
+        href: https://transmission.richardsoper.me
+        description: Torrent interface
+    - Radarr:
+        icon: radarr.png
+        href: https://movies.richardsoper.me
+        description: Movie management service
+        widget:
+            type: radarr
+            url: http://192.168.33.120:7878
+            key: API KEY HERE
+    - Sonarr:
+        icon: sonarr.png
+        href: https://tv.richardsoper.me
+        description: TV management service
+        widget:
+            type: sonarr
+            url: http://192.168.33.120:8989
+            key: API KEY HERE
+
+- Admin Services:
+    - Unifi Network:
+        icon: unifi-controller.png
+        href: https://192.168.10.1/network/default/dashboard
+        description: Unifi Network dashboard
+    - Proxmox:
+        icon: proxmox.png
+        href: https://192.168.33.17:8006
+        description: Proxmox dashboard
+    - Synology:
+        icon: synology.png
+        href: http://storage.local:5000
+        description: Synology DSM dashboard
+    - Portainer:
+        icon: portainer.png
+        href: https://portainer.richardsoper.me
+        description: Portainer dashboard
+    - Grafana:
+        icon: grafana.png
+        href: https://grafana.richardsoper.me
+        description: Portainer dashboard
+    - Traefik:
+        icon: traefik.png
+        href: https://traefik.richardsoper.me
+        description: Traefik dashboard
+
+- Everything Else:
+    - Nextcloud:
+        icon: nextcloud.png
+        href: https://cloud.richardsoper.me
+    - Gitlab:
+        icon: gitlab.png
+        href: https://gitlab.richardsoper.me
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: https://uptime.richardsoper.me
