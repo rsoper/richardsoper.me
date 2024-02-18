@@ -1,7 +1,0 @@
-http:
-  middlewares:
-    LAN-whitelist:
-      ipWhiteList:
-        sourceRange:
-          - "192.168.10.0/24"
-          - "192.168.3.0/24"
