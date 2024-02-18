@@ -3,8 +3,6 @@ version: "3.7"
 secrets:
   CF_API_EMAIL_2024:
     external: true
-  CF_GLOBAL_KEY:
-    external: true
   CF_API_DDNS:
     external: true
 
@@ -26,11 +24,9 @@ services:
     image: traefik:v2.10
     secrets:
       - "CF_API_EMAIL_2024"
-      - "CF_GLOBAL_KEY"
       - "CF_API_DDNS"
     environment:
       - CF_API_EMAIL_FILE=/run/secrets/CF_API_EMAIL_2024
-      # - CF_API_KEY_FILE=/run/secrets/CF_GLOBAL_KEY
       - CF_DNS_API_TOKEN_FILE=/run/secrets/CF_API_DDNS
     ports:
       - "80:80"
