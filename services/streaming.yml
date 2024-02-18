@@ -21,7 +21,6 @@ services:
       - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
       - CUSTOM_BUTTON_URL=https://watch.rdsv.me/,https://request.rdsv.me/
       - FAVICON_URL=https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png
-      - FOOTER=Richard Soper © 2024
       - LANG=en
       - META_TITLE=JellyFin Streaming
       - NAME=JellyFin Streaming
