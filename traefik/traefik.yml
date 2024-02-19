@@ -41,8 +41,6 @@ certificatesResolvers:
       #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       storage: /etc/traefik/acme/acme.json
       email: 00.trodden.bench@icloud.com
-      httpChallenge:
-        entryPoint: web
       dnsChallenge:
         provider: cloudflare
         resolvers:
