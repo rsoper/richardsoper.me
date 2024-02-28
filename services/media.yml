@@ -167,3 +167,29 @@ services:
         - "traefik.http.routers.jellyseerr.tls.certresolver=cf-cert"
         - "traefik.http.routers.jellyseerr.middlewares=secure-headers@file"
         - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    environment:
+      - PUID=1028
+      - PGID=1028
+      - TZ=America/Los_Angeles
+    volumes:
+      - bazarr_config:/config
+      - media_data:/data
+    ports:
+      - 6767:6767
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.bazarr.entrypoints=websecure"
+        - "traefik.http.routers.bazarr.rule=Host(`bazarr.richardsoper.me`)"
+        - "traefik.http.routers.bazarr.tls.certresolver=cf-cert"
+        - "traefik.http.routers.bazarr.middlewares=secure-headers@file"
+        - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
