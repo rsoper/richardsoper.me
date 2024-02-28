@@ -14,6 +14,12 @@ volumes:
       type: "nfs"
       o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/jellyseerr"
+  bazarr_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/bazarr"
   radarr_data:
     driver: local
     driver_opts:
