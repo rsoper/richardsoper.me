@@ -9,7 +9,7 @@ secrets:
     external: true
   AUTHELIA_SESSION:
     external: true
-  AUTHELIA_SMTP:
+  ICLOUD_SMTP:
     external: true
 
 volumes:
@@ -28,7 +28,7 @@ services:
     secrets:
       - AUTHELIA_JWT
       - AUTHELIA_SESSION
-      - AUTHELIA_SMTP
+      - ICLOUD_SMTP
     networks:
       - traefik_swarm
     logging:
@@ -39,7 +39,7 @@ services:
       - TZ=America/Los_Angeles
       - AUTHELIA_JWT_SECRET_FILE=/run/secrets/AUTHELIA_JWT
       - AUTHELIA_SESSION_SECRET_FILE=/run/secrets/AUTHELIA_SESSION
-      - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/run/secrets/AUTHELIA_SMTP
+      - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/run/secrets/ICLOUD_SMTP
     deploy:
       mode: replicated
       replicas: 1
