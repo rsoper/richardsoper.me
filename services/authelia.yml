@@ -9,8 +9,6 @@ secrets:
     external: true
   AUTHELIA_SESSION:
     external: true
-  AUTHELIA_SMTP:
-    external: true
   ICLOUD_SMTP:
     external: true
 
@@ -30,7 +28,6 @@ services:
     secrets:
       - AUTHELIA_JWT
       - AUTHELIA_SESSION
-      - AUTHELIA_SMTP
       - ICLOUD_SMTP
     networks:
       - traefik_swarm
