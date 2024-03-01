@@ -13,6 +13,10 @@ secrets:
     external: true
   AUTHELIA_SMTP:
     external: true
+  ICLOUD_SMTP:
+    external: true
+  ICLOUD_USERNAME:
+    external: true
 
 volumes:
   gitlab_data:
@@ -62,6 +66,8 @@ services:
     secrets:
       - gitlab_root_password
       - AUTHELIA_SMTP
+      - ICLOUD_SMTP
+      - ICLOUD_USERNAME
     networks:
       - traefik_swarm
     logging:
@@ -72,7 +78,7 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.hostname == purphoros.lan.richardsoper.me]
+        constraints: [node.hostname == purphoros]
       labels:
         - "traefik.enable=true"
         # UI routers/service
