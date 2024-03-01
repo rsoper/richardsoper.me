@@ -11,8 +11,6 @@ configs:
 secrets:
   gitlab_root_password:
     external: true
-  AUTHELIA_SMTP:
-    external: true
   ICLOUD_SMTP:
     external: true
   ICLOUD_USERNAME:
@@ -65,7 +63,6 @@ services:
         target: /omnibus_config.rb
     secrets:
       - gitlab_root_password
-      - AUTHELIA_SMTP
       - ICLOUD_SMTP
       - ICLOUD_USERNAME
     networks:

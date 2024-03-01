@@ -20,8 +20,8 @@ gitlab_rails['smtp_enable_starttls_auto'] = true
 gitlab_rails['smtp_user_name'] = File.read('/run/secrets/ICLOUD_USERNAME')
 gitlab_rails['smtp_password'] = File.read('/run/secrets/ICLOUD_SMTP')
 gitlab_rails['smtp_domain'] = "smtp.mail.me.com"
-gitlab_rails['gitlab_email_from'] = 'richard@rdsv.me'
-gitlab_rails['gitlab_email_reply_to'] = 'richard@rdsv.me'
+gitlab_rails['gitlab_email_from'] = 'noreply@richardsoper.me'
+gitlab_rails['gitlab_email_reply_to'] = 'noreply@richardsoper.me'
 
 # Registry
 registry_nginx['enable'] = true
