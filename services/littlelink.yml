@@ -21,7 +21,7 @@ services:
       - CUSTOM_BUTTON_TEXT_COLOR=#ffffff,#ffffff
       - CUSTOM_BUTTON_URL=https://blog.richardsoper.me/projects/,https://mmacalendars.com
       - FAVICON_URL=https://gitlab.richardsoper.me/uploads/-/system/user/avatar/2/avatar.png?width=200
-      - FOOTER=Richard Soper © 2023
+      - FOOTER=Richard Soper © 2024
       - GHOST=https://blog.richardsoper.me
       - GITHUB=https://github.com/rsoper
       - GITLAB=https://gitlab.richardsoper.me/richardsoper

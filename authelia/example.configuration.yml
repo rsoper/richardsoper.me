@@ -3,11 +3,14 @@
 #                   Authelia configuration                    #
 ###############################################################
 
-host: 0.0.0.0
-port: 9091
-log_level: debug
 theme: dark
 default_redirection_url: https://auth.richardsoper.me
+
+server:
+  host: 0.0.0.0
+  port: 9091
+log:
+  level: debug
 totp:
   issuer: authelia.com
 
@@ -66,8 +69,8 @@ storage:
 notifier:
   smtp:
     username: "noreply@richardsoper.me"
-    host: "smtppro.zoho.com"
-    port: 465
+    host: "smtp.mail.me.com"
+    port: 587
     sender: "noreply@richardsoper.me"
   # filesystem:
   #   filename: /config/notification.txt
