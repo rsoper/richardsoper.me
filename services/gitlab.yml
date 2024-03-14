@@ -75,7 +75,7 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.hostname == purphoros]
+        constraints: [node.hostname == heliod]
       labels:
         - "traefik.enable=true"
         # UI routers/service
@@ -105,5 +105,7 @@ services:
     environment:
       TZ: America/Los_Angeles
     deploy:
+      placement:
+        constraints: [node.platform.arch == x86_64]
       mode: replicated
       replicas: 1

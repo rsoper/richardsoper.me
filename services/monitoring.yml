@@ -7,20 +7,30 @@ networks:
     external: true
 
 volumes:
+  promtail_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/promtail"
+  loki_config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/monitoring/loki"
   prometheus_data:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/monitoring/prometheus_db"
-
   prometheus_config:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.33.32,nolock,soft,rw
       device: ":/volume1/swarm/monitoring/prometheus"
-
   grafana_data:
     driver: local
     driver_opts:
@@ -87,3 +97,39 @@ services:
         - "traefik.http.routers.grafana.tls.certresolver=cf-cert"
         - "traefik.http.routers.grafana.middlewares=secure-headers@file"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
+  loki:
+    image: grafana/loki:1.5.0
+    volumes:
+      - loki_config:/etc/loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring_agents
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.platform.os == linux]
+
+  promtail:
+    image: grafana/promtail:1.5.0
+    volumes:
+      - /var/log:/var/log
+      - promtail_config:/etc/promtail/
+    command: -config.file=/etc/promtail/docker-config.yaml
+    networks:
+      - monitoring_agents
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]

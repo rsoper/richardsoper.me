@@ -9,6 +9,8 @@ secrets:
     external: true
   AUTHELIA_SESSION:
     external: true
+  AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE:
+    external: true
   ICLOUD_SMTP:
     external: true
 
@@ -22,13 +24,14 @@ volumes:
 
 services:
   authelia:
-    image: authelia/authelia:4.30.4
+    image: authelia/authelia:4.37.5
     volumes:
       - authelia_data:/config
     secrets:
       - AUTHELIA_JWT
       - AUTHELIA_SESSION
       - ICLOUD_SMTP
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
     networks:
       - traefik_swarm
     logging:
@@ -40,6 +43,7 @@ services:
       - AUTHELIA_JWT_SECRET_FILE=/run/secrets/AUTHELIA_JWT
       - AUTHELIA_SESSION_SECRET_FILE=/run/secrets/AUTHELIA_SESSION
       - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/run/secrets/ICLOUD_SMTP
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/run/secrets/AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
     deploy:
       mode: replicated
       replicas: 1
