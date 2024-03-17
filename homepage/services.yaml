@@ -10,7 +10,7 @@
         widget:
             type: pihole
             url: http://192.168.33.2
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_PIHOLE_1}}
     - Secondary Pi-Hole:
         icon: pi-hole.png
         href: https://pihole2.richardsoper.me
@@ -18,7 +18,7 @@
         widget:
             type: pihole
             url: http://192.168.33.3
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_PIHOLE_2}}
     - Tertiary Pi-Hole:
         icon: pi-hole.png
         href: https://pihole3.richardsoper.me
@@ -26,7 +26,7 @@
         widget:
             type: pihole
             url: http://192.168.33.15
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_PIHOLE_3}}
 - Media Services:
     - Jellyfin:
         icon: jellyfin.png
@@ -35,7 +35,7 @@
         widget:
             type: jellyfin
             url: https://watch.richardsoper.me
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_JELLYFIN}}
             enableBlocks: true # optional, defaults to false
             enableNowPlaying: true # optional, defaults to true
     - Jellyseerr:
@@ -45,7 +45,7 @@
         widget:
             type: jellyseerr
             url: https://request.richardsoper.me
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_JELLYSEERR}}
     - Transmission:
         icon: transmission.png
         href: https://transmission.richardsoper.me
@@ -57,7 +57,7 @@
         widget:
             type: radarr
             url: http://192.168.33.120:7878
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_RADARR}}
     - Sonarr:
         icon: sonarr.png
         href: https://tv.richardsoper.me
@@ -65,7 +65,7 @@
         widget:
             type: sonarr
             url: http://192.168.33.120:8989
-            key: API KEY HERE
+            key: {{HOMEPAGE_FILE_SONARR}}
 
 - Admin Services:
     - Unifi Network:
@@ -87,7 +87,7 @@
     - Grafana:
         icon: grafana.png
         href: https://grafana.richardsoper.me
-        description: Portainer dashboard
+        description: Grafana dashboard
     - Traefik:
         icon: traefik.png
         href: https://traefik.richardsoper.me
@@ -97,9 +97,18 @@
     - Nextcloud:
         icon: nextcloud.png
         href: https://cloud.richardsoper.me
+        widget:
+            type: nextcloud
+            url: https://cloud.richardsoper.me
+            username: richardsoper
+            password: {{HOMEPAGE_FILE_NEXTCLOUD}}
     - Gitlab:
         icon: gitlab.png
         href: https://gitlab.richardsoper.me
     - Uptime Kuma:
         icon: uptime-kuma.png
         href: https://uptime.richardsoper.me
+        widget:
+            type: uptimekuma
+            url: https://uptime.richardsoper.me
+            slug: internal
