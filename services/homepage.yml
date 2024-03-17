@@ -4,6 +4,24 @@ networks:
   traefik_swarm:
     external: true
 
+secrets:
+  HOMEPAGE_FILE_PIHOLE_1:
+    external: true
+  HOMEPAGE_FILE_PIHOLE_2:
+    external: true
+  HOMEPAGE_FILE_PIHOLE_3:
+    external: true
+  HOMEPAGE_FILE_JELLYFIN:
+    external: true
+  HOMEPAGE_FILE_JELLYSEERR:
+    external: true
+  HOMEPAGE_FILE_RADARR:
+    external: true
+  HOMEPAGE_FILE_SONARR:
+    external: true
+  HOMEPAGE_FILE_NEXTCLOUD:
+    external: true
+
 volumes:
   homepage_data:
     driver: local
@@ -17,6 +35,15 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     volumes:
       - homepage_data:/app/config
+    secrets:
+      - HOMEPAGE_FILE_PIHOLE_1
+      - HOMEPAGE_FILE_PIHOLE_2
+      - HOMEPAGE_FILE_PIHOLE_3
+      - HOMEPAGE_FILE_JELLYFIN
+      - HOMEPAGE_FILE_JELLYSEERR
+      - HOMEPAGE_FILE_RADARR
+      - HOMEPAGE_FILE_SONARR
+      - HOMEPAGE_FILE_NEXTCLOUD
     logging:
       driver: loki:latest
       options:
@@ -24,6 +51,14 @@ services:
     environment:
       - UID=1028
       - GID=1028
+      - HOMEPAGE_FILE_PIHOLE_1=/run/secrets/HOMEPAGE_FILE_PIHOLE_1
+      - HOMEPAGE_FILE_PIHOLE_2=/run/secrets/HOMEPAGE_FILE_PIHOLE_2
+      - HOMEPAGE_FILE_PIHOLE_3=/run/secrets/HOMEPAGE_FILE_PIHOLE_3
+      - HOMEPAGE_FILE_JELLYFIN=/run/secrets/HOMEPAGE_FILE_JELLYFIN
+      - HOMEPAGE_FILE_JELLYSEERR=/run/secrets/HOMEPAGE_FILE_JELLYSEERR
+      - HOMEPAGE_FILE_RADARR=/run/secrets/HOMEPAGE_FILE_RADARR
+      - HOMEPAGE_FILE_SONARR=/run/secrets/HOMEPAGE_FILE_SONARR
+      - HOMEPAGE_FILE_NEXTCLOUD=/run/secrets/HOMEPAGE_FILE_NEXTCLOUD
     networks:
       - traefik_swarm
     deploy:
