@@ -44,7 +44,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.littlelink-rdsv.entrypoints=websecure"
-        - "traefik.http.routers.littlelink-rdsv.rule=Host(`rdsv.me`) || Host(`www.rdsv.me`)"
+        - "traefik.http.routers.littlelink-rdsv.rule=Host(`rdsv.me`) || Host(`www.rdsv.me`) || Host(`www.ccw.wtf`) || Host(`ccw.wtf`)"
         - "traefik.http.routers.littlelink-rdsv.tls.certresolver=cf-cert"
         - "traefik.http.routers.littlelink-rdsv.middlewares=secure-headers@file"
         - "traefik.http.services.littlelink-rdsv.loadbalancer.server.port=3000"
