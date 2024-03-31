@@ -16,7 +16,7 @@ services:
     environment:
       - TZ=America/Los_Angeles
       - CF_API_TOKEN_FILE=/run/secrets/CF_API_DDNS
-      - DOMAINS=richardsoper.me,peregrinesparlor.com,onefccalendar.com,rdsv.me
+      - DOMAINS=richardsoper.me,peregrinesparlor.com,onefccalendar.com,mmacalendars.com,rdsv.me,rdsv.dev,ccw.wtf
       - PROXIED=true
       - IP6_PROVIDER=none
     deploy:
