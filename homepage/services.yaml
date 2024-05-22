@@ -56,7 +56,7 @@
         description: Movie management service
         widget:
             type: radarr
-            url: http://192.168.33.120:7878
+            url: http://192.168.33.200:7878
             key: {{HOMEPAGE_FILE_RADARR}}
     - Sonarr:
         icon: sonarr.png
@@ -64,7 +64,7 @@
         description: TV management service
         widget:
             type: sonarr
-            url: http://192.168.33.120:8989
+            url: http://192.168.33.200:8989
             key: {{HOMEPAGE_FILE_SONARR}}
 
 - Admin Services:
@@ -74,7 +74,7 @@
         description: Unifi Network dashboard
     - Proxmox:
         icon: proxmox.png
-        href: https://192.168.33.17:8006
+        href: https://proxmox.lan.richardsoper.me
         description: Proxmox dashboard
     - Synology:
         icon: synology.png
