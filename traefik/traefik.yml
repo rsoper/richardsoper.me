@@ -12,6 +12,9 @@ metrics:
     addServicesLabels: true
     entryPoint: metrics
 
+serversTransport:
+  insecureSkipVerify: true
+
 entryPoints:
   web:
     address: ":80"

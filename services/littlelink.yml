@@ -52,8 +52,6 @@ services:
     deploy:
       mode: replicated
       replicas: 3
-      update_config:
-        order: start-first
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.littlelink.entrypoints=websecure"

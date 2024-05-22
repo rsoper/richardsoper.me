@@ -1,18 +1,19 @@
 http:
   routers:
-    jellyfin:
-      rule: "Host(`watch.richardsoper.me`) || Host(`watch.rdsv.me`) || Host(`w.rdsv.me`)"
-      service: jellyfin-service
+    proxmox:
+      rule: "Host(`proxmox.lan.richardsoper.me`)"
+      service: proxmox-service
       entryPoints:
         - websecure
       tls:
         certResolver: cf-cert
       middlewares:
         - securedheaders@file
+        - authelia@docker
 
   services:
-    jellyfin-service:
+    proxmox-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://192.168.33.119:8096"
+          - url: "https://192.168.33.17:8006"
