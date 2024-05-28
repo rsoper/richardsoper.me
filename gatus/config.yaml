@@ -43,21 +43,21 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 150"
+      - "[RESPONSE_TIME] < 250"
   - name: rdsv.me
     group: P1
     url: "https://rdsv.me"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 150"
+      - "[RESPONSE_TIME] < 250"
   - name: mmacalendars.com
     group: P1
     url: "https://mmacalendars.com"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 150"
+      - "[RESPONSE_TIME] < 250"
 
 
   - name: Athreos
