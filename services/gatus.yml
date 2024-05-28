@@ -14,7 +14,7 @@ volumes:
 
 services:
   gatus:
-    image: ghcr.io/gethomepage/homepage:latest
+    image: twinproduction/gatus:latest
     volumes:
       - gatus_data:/config
     logging:
