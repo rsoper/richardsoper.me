@@ -70,7 +70,7 @@
 - Admin Services:
     - Unifi Network:
         icon: unifi-controller.png
-        href: https://192.168.10.1/network/default/dashboard
+        href: https://unifi.lan.richardsoper.me/network/default/dashboard
         description: Unifi Network dashboard
     - Proxmox:
         icon: proxmox.png
