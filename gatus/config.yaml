@@ -29,9 +29,31 @@ endpoints:
     conditions:
       - "[BODY] == 192.168.33.200"
       - "[DNS_RCODE] == NOERROR"
+
   - name: Jellyfin
     group: P1
     url: "http://jellyfin.internal:8096"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 150"
+  - name: richardsoper.me
+    group: P1
+    url: "https://richardsoper.me"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 150"
+  - name: rdsv.me
+    group: P1
+    url: "https://rdsv.me"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 150"
+  - name: mmacalendars.com
+    group: P1
+    url: "https://mmacalendars.com"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
