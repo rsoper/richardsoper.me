@@ -1,0 +1,82 @@
+endpoints:
+  - name: Primary Pi-Hole
+    group: dns
+    url: 192.168.33.2
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+  - name: Secondary Pi-Hole
+    group: dns
+    url: 192.168.33.3
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+  - name: Tertiary Pi-Hole
+    group: dns
+    url: 192.168.33.15
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+  - name: Jellyfin
+    group: P1
+    url: "http://jellyfin.internal:8096"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 150"
+
+
+  - name: Athreos
+    group: Swarm
+    url: "icmp://athreos.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: ephara
+    group: Swarm
+    url: "icmp://ephara.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: erebos
+    group: Swarm
+    url: "icmp://erebos.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: heliod
+    group: Swarm
+    url: "icmp://heliod.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: liliana
+    group: Swarm
+    url: "icmp://liliana.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: nylea
+    group: Swarm
+    url: "icmp://nylea.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: thassa
+    group: Swarm
+    url: "icmp://thassa.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
