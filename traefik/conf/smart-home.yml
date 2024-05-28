@@ -1,7 +1,7 @@
 http:
   routers:
     scrypted:
-      rule: "Host(`scrypted.richardsoper.me`)"
+      rule: "Host(`scrypted.lan.richardsoper.me`)"
       service: scrypted-service
       entryPoints:
         - websecure
@@ -16,4 +16,4 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "https://scrypted.lan.richardsoper.me:10443"
+          - url: "https://scrypted.internal:10443"

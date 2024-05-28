@@ -16,25 +16,25 @@ scrape_configs:
     static_configs:
       - targets:
           [
-            "nylea.lan.richardsoper.me:9100",
-            "erebos.lan.richardsoper.me:9100",
-            "heliod.lan.richardsoper.me:9100",
-            "thassa.lan.richardsoper.me:9100",
-            "liliana.lan.richardsoper.me:9100",
-            "ephara.lan.richardsoper.me:9100",
-            "athreos.lan.richardsoper.me:9100",
+            "nylea.internal:9100",
+            "erebos.internal:9100",
+            "heliod.internal:9100",
+            "thassa.internal:9100",
+            "liliana.internal:9100",
+            "ephara.internal:9100",
+            "athreos.internal:9100",
           ]
   - job_name: cadvisor
     static_configs:
       - targets:
           [
-            "nylea.lan.richardsoper.me:8181",
-            "erebos.lan.richardsoper.me:8181",
-            "heliod.lan.richardsoper.me:8181",
-            "thassa.lan.richardsoper.me:8181",
-            "liliana.lan.richardsoper.me:8181",
-            "ephara.lan.richardsoper.me:8181",
-            "athreos.lan.richardsoper.me:8181",
+            "nylea.internal:8181",
+            "erebos.internal:8181",
+            "heliod.internal:8181",
+            "thassa.internal:8181",
+            "liliana.internal:8181",
+            "ephara.internal:8181",
+            "athreos.internal:8181",
           ]
   - job_name: traefik
     static_configs:
