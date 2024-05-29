@@ -1,6 +1,6 @@
 endpoints:
   - name: Primary Pi-Hole
-    group: dns
+    group: local dns
     url: 192.168.33.2
     interval: 30s
     dns:
@@ -10,7 +10,7 @@ endpoints:
       - "[BODY] == 192.168.33.200"
       - "[DNS_RCODE] == NOERROR"
   - name: Secondary Pi-Hole
-    group: dns
+    group: local dns
     url: 192.168.33.3
     interval: 30s
     dns:
@@ -20,7 +20,7 @@ endpoints:
       - "[BODY] == 192.168.33.200"
       - "[DNS_RCODE] == NOERROR"
   - name: Tertiary Pi-Hole
-    group: dns
+    group: local dns
     url: 192.168.33.15
     interval: 30s
     dns:
@@ -28,6 +28,33 @@ endpoints:
       query-type: "A"
     conditions:
       - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+  - name: Primary Pi-Hole
+    group: public dns
+    url: 192.168.33.2
+    interval: 30s
+    dns:
+      query-name: "apple.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+  - name: Secondary Pi-Hole
+    group: public dns
+    url: 192.168.33.3
+    interval: 30s
+    dns:
+      query-name: "apple.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+  - name: Tertiary Pi-Hole
+    group: public dns
+    url: 192.168.33.15
+    interval: 30s
+    dns:
+      query-name: "apple.com"
+      query-type: "A"
+    conditions:
       - "[DNS_RCODE] == NOERROR"
 
   - name: Jellyfin
@@ -43,21 +70,21 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 250"
+      - "[RESPONSE_TIME] < 500"
   - name: rdsv.me
     group: P1
     url: "https://rdsv.me"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 250"
+      - "[RESPONSE_TIME] < 500"
   - name: mmacalendars.com
     group: P1
     url: "https://mmacalendars.com"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 250"
+      - "[RESPONSE_TIME] < 500"
 
 
   - name: Athreos
