@@ -102,7 +102,7 @@ endpoints:
       - type: email
   - name: Internal Proxy
     group: P1
-    url: "https://proxy.internal"
+    url: "icmp://proxy.internal"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
