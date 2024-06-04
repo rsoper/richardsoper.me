@@ -12,8 +12,8 @@ alerting:
     default-alert:
       description: "health check failed"
       send-on-resolved: true
-      failure-threshold: 5
-      success-threshold: 5
+      failure-threshold: 3
+      success-threshold: 3
 endpoints:
   - name: Primary Pi-Hole
     group: local dns
