@@ -1,3 +1,6 @@
+storage:
+  type: sqlite
+  path: /config/data.db
 alerting:
   email:
     from: "noreply@richardsoper.me"
