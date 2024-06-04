@@ -24,6 +24,9 @@ services:
     environment:
       - UID=1028
       - GID=1028
+      - ICLOUD_USERNAME="ICLOUD EMAIL HERE"
+      - ICLOUD_PASSWORD="ICLOUD PASSWORD HERE"
+      - NOTIFICATION_EMAIL="WHERE TO SEND NOTIFICATION EMAIL"
     networks:
       - traefik_swarm
     deploy:

@@ -1,3 +1,18 @@
+alerting:
+  email:
+    from: "noreply@richardsoper.me"
+    username: "${ICLOUD_USERNAME}"
+    password: "${ICLOUD_PASSWORD}"
+    host: "smtp.mail.me.com"
+    port: 587
+    to: "${NOTIFICATION_EMAIL}"
+    client:
+      insecure: false
+    default-alert:
+      description: "health check failed"
+      send-on-resolved: true
+      failure-threshold: 5
+      success-threshold: 5
 endpoints:
   - name: Primary Pi-Hole
     group: local dns
