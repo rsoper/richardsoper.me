@@ -6,8 +6,6 @@ alerting:
     host: "smtp.mail.me.com"
     port: 587
     to: "${NOTIFICATION_EMAIL}"
-    client:
-      insecure: false
     default-alert:
       description: "health check failed"
       send-on-resolved: true
@@ -24,6 +22,8 @@ endpoints:
     conditions:
       - "[BODY] == 192.168.33.200"
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
   - name: Secondary Pi-Hole
     group: local dns
     url: 192.168.33.3
@@ -34,6 +34,8 @@ endpoints:
     conditions:
       - "[BODY] == 192.168.33.200"
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
   - name: Tertiary Pi-Hole
     group: local dns
     url: 192.168.33.15
@@ -44,6 +46,8 @@ endpoints:
     conditions:
       - "[BODY] == 192.168.33.200"
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
   - name: Primary Pi-Hole
     group: public dns
     url: 192.168.33.2
@@ -53,6 +57,8 @@ endpoints:
       query-type: "A"
     conditions:
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
   - name: Secondary Pi-Hole
     group: public dns
     url: 192.168.33.3
@@ -62,6 +68,8 @@ endpoints:
       query-type: "A"
     conditions:
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
   - name: Tertiary Pi-Hole
     group: public dns
     url: 192.168.33.15
@@ -71,6 +79,8 @@ endpoints:
       query-type: "A"
     conditions:
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
 
   - name: Jellyfin
     group: P1
@@ -79,6 +89,8 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 150"
+    alerts:
+      - type: email
   - name: richardsoper.me
     group: P1
     url: "https://richardsoper.me"
@@ -86,6 +98,8 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
   - name: rdsv.me
     group: P1
     url: "https://rdsv.me"
@@ -93,6 +107,8 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
   - name: mmacalendars.com
     group: P1
     url: "https://mmacalendars.com"
@@ -100,6 +116,8 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
 
 
   - name: Athreos
@@ -108,39 +126,53 @@ endpoints:
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
   - name: ephara
     group: Swarm
     url: "icmp://ephara.internal"
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
   - name: erebos
     group: Swarm
     url: "icmp://erebos.internal"
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
   - name: heliod
     group: Swarm
     url: "icmp://heliod.internal"
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
   - name: liliana
     group: Swarm
     url: "icmp://liliana.internal"
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
   - name: nylea
     group: Swarm
     url: "icmp://nylea.internal"
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
   - name: thassa
     group: Swarm
     url: "icmp://thassa.internal"
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
