@@ -3,7 +3,7 @@ storage:
   path: /config/data.db
 alerting:
   email:
-    from: "\"Gatus\" <noreply@richardsoper.me>"
+    from: "Gatus <noreply@richardsoper.me>"
     username: "${ICLOUD_USERNAME}"
     password: "${ICLOUD_PASSWORD}"
     host: "smtp.mail.me.com"
