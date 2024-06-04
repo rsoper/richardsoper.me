@@ -10,7 +10,6 @@ alerting:
     port: 587
     to: "${NOTIFICATION_EMAIL}"
     default-alert:
-      description: "health check failed"
       send-on-resolved: true
       failure-threshold: 3
       success-threshold: 3
