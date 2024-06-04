@@ -15,6 +15,18 @@ alerting:
       failure-threshold: 3
       success-threshold: 3
 endpoints:
+  - name: Floating DNS
+    group: local dns
+    url: 192.168.33.5
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
   - name: Primary Pi-Hole
     group: local dns
     url: 192.168.33.2
@@ -48,39 +60,6 @@ endpoints:
       query-type: "A"
     conditions:
       - "[BODY] == 192.168.33.200"
-      - "[DNS_RCODE] == NOERROR"
-    alerts:
-      - type: email
-  - name: Primary Pi-Hole
-    group: public dns
-    url: 192.168.33.2
-    interval: 30s
-    dns:
-      query-name: "apple.com"
-      query-type: "A"
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
-    alerts:
-      - type: email
-  - name: Secondary Pi-Hole
-    group: public dns
-    url: 192.168.33.3
-    interval: 30s
-    dns:
-      query-name: "apple.com"
-      query-type: "A"
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
-    alerts:
-      - type: email
-  - name: Tertiary Pi-Hole
-    group: public dns
-    url: 192.168.33.15
-    interval: 30s
-    dns:
-      query-name: "apple.com"
-      query-type: "A"
-    conditions:
       - "[DNS_RCODE] == NOERROR"
     alerts:
       - type: email
@@ -115,6 +94,15 @@ endpoints:
   - name: mmacalendars.com
     group: P1
     url: "https://mmacalendars.com"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
+  - name: Internal Proxy
+    group: P1
+    url: "https://proxy.internal"
     interval: 30s
     conditions:
       - "[STATUS] == 200"
@@ -177,5 +165,14 @@ endpoints:
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: email
+
+  - name: Nextcloud Cron
+    group: MISC
+    url: "https://cloud.richardsoper.me/cron.php"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
     alerts:
       - type: email
