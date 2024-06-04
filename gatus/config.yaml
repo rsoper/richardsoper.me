@@ -105,8 +105,7 @@ endpoints:
     url: "icmp://proxy.internal"
     interval: 30s
     conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 500"
+      - "[CONNECTED] == true"
     alerts:
       - type: email
 
