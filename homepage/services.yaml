@@ -112,3 +112,9 @@
             type: uptimekuma
             url: https://uptime.richardsoper.me
             slug: internal
+    - Gatus:
+        icon: gatus.png
+        href: https://gatus.richardsoper.me
+        widget:
+            type: gatus
+            url: https://gatus.richardsoper.me
