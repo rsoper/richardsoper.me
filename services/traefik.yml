@@ -56,4 +56,11 @@ services:
         - "traefik.http.routers.traefik.tls.certresolver=cf-cert"
         - "traefik.http.routers.traefik.tls.domains[0].main=richardsoper.me"
         - "traefik.http.routers.traefik.tls.domains[0].sans=*.richardsoper.me"
+  tunnel:
+    image: cloudflare/cloudflared
+    command: tunnel run
+    networks:
+      - traefik_swarm
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
 
