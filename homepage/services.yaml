@@ -105,13 +105,6 @@
     - Gitlab:
         icon: gitlab.png
         href: https://gitlab.richardsoper.me
-    # - Uptime Kuma:
-    #     icon: uptime-kuma.png
-    #     href: https://uptime.richardsoper.me
-    #     widget:
-    #         type: uptimekuma
-    #         url: https://uptime.richardsoper.me
-    #         slug: internal
     - Gatus:
         icon: gatus.png
         href: https://gatus.richardsoper.me
