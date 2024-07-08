@@ -1,0 +1,41 @@
+version: "3.7"
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  gatus_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/gatus"
+
+services:
+  gatus:
+    image: twinproduction/gatus:latest
+    volumes:
+      - gatus_data:/config
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      - UID=1028
+      - GID=1028
+      - ICLOUD_USERNAME="ICLOUD EMAIL HERE"
+      - ICLOUD_PASSWORD="ICLOUD PASSWORD HERE"
+      - NOTIFICATION_EMAIL="WHERE TO SEND NOTIFICATION EMAIL"
+    networks:
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.gatus.entrypoints=websecure"
+        - "traefik.http.routers.gatus.rule=Host(`gatus.richardsoper.me`)"
+        - "traefik.http.routers.gatus.tls.certresolver=cf-cert"
+        - "traefik.http.routers.gatus.middlewares=secure-headers@file"
+        - "traefik.http.services.gatus.loadbalancer.server.port=8080"

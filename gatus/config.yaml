@@ -1,0 +1,194 @@
+storage:
+  type: sqlite
+  path: /config/data.db
+alerting:
+  email:
+    from: "Gatus <noreply@richardsoper.me>"
+    username: "${ICLOUD_USERNAME}"
+    password: "${ICLOUD_PASSWORD}"
+    host: "smtp.mail.me.com"
+    port: 587
+    to: "${NOTIFICATION_EMAIL}"
+    default-alert:
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 3
+endpoints:
+  - name: Floating DNS
+    group: local dns
+    url: 192.168.33.5
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
+  - name: Primary Pi-Hole
+    group: local dns
+    url: 192.168.33.2
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
+  - name: Secondary Pi-Hole
+    group: local dns
+    url: 192.168.33.3
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
+  - name: Tertiary Pi-Hole
+    group: local dns
+    url: 192.168.33.15
+    interval: 30s
+    dns:
+      query-name: "proxy.internal"
+      query-type: "A"
+    conditions:
+      - "[BODY] == 192.168.33.200"
+      - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: email
+
+  - name: Jellyfin
+    group: P1
+    url: "http://jellyfin.internal:8096"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 150"
+    alerts:
+      - type: email
+  - name: richardsoper.me
+    group: P1
+    url: "https://richardsoper.me"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
+  - name: rdsv.me
+    group: P1
+    url: "https://rdsv.me"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
+  - name: Jellyfin Tunnel
+    group: P1
+    url: "https://w.rdsv.me"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
+  - name: mmacalendars.com
+    group: P1
+    url: "https://mmacalendars.com"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
+  - name: Internal Proxy
+    group: P1
+    url: "icmp://proxy.internal"
+    interval: 30s
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+
+
+  - name: Athreos
+    group: Swarm
+    url: "icmp://athreos.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+  - name: ephara
+    group: Swarm
+    url: "icmp://ephara.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+  - name: erebos
+    group: Swarm
+    url: "icmp://erebos.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+  - name: heliod
+    group: Swarm
+    url: "icmp://heliod.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+  - name: liliana
+    group: Swarm
+    url: "icmp://liliana.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+  - name: nylea
+    group: Swarm
+    url: "icmp://nylea.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+  - name: thassa
+    group: Swarm
+    url: "icmp://thassa.internal"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: email
+
+  - name: Nextcloud Cron
+    group: MISC
+    url: "https://cloud.richardsoper.me/cron.php"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: email
+  - name: Appwrite
+    group: MISC
+    url: "http://appwrite.internal"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 150"
+    alerts:
+      - type: email
