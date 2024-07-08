@@ -90,6 +90,15 @@ endpoints:
       - "[RESPONSE_TIME] < 500"
     alerts:
       - type: email
+  - name: Jellyfin Tunnel
+    group: P1
+    url: "https://w.rdsv.me"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"
+    alerts:
+      - type: email
   - name: mmacalendars.com
     group: P1
     url: "https://mmacalendars.com"
