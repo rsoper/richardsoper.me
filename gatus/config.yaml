@@ -50,18 +50,6 @@ endpoints:
       - "[DNS_RCODE] == NOERROR"
     alerts:
       - type: email
-  - name: Tertiary Pi-Hole
-    group: local dns
-    url: 192.168.33.15
-    interval: 30s
-    dns:
-      query-name: "proxy.internal"
-      query-type: "A"
-    conditions:
-      - "[BODY] == 192.168.33.200"
-      - "[DNS_RCODE] == NOERROR"
-    alerts:
-      - type: email
 
   - name: Jellyfin
     group: P1

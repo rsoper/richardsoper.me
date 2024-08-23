@@ -22,17 +22,6 @@ http:
         - admin-redirect@file
         - secure-headers@file
         - authelia@docker
-    pihole-vm:
-      rule: "Host(`pihole3.richardsoper.me`)"
-      service: pihole-vm-service
-      entryPoints:
-        - websecure
-      tls:
-        certResolver: cf-cert
-      middlewares:
-        - admin-redirect@file
-        - secure-headers@file
-        - authelia@docker
 
   services:
     pihole-service:
@@ -45,14 +34,9 @@ http:
         passHostHeader: true
         servers:
           - url: "http://192.168.33.3:80"
-    pihole-vm-service:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: "http://192.168.33.15:80"
 
   middlewares:
     admin-redirect:
       redirectRegex:
-        regex: "^https://(pihole.|pihole2.|pihole3.)?richardsoper.me/$"
+        regex: "^https://(pihole.|pihole2.)?richardsoper.me/$"
         replacement: "https://${1}richardsoper.me/admin/"

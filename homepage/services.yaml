@@ -2,7 +2,11 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
 
-- DNS:
+- Network Services:
+    - Unifi Network:
+        icon: unifi-controller.png
+        href: https://unifi.lan.richardsoper.me/network/default/dashboard
+        description: Unifi Network dashboard
     - Primary Pi-Hole:
         icon: pi-hole.png
         href: https://pihole.richardsoper.me
@@ -19,14 +23,6 @@
             type: pihole
             url: http://192.168.33.3
             key: {{HOMEPAGE_FILE_PIHOLE_2}}
-    - Tertiary Pi-Hole:
-        icon: pi-hole.png
-        href: https://pihole3.richardsoper.me
-        description: Tertiary Pi-hole
-        widget:
-            type: pihole
-            url: http://192.168.33.15
-            key: {{HOMEPAGE_FILE_PIHOLE_3}}
 - Media Services:
     - Jellyfin:
         icon: jellyfin.png
@@ -68,10 +64,6 @@
             key: {{HOMEPAGE_FILE_SONARR}}
 
 - Admin Services:
-    - Unifi Network:
-        icon: unifi-controller.png
-        href: https://unifi.lan.richardsoper.me/network/default/dashboard
-        description: Unifi Network dashboard
     - Proxmox:
         icon: proxmox.png
         href: https://proxmox.lan.richardsoper.me

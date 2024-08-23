@@ -8,7 +8,7 @@ color: stone
 useEqualHeights: true
 
 layout:
-  DNS:
+  Network Services:
     style: row
     columns: 3
   Media Services:
