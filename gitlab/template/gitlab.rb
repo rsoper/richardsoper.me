@@ -1,6 +1,7 @@
 external_url 'https://gitlab.richardsoper.me/'
 pages_external_url 'https://pages.richardsoper.me/'
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
+gitlab_rails['gitlab_shell_ssh_port'] = 2424
 
 gitlab_pages['enable'] = true
 pages_nginx['enable'] = true
@@ -31,5 +32,4 @@ registry_external_url 'https://registry.richardsoper.me'
 
 # Monitoring 
 prometheus_monitoring['enable'] = false
-grafana['enable'] = false
 consul['enable'] = false
