@@ -56,6 +56,8 @@ services:
       - gitlab_logs:/var/log/gitlab
       - gitlab_config:/etc/gitlab
       - /home/swarm/postgres:/var/opt/gitlab/postgresql
+    ports:
+      - 2424:22
     environment:
       GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
     configs:

@@ -26,21 +26,21 @@
 - Media Services:
     - Jellyfin:
         icon: jellyfin.png
-        href: https://watch.richardsoper.me
+        href: https://w.rdsv.me
         description: Jellyfin streaming server
         widget:
             type: jellyfin
-            url: https://watch.richardsoper.me
+            url: https://w.rdsv.me
             key: {{HOMEPAGE_FILE_JELLYFIN}}
             enableBlocks: true # optional, defaults to false
             enableNowPlaying: true # optional, defaults to true
     - Jellyseerr:
         icon: jellyseerr.png
-        href: https://request.richardsoper.me
+        href: https://request.rdsv.me
         description: Jellyfin request server
         widget:
             type: jellyseerr
-            url: https://request.richardsoper.me
+            url: https://request.rdsv.me
             key: {{HOMEPAGE_FILE_JELLYSEERR}}
     - Transmission:
         icon: transmission.png
