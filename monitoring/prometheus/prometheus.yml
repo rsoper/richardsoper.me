@@ -24,6 +24,7 @@ scrape_configs:
             "ephara.internal:9100",
             "athreos.internal:9100",
             "jellyfin.internal:9100",
+            "proxmox.internal:9100",
           ]
   - job_name: cadvisor
     static_configs:
