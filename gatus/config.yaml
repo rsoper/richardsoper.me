@@ -69,6 +69,15 @@ endpoints:
       - "[RESPONSE_TIME] < 500"
     alerts:
       - type: email
+  - name: MTFX Graphics Tunnel
+    group: P1
+    url: "https://mtfxgraphics.com"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 700"
+    alerts:
+      - type: email
   - name: rdsv.me
     group: P1
     url: "https://rdsv.me"

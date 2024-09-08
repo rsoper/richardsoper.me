@@ -1,0 +1,55 @@
+version: "3.7"
+
+secrets:
+  GHOST_DB:
+    external: true
+  TZ:
+    external: true
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  mtfx_ghost_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/mtfx"
+
+services:
+  mtfx_ghost:
+    image: ghost:5-alpine
+    volumes:
+      - mtfx_ghost_data:/var/lib/ghost/content
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      database__client: mysql
+      database__connection__host: 192.168.33.32
+      database__connection__port: 3307
+      database__connection__user: mtfx
+      database__connection__password: SUPER_SECRET_PASSWORD
+      database__connection__database: mtfx
+      url: https://mtfxgraphics.com
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.mtfx.entrypoints=websecure"
+        - "traefik.http.routers.mtfx.rule=Host(`www.mtfxgraphics.com`) || Host(`mtfxgraphics.com`)"
+        - "traefik.http.routers.mtfx.tls.certresolver=cf-cert"
+        - "traefik.http.routers.mtfx.middlewares=secure-headers@file"
+        - "traefik.http.services.mtfx.loadbalancer.server.port=2368"
+        - "traefik.http.routers.redirect-router.entrypoints=websecure"
+        - "traefik.http.routers.redirect-router.tls.certresolver=cf-cert"
+        - "traefik.http.routers.redirect-router.rule=Host(`mail.mtfxgraphics.com`)"
+        - "traefik.http.routers.redirect-router.middlewares=redirect-regex"
+        - "traefik.http.middlewares.redirect-regex.redirectregex.regex=(.)*"
+        - "traefik.http.middlewares.redirect-regex.redirectregex.replacement=http://mail.google.com/a/mtfxgraphics.com"
+        - "traefik.http.middlewares.redirect-regex.redirectregex.permanent=false"
