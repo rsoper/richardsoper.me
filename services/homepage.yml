@@ -19,6 +19,8 @@ secrets:
     external: true
   HOMEPAGE_FILE_NEXTCLOUD:
     external: true
+  HOMEPAGE_FILE_TRANSMISSION:
+    external: true
 
 volumes:
   homepage_data:
@@ -41,6 +43,7 @@ services:
       - HOMEPAGE_FILE_RADARR
       - HOMEPAGE_FILE_SONARR
       - HOMEPAGE_FILE_NEXTCLOUD
+      - HOMEPAGE_FILE_TRANSMISSION
     logging:
       driver: loki:latest
       options:
@@ -55,6 +58,7 @@ services:
       - HOMEPAGE_FILE_RADARR=/run/secrets/HOMEPAGE_FILE_RADARR
       - HOMEPAGE_FILE_SONARR=/run/secrets/HOMEPAGE_FILE_SONARR
       - HOMEPAGE_FILE_NEXTCLOUD=/run/secrets/HOMEPAGE_FILE_NEXTCLOUD
+      - HOMEPAGE_FILE_TRANSMISSION=/run/secrets/HOMEPAGE_FILE_TRANSMISSION
     networks:
       - traefik_swarm
     deploy:
