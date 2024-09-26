@@ -46,6 +46,12 @@
         icon: transmission.png
         href: https://transmission.richardsoper.me
         description: Torrent interface
+        widget:
+            type: transmission
+            url: http://transmission.internal:9091
+            username: richardsoper
+            password: {{HOMEPAGE_FILE_TRANSMISSION}}
+            rpcUrl: /transmission/ # Optional. Matches the value of "rpc-url" in your Transmission's settings.json file
     - Radarr:
         icon: radarr.png
         href: https://movies.richardsoper.me
