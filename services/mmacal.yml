@@ -23,3 +23,21 @@ services:
         - "traefik.http.routers.mma-calendar.tls.certresolver=cf-cert"
         - "traefik.http.routers.mma-calendar.middlewares=secure-headers@file"
         - "traefik.http.services.mma-calendar.loadbalancer.server.port=5000"
+  stage_mma_cal:
+    image: registry.richardsoper.me/richardsoper/mma-calendar:staging
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    networks:
+      - traefik_swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.stage-mma-calendar.entrypoints=websecure"
+        - "traefik.http.routers.stage-mma-calendar.rule=Host(`stage.mmacalendars.com`)"
+        - "traefik.http.routers.stage-mma-calendar.tls.certresolver=cf-cert"
+        - "traefik.http.routers.stage-mma-calendar.middlewares=secure-headers@file"
+        - "traefik.http.services.stage-mma-calendar.loadbalancer.server.port=5000"
