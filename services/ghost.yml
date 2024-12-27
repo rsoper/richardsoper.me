@@ -31,12 +31,18 @@ services:
         loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       database__client: mysql
-      database__connection__host: 192.168.33.32
-      database__connection__port: 3307
+      database__connection__host: 192.168.33.133
+      database__connection__port: 3306
       database__connection__user: ghost
       database__connection__password: SUPER_SECRET_PASSWORD
       database__connection__database: ghost
       url: https://blog.richardsoper.me
+      mail__from: "Richard's Blog <noreply@richardsoper.me>"
+      mail__options__auth__pass: SUPER_SECRET_PASSWORD
+      mail__options__auth__user: SMTP_USER
+      mail__options__host: smtp.mail.me.com
+      mail__options__port: 587
+      mail__transport: SMTP
     deploy:
       replicas: 1
       labels:

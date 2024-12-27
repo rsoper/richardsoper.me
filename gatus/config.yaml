@@ -66,7 +66,7 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 500"
+      - "[RESPONSE_TIME] < 1000"
     alerts:
       - type: email
   - name: MTFX Graphics Tunnel
@@ -75,7 +75,7 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 700"
+      - "[RESPONSE_TIME] < 1000"
     alerts:
       - type: email
   - name: rdsv.me
@@ -84,7 +84,7 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 500"
+      - "[RESPONSE_TIME] < 1000"
     alerts:
       - type: email
   - name: Jellyfin Tunnel
@@ -93,7 +93,7 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 500"
+      - "[RESPONSE_TIME] < 1000"
     alerts:
       - type: email
   - name: mmacalendars.com
@@ -102,7 +102,7 @@ endpoints:
     interval: 30s
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 500"
+      - "[RESPONSE_TIME] < 1000"
     alerts:
       - type: email
   - name: Internal Proxy
@@ -118,7 +118,7 @@ endpoints:
   - name: Athreos
     group: Swarm
     url: "icmp://athreos.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:
@@ -126,7 +126,7 @@ endpoints:
   - name: ephara
     group: Swarm
     url: "icmp://ephara.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:
@@ -134,7 +134,7 @@ endpoints:
   - name: erebos
     group: Swarm
     url: "icmp://erebos.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:
@@ -142,7 +142,7 @@ endpoints:
   - name: heliod
     group: Swarm
     url: "icmp://heliod.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:
@@ -150,7 +150,7 @@ endpoints:
   - name: liliana
     group: Swarm
     url: "icmp://liliana.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:
@@ -158,7 +158,7 @@ endpoints:
   - name: nylea
     group: Swarm
     url: "icmp://nylea.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:
@@ -166,7 +166,7 @@ endpoints:
   - name: thassa
     group: Swarm
     url: "icmp://thassa.internal"
-    interval: 1m
+    interval: 30s
     conditions:
       - "[CONNECTED] == true"
     alerts:

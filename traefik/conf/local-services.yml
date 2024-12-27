@@ -20,6 +20,16 @@ http:
       middlewares:
         - securedheaders@file
         - authelia@docker
+    pma:
+      rule: "Host(`pma.lan.richardsoper.me`)"
+      service: pma-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
+        - authelia@docker
 
   services:
     proxmox-service:
@@ -32,3 +42,8 @@ http:
         passHostHeader: true
         servers:
           - url: "https://192.168.33.1"
+    pma-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://192.168.33.133:8080"
