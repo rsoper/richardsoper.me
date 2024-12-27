@@ -31,8 +31,8 @@ services:
         loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
     environment:
       database__client: mysql
-      database__connection__host: 192.168.33.32
-      database__connection__port: 3307
+      database__connection__host: 192.168.33.133
+      database__connection__port: 3306
       database__connection__user: mtfx
       database__connection__password: SUPER_SECRET_PASSWORD
       database__connection__database: mtfx

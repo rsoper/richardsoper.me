@@ -1,0 +1,54 @@
+version: "3.7"
+
+secrets:
+  GHOST_DB:
+    external: true
+  TZ:
+    external: true
+
+networks:
+  traefik_swarm:
+    external: true
+
+volumes:
+  rargutters_ghost_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.33.32,nolock,soft,rw
+      device: ":/volume1/swarm/rargutters"
+
+services:
+  rar_ghost:
+    image: ghost:5-alpine
+    volumes:
+      - rargutters_ghost_data:/var/lib/ghost/content
+    networks:
+      - traefik_swarm
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    environment:
+      database__client: mysql
+      database__connection__host: 192.168.33.133
+      database__connection__port: 3306
+      database__connection__user: rargutters
+      database__connection__password: SUPER_SECRET_PASSWORD
+      database__connection__database: rargutters
+      url: https://rargutters.com
+      mail__transport: SMTP
+      mail__options__host: smtp.mail.me.com
+      mail__options__port: 587
+      mail__options__auth__user: SMTP_USER
+      mail__options__auth__pass: SUPER_SECRET_PASSWORD
+      mail__from: Right as Rain Gutters <noreply@rargutters.coms>
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.rargutters.entrypoints=websecure"
+        - "traefik.http.routers.rargutters.rule=Host(`www.rargutters.com`) || Host(`rargutters.com`)"
+        - "traefik.http.routers.rargutters.tls.certresolver=cf-cert"
+        - "traefik.http.routers.rargutters.middlewares=secure-headers@file"
+        - "traefik.http.services.rargutters.loadbalancer.server.port=2368"

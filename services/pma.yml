@@ -1,0 +1,22 @@
+# This is run in a standalone docker VM and not as part of the swarm for maximum stability. 
+version: '3.1'
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: REPLACE_WITH_SECURE_PASSWORD
+    volumes:
+      - ./db_data:/var/lib/mysql:Z
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=db
+      - UPLOAD_LIMIT=40960K
