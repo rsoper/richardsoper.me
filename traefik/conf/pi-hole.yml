@@ -1,7 +1,7 @@
 http:
   routers:
     pihole:
-      rule: "Host(`pihole.richardsoper.me`)"
+      rule: "Host(`pihole.lan.richardsoper.me`)"
       service: pihole-service
       entryPoints:
         - websecure
@@ -12,7 +12,7 @@ http:
         - secure-headers@file
         - authelia@docker
     pihole-backup:
-      rule: "Host(`pihole2.richardsoper.me`)"
+      rule: "Host(`pihole2.lan.richardsoper.me`)"
       service: pihole-backup-service
       entryPoints:
         - websecure
@@ -38,5 +38,5 @@ http:
   middlewares:
     admin-redirect:
       redirectRegex:
-        regex: "^https://(pihole.|pihole2.)?richardsoper.me/$"
-        replacement: "https://${1}richardsoper.me/admin/"
+        regex: "^https://(pihole.|pihole2.)?lan.richardsoper.me/$"
+        replacement: "https://${1}lan.richardsoper.me/admin/"
