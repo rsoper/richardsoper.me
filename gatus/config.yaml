@@ -113,6 +113,14 @@ endpoints:
       - "[CONNECTED] == true"
     alerts:
       - type: email
+  - name: Nextcloud Cron
+    group: P1
+    url: "https://cloud.richardsoper.me/cron.php"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: email
 
 
   - name: Athreos
@@ -172,20 +180,3 @@ endpoints:
     alerts:
       - type: email
 
-  - name: Nextcloud Cron
-    group: MISC
-    url: "https://cloud.richardsoper.me/cron.php"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: email
-  - name: Appwrite
-    group: MISC
-    url: "http://appwrite.internal"
-    interval: 30s
-    conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 150"
-    alerts:
-      - type: email
