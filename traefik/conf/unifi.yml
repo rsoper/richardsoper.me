@@ -1,8 +1,8 @@
 http:
   routers:
-    appwrite:
-      rule: "Host(`appwrite.richardsoper.me`)"
-      service: appwrite-service
+    unifi:
+      rule: "Host(`unifi.lan.richardsoper.me`)"
+      service: unifi-service
       entryPoints:
         - websecure
       tls:
@@ -12,8 +12,8 @@ http:
         - authelia@docker
 
   services:
-    appwrite-service:
+    unifi-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://192.168.33.16:80"
+          - url: "https://192.168.33.1"

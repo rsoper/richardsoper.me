@@ -9,7 +9,7 @@
         description: Unifi Network dashboard
     - Primary Pi-Hole:
         icon: pi-hole.png
-        href: https://pihole.richardsoper.me
+        href: https://pihole.lan.richardsoper.me
         description: Primary Pi-hole
         widget:
             type: pihole
@@ -17,7 +17,7 @@
             key: {{HOMEPAGE_FILE_PIHOLE_1}}
     - Secondary Pi-Hole:
         icon: pi-hole.png
-        href: https://pihole2.richardsoper.me
+        href: https://pihole2.lan.richardsoper.me
         description: Secondary Pi-hole
         widget:
             type: pihole

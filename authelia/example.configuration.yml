@@ -30,7 +30,7 @@ access_control:
     # Rules applied to everyone
     - domain: traefik.richardsoper.me
       policy: two_factor
-    - domain: pihole.richardsoper.me
+    - domain: pihole.lan.richardsoper.me
       policy: two_factor
     - domain: tv.richardsoper.me
       policy: two_factor
