@@ -1,0 +1,19 @@
+http:
+  routers:
+    unifi:
+      rule: "Host(`unifi.lan.richardsoper.me`)"
+      service: unifi-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cf-cert
+      middlewares:
+        - securedheaders@file
+        - authelia@docker
+
+  services:
+    unifi-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "https://192.168.33.1"
