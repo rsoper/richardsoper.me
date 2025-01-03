@@ -75,6 +75,7 @@ services:
         - "traefik.http.routers.radarr.tls.certresolver=cf-cert"
         - "traefik.http.routers.radarr.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+        - shepherd.autodeploy=true
 
   jackett:
     image: lscr.io/linuxserver/jackett:latest
@@ -103,6 +104,7 @@ services:
         - "traefik.http.routers.jackett.tls.certresolver=cf-cert"
         - "traefik.http.routers.jackett.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+        - shepherd.autodeploy=true
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -133,6 +135,7 @@ services:
         - "traefik.http.routers.sonarr.tls.certresolver=cf-cert"
         - "traefik.http.routers.sonarr.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+        - shepherd.autodeploy=true
 
   solverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -147,6 +150,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      labels:
+        - shepherd.autodeploy=true
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
@@ -173,6 +178,7 @@ services:
         - "traefik.http.routers.jellyseerr.tls.certresolver=cf-cert"
         - "traefik.http.routers.jellyseerr.middlewares=secure-headers@file"
         - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
+        - shepherd.autodeploy=true
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -199,3 +205,4 @@ services:
         - "traefik.http.routers.bazarr.tls.certresolver=cf-cert"
         - "traefik.http.routers.bazarr.middlewares=secure-headers@file"
         - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+        - shepherd.autodeploy=true

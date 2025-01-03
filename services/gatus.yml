@@ -39,3 +39,4 @@ services:
         - "traefik.http.routers.gatus.tls.certresolver=cf-cert"
         - "traefik.http.routers.gatus.middlewares=secure-headers@file"
         - "traefik.http.services.gatus.loadbalancer.server.port=8080"
+        - shepherd.autodeploy=true

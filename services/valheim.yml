@@ -45,3 +45,5 @@ services:
       replicas: 1
       placement:
         constraints: [node.hostname == heliod]
+      labels:
+        - shepherd.autodeploy=true

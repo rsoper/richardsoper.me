@@ -22,3 +22,5 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      labels:
+        - shepherd.autodeploy=true

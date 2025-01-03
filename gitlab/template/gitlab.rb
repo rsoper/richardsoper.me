@@ -33,3 +33,15 @@ registry_external_url 'https://registry.richardsoper.me'
 # Monitoring 
 prometheus_monitoring['enable'] = false
 consul['enable'] = false
+
+# Postgres DB
+# Disable the built-in Postgres
+postgresql['enable'] = false
+# Fill in the connection details
+gitlab_rails['db_adapter'] = 'postgresql'
+gitlab_rails['db_encoding'] = 'utf8'
+gitlab_rails['db_host'] = 'postgres-db.internal'
+gitlab_rails['db_port'] = 5432
+gitlab_rails['db_database'] = "gitlabhq_production"
+gitlab_rails['db_username'] = 'gitlab'
+gitlab_rails['db_password'] = File.read('/run/secrets/GITLAB_DB')
