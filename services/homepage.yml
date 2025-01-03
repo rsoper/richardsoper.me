@@ -71,3 +71,4 @@ services:
         - "traefik.http.routers.homepage.tls.certresolver=cf-cert"
         - "traefik.http.routers.homepage.middlewares=secure-headers@file,authelia@docker"
         - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+        - shepherd.autodeploy=true

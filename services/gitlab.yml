@@ -15,6 +15,8 @@ secrets:
     external: true
   ICLOUD_USERNAME:
     external: true
+  GITLAB_DB:
+    external: true
 
 volumes:
   gitlab_data:
@@ -50,12 +52,11 @@ volumes:
 
 services:
   gitlab:
-    image: gitlab/gitlab-ee:latest
+    image: gitlab/gitlab-ee:17.7.0-ee.0
     volumes:
       - gitlab_data:/var/opt/gitlab
       - gitlab_logs:/var/log/gitlab
       - gitlab_config:/etc/gitlab
-      - /home/swarm/postgres:/var/opt/gitlab/postgresql
     ports:
       - 2424:22
     environment:
@@ -67,6 +68,7 @@ services:
       - gitlab_root_password
       - ICLOUD_SMTP
       - ICLOUD_USERNAME
+      - GITLAB_DB
     networks:
       - traefik_swarm
     logging:
@@ -76,8 +78,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == heliod]
       labels:
         - "traefik.enable=true"
         # UI routers/service

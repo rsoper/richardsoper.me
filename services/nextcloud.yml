@@ -70,3 +70,4 @@ services:
         - "traefik.http.routers.nextcloud.tls.certresolver=cf-cert"
         - "traefik.http.routers.nextcloud.middlewares=nextcloud-headers@file"
         - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+        - shepherd.autodeploy=true

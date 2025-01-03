@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  shepherd:
+    image: containrrr/shepherd
+    environment:
+      SLEEP_TIME: "12h"
+      TZ: "US/Pacific"
+      VERBOSE: "true"
+      FILTER_SERVICES: "label=shepherd.autodeploy=true"
+      ROLLBACK_ON_FAILURE: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      driver: loki:latest
+      options:
+        loki-url: "http://logging.richardsoper.me:3100/loki/api/v1/push"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
