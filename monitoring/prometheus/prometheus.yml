@@ -25,6 +25,12 @@ scrape_configs:
             "athreos.internal:9100",
             "jellyfin.internal:9100",
             "proxmox.internal:9100",
+            "transmission.internal:9100",
+            "mc.internal:9100",
+            "palworld.internal:9100",
+            "scrypted.internal:9100",
+            "maria-db.internal:9100",
+            "postgres-db.internal:9100",
           ]
   - job_name: cadvisor
     static_configs:
@@ -37,6 +43,12 @@ scrape_configs:
             "liliana.internal:8181",
             "ephara.internal:8181",
             "athreos.internal:8181",
+            "transmission.internal:8181",
+            "mc.internal:8181",
+            "palworld.internal:8181",
+            "scrypted.internal:8181",
+            "maria-db.internal:8181",
+            "postgres-db.internal:8181",
           ]
   - job_name: traefik
     static_configs:
